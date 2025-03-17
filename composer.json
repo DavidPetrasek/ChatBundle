@@ -1,0 +1,19 @@
+{
+    "name": "psys/chat-bundle",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Psys\\ChatBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "David Petrásek",
+            "email": "davidpetrasek@hotmail.cz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "doctrine/orm": "^3.3"
+    }
+}
