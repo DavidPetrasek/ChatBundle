@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\MessageBuilder;
+namespace FOS\ChatBundle\MessageBuilder;
 
 use Doctrine\Common\Collections\Collection;
-use FOS\MessageBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
 
 /**
  * Fluent interface message builder for new thread messages.
@@ -14,36 +14,22 @@ class NewThreadMessageBuilder extends AbstractMessageBuilder
 {
     /**
      * The thread subject.
-     *
-     * @param  string
-     *
-     * @return NewThreadMessageBuilder (fluent interface)
      */
-    public function setSubject($subject)
+    public function setSubject(string $subject): static
     {
         $this->thread->setSubject($subject);
 
         return $this;
     }
 
-    /**
-     * @param ParticipantInterface $recipient
-     *
-     * @return NewThreadMessageBuilder (fluent interface)
-     */
-    public function addRecipient(ParticipantInterface $recipient)
+    public function addRecipient(ParticipantInterface $recipient): static
     {
         $this->thread->addParticipant($recipient);
 
         return $this;
     }
 
-    /**
-     * @param Collection $recipients
-     *
-     * @return NewThreadMessageBuilder
-     */
-    public function addRecipients(Collection $recipients)
+    public function addRecipients(Collection $recipients): static
     {
         foreach ($recipients as $recipient) {
             $this->addRecipient($recipient);

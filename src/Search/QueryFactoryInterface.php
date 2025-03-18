@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\MessageBundle\Search;
+namespace FOS\ChatBundle\Search;
 
 /**
  * Gets the search term from the request and prepares it.
@@ -9,8 +9,6 @@ interface QueryFactoryInterface
 {
     /**
      * Gets the search term.
-     *
-     * @return Query the term object
      */
-    public function createFromRequest();
+    public function createFromRequest() : Query;
 }

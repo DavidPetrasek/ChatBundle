@@ -1,6 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Model;
+namespace FOS\ChatBundle\Model;
+
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Message model.
@@ -11,43 +13,26 @@ interface MessageInterface extends ReadableInterface
 {
     /**
      * Gets the message unique id.
-     *
-     * @return mixed
      */
-    public function getId();
+    public function getId() : ?int;
 
-    /**
-     * @return ThreadInterface
-     */
-    public function getThread();
+    public function getThread() : ThreadInterface;
 
-    /**
-     * @param  ThreadInterface
-     */
     public function setThread(ThreadInterface $thread);
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt();
+    public function getCreatedAt() : \DateTimeImmutable;
 
-    /**
-     * @return string
-     */
-    public function getBody();
+    public function getBody() : string;
 
-    /**
-     * @param  string
-     */
-    public function setBody($body);
+    public function setBody(string $body);
 
-    /**
-     * @return ParticipantInterface
-     */
-    public function getSender();
+    public function getSender() : ParticipantInterface;
 
-    /**
-     * @param  ParticipantInterface
-     */
     public function setSender(ParticipantInterface $sender);
+
+    public function addMetadata(MessageMetadata $meta): void;
+
+    public function getAllMetadata() : Collection;
+
+    public function getMetadataForParticipant(ParticipantInterface $participant) : ?MessageMetadata;
 }

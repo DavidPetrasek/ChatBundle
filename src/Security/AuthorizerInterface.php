@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\Security;
+namespace FOS\ChatBundle\Security;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Manages permissions to manipulate threads and messages.
@@ -15,30 +15,18 @@ interface AuthorizerInterface
     /**
      * Tells if the current user is allowed
      * to see this thread.
-     *
-     * @param ThreadInterface $thread
-     *
-     * @return bool
      */
-    public function canSeeThread(ThreadInterface $thread);
+    public function canSeeThread(ThreadInterface $thread) : bool;
 
     /**
      * Tells if the current participant is allowed
      * to delete this thread.
-     *
-     * @param ThreadInterface $thread
-     *
-     * @return bool
      */
-    public function canDeleteThread(ThreadInterface $thread);
+    public function canDeleteThread(ThreadInterface $thread) : bool;
 
     /**
      * Tells if the current participant is allowed
      * to send a message to this other participant.
-     *
-     * @param ParticipantInterface $participant the one we want to send a message to
-     *
-     * @return bool
      */
-    public function canMessageParticipant(ParticipantInterface $participant);
+    public function canMessageParticipant(ParticipantInterface $participant) : bool;
 }

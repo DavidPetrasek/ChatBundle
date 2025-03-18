@@ -1,30 +1,21 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
-use FOS\MessageBundle\Security\AuthorizerInterface;
+use FOS\ChatBundle\Security\AuthorizerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class AuthorizationValidator extends ConstraintValidator
 {
-    /**
-     * @var AuthorizerInterface
-     */
-    protected $authorizer;
-
-    public function __construct(AuthorizerInterface $authorizer)
+    public function __construct(private AuthorizerInterface $authorizer)
     {
-        $this->authorizer = $authorizer;
     }
 
     /**
      * Indicates whether the constraint is valid.
-     *
-     * @param object     $recipient
-     * @param Constraint $constraint
      */
-    public function validate($recipient, Constraint $constraint)
+    public function validate(object $recipient, Constraint $constraint): void
     {
         if ($recipient && !$this->authorizer->canMessageParticipant($recipient)) {
             $this->context->addViolation($constraint->message);

@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Document;
+namespace FOS\ChatBundle\Document;
 
-use FOS\MessageBundle\Model\ThreadMetadata as BaseThreadMetadata;
+use FOS\ChatBundle\Model\ThreadMetadata as BaseThreadMetadata;
 
 abstract class ThreadMetadata extends BaseThreadMetadata
 {

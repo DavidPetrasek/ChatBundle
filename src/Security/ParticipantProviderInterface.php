@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Security;
+namespace FOS\ChatBundle\Security;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
 
 /**
  * Provides the authenticated participant.
@@ -13,8 +13,6 @@ interface ParticipantProviderInterface
 {
     /**
      * Gets the current authenticated user.
-     *
-     * @return ParticipantInterface
      */
-    public function getAuthenticatedParticipant();
+    public function getAuthenticatedParticipant() : ParticipantInterface;
 }

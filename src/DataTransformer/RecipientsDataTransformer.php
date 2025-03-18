@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\MessageBundle\DataTransformer;
+namespace FOS\ChatBundle\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,30 +16,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RecipientsDataTransformer implements DataTransformerInterface
 {
-    /**
-     * @var DataTransformerInterface
-     */
-    private $userToUsernameTransformer;
-
-    public function __construct(DataTransformerInterface $userToUsernameTransformer)
+    public function __construct(private readonly DataTransformerInterface $userToUsernameTransformer)
     {
-        $this->userToUsernameTransformer = $userToUsernameTransformer;
     }
 
     /**
      * Transforms a collection of recipients into a string.
-     *
-     * @param Collection $recipients
-     *
-     * @return string
      */
-    public function transform($recipients)
+    public function transform(Collection $recipients): string
     {
-        if (null === $recipients || 0 === $recipients->count()) {
+        if (0 === $recipients->count()) {
             return '';
         }
 
-        $usernames = array();
+        $usernames = [];
 
         foreach ($recipients as $recipient) {
             $usernames[] = $this->userToUsernameTransformer->transform($recipient);
@@ -50,17 +40,12 @@ class RecipientsDataTransformer implements DataTransformerInterface
 
     /**
      * Transforms a string (usernames) to a Collection of UserInterface.
-     *
-     * @param string $usernames
-     *
      * @throws UnexpectedTypeException
      * @throws TransformationFailedException
-     *
-     * @return Collection $recipients
      */
-    public function reverseTransform($usernames)
+    public function reverseTransform(string $usernames): ?ArrayCollection
     {
-        if (null === $usernames || '' === $usernames) {
+        if ('' === $usernames) {
             return null;
         }
 

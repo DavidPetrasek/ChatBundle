@@ -1,12 +1,13 @@
 <?php
 
-namespace FOS\MessageBundle\EntityManager;
+namespace FOS\ChatBundle\EntityManager;
 
 use Doctrine\ORM\EntityManager;
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ReadableInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\ModelManager\ThreadManager as BaseThreadManager;
+use Doctrine\ORM\QueryBuilder;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
 
 /**
  * Default ORM ThreadManager.
@@ -15,57 +16,29 @@ use FOS\MessageBundle\ModelManager\ThreadManager as BaseThreadManager;
  */
 class ThreadManager extends BaseThreadManager
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    private $repository;
 
     /**
      * The model class.
-     *
-     * @var string
      */
-    protected $class;
+    private string $class;
 
     /**
      * The model class.
-     *
-     * @var string
      */
-    protected $metaClass;
+    private string $metaClass;
 
-    /**
-     * The message manager, required to mark
-     * the messages of a thread as read/unread.
-     *
-     * @var MessageManager
-     */
-    protected $messageManager;
-
-    /**
-     * @param EntityManager  $em
-     * @param string         $class
-     * @param string         $metaClass
-     * @param MessageManager $messageManager
-     */
-    public function __construct(EntityManager $em, $class, $metaClass, MessageManager $messageManager)
+    public function __construct(private EntityManager $em, string $class, string $metaClass, private \FOS\ChatBundle\EntityManager\MessageManager $messageManager)
     {
-        $this->em = $em;
-        $this->repository = $em->getRepository($class);
-        $this->class = $em->getClassMetadata($class)->name;
-        $this->metaClass = $em->getClassMetadata($metaClass)->name;
-        $this->messageManager = $messageManager;
+        $this->repository = $this->em->getRepository($class);
+        $this->class = $this->em->getClassMetadata($class)->name;
+        $this->metaClass = $this->em->getClassMetadata($metaClass)->name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findThreadById($id)
+    public function findThreadById($id): ?ThreadInterface
     {
         return $this->repository->find($id);
     }
@@ -73,7 +46,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant)
+    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -102,7 +75,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantInboxThreads(ParticipantInterface $participant)
+    public function findParticipantInboxThreads(ParticipantInterface $participant): array
     {
         return $this->getParticipantInboxThreadsQueryBuilder($participant)
             ->getQuery()
@@ -112,7 +85,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant)
+    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -141,7 +114,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantSentThreads(ParticipantInterface $participant)
+    public function findParticipantSentThreads(ParticipantInterface $participant): array
     {
         return $this->getParticipantSentThreadsQueryBuilder($participant)
             ->getQuery()
@@ -151,7 +124,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant)
+    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -173,7 +146,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantDeletedThreads(ParticipantInterface $participant)
+    public function findParticipantDeletedThreads(ParticipantInterface $participant): array
     {
         return $this->getParticipantDeletedThreadsQueryBuilder($participant)
             ->getQuery()
@@ -183,12 +156,12 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search)
+    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search): never
     {
         // remove all non-word chars
         $search = preg_replace('/[^\w]/', ' ', trim($search));
         // build a regex like (term1|term2)
-        $regex = sprintf('/(%s)/', implode('|', explode(' ', $search)));
+        $regex = sprintf('/(%s)/', implode('|', explode(' ', (string) $search)));
 
         throw new \Exception('not yet implemented');
     }
@@ -196,7 +169,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantThreadsBySearch(ParticipantInterface $participant, $search)
+    public function findParticipantThreadsBySearch(ParticipantInterface $participant, $search): array
     {
         return $this->getParticipantThreadsBySearchQueryBuilder($participant, $search)
             ->getQuery()
@@ -206,7 +179,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findThreadsCreatedBy(ParticipantInterface $participant)
+    public function findThreadsCreatedBy(ParticipantInterface $participant): array
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.createdBy', 'p')
@@ -237,7 +210,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function saveThread(ThreadInterface $thread, $andFlush = true)
+    public function saveThread(ThreadInterface $thread, $andFlush = true): void
     {
         $this->denormalize($thread);
         $this->em->persist($thread);
@@ -249,7 +222,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function deleteThread(ThreadInterface $thread)
+    public function deleteThread(ThreadInterface $thread): void
     {
         $this->em->remove($thread);
         $this->em->flush();
@@ -257,10 +230,8 @@ class ThreadManager extends BaseThreadManager
 
     /**
      * Returns the fully qualified comment thread class name.
-     *
-     * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -274,7 +245,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Performs denormalization tricks.
      */
-    protected function denormalize(ThreadInterface $thread)
+    private function denormalize(ThreadInterface $thread)
     {
         $this->doMetadata($thread);
         $this->doCreatedByAndAt($thread);
@@ -284,7 +255,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Ensures that the thread metadata are up to date.
      */
-    protected function doMetadata(ThreadInterface $thread)
+    private function doMetadata(ThreadInterface $thread)
     {
         // Participants
         foreach ($thread->getParticipants() as $participant) {
@@ -313,7 +284,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Ensures that the createdBy & createdAt properties are set.
      */
-    protected function doCreatedByAndAt(ThreadInterface $thread)
+    private function doCreatedByAndAt(ThreadInterface $thread)
     {
         if (!($message = $thread->getFirstMessage())) {
             return;
@@ -331,7 +302,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Update the dates of last message written by other participants.
      */
-    protected function doDatesOfLastMessageWrittenByOtherParticipant(ThreadInterface $thread)
+    private function doDatesOfLastMessageWrittenByOtherParticipant(ThreadInterface $thread)
     {
         foreach ($thread->getAllMetadata() as $meta) {
             $participantId = $meta->getParticipant()->getId();
@@ -342,15 +313,16 @@ class ThreadManager extends BaseThreadManager
                     $timestamp = max($timestamp, $message->getTimestamp());
                 }
             }
+
             if ($timestamp) {
-                $date = new \DateTime();
+                $date = new \DateTimeImmutable();
                 $date->setTimestamp($timestamp);
                 $meta->setLastMessageDate($date);
             }
         }
     }
 
-    protected function createThreadMetadata()
+    private function createThreadMetadata()
     {
         return new $this->metaClass();
     }

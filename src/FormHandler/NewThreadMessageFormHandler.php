@@ -1,28 +1,18 @@
 <?php
 
-namespace FOS\MessageBundle\FormHandler;
+namespace FOS\ChatBundle\FormHandler;
 
-use FOS\MessageBundle\FormModel\AbstractMessage;
-use FOS\MessageBundle\FormModel\NewThreadMessage;
-use FOS\MessageBundle\Model\MessageInterface;
+use FOS\ChatBundle\FormModel\AbstractMessage;
+use FOS\ChatBundle\FormModel\NewThreadMessage;
+use FOS\ChatBundle\Model\MessageInterface;
 
 class NewThreadMessageFormHandler extends AbstractMessageFormHandler
 {
     /**
      * Composes a message from the form data.
-     *
-     * @param AbstractMessage $message
-     *
-     * @throws \InvalidArgumentException if the message is not a NewThreadMessage
-     *
-     * @return MessageInterface the composed message ready to be sent
      */
-    public function composeMessage(AbstractMessage $message)
+    private function composeMessage(NewThreadMessage $message) : MessageInterface
     {
-        if (!$message instanceof NewThreadMessage) {
-            throw new \InvalidArgumentException(sprintf('Message must be a NewThreadMessage instance, "%s" given', get_class($message)));
-        }
-
         return $this->composer->newThread()
             ->setSubject($message->getSubject())
             ->addRecipient($message->getRecipient())

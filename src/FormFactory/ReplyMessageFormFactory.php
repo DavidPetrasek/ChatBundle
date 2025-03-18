@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\FormFactory;
+namespace FOS\ChatBundle\FormFactory;
 
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -14,12 +14,8 @@ class ReplyMessageFormFactory extends AbstractMessageFormFactory
 {
     /**
      * Creates a reply message.
-     *
-     * @param ThreadInterface $thread the thread we answer to
-     *
-     * @return FormInterface
      */
-    public function create(ThreadInterface $thread)
+    public function create(ThreadInterface $thread): FormInterface
     {
         $message = $this->createModelInstance();
         $message->setThread($thread);

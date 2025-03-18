@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\MessageBundle\Model;
+namespace FOS\ChatBundle\Model;
 
 /**
  * A user participating to a thread.
@@ -13,8 +13,6 @@ interface ParticipantInterface
 {
     /**
      * Gets the unique identifier of the participant.
-     *
-     * @return mixed
      */
-    public function getId();
+    public function getId() : ?int;
 }

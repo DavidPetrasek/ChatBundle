@@ -1,38 +1,31 @@
 <?php
 
-namespace FOS\MessageBundle\Model;
+namespace FOS\ChatBundle\Model;
 
 abstract class MessageMetadata
 {
-    protected $participant;
-    protected $isRead = false;
+    protected ParticipantInterface $participant;
 
-    /**
-     * @return ParticipantInterface
-     */
-    public function getParticipant()
+    protected bool $isRead = false;
+
+    
+    public function getParticipant() : ParticipantInterface
     {
         return $this->participant;
     }
 
-    public function setParticipant(ParticipantInterface $participant)
+    public function setParticipant(ParticipantInterface $participant): void
     {
         $this->participant = $participant;
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsRead()
+    public function getIsRead() : bool
     {
         return $this->isRead;
     }
 
-    /**
-     * @param bool $isRead
-     */
-    public function setIsRead($isRead)
+    public function setIsRead(bool $isRead): void
     {
-        $this->isRead = (bool) $isRead;
+        $this->isRead = $isRead;
     }
 }

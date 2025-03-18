@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\FormModel;
+namespace FOS\ChatBundle\FormModel;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\MessageBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
 
 /**
  * Class for handling multiple recipients in thread.
@@ -12,53 +12,38 @@ class NewThreadMultipleMessage extends AbstractMessage
 {
     /**
      * The user who receives the message.
-     *
-     * @var ArrayCollection
      */
-    protected $recipients;
+    private ArrayCollection $recipients;
 
     /**
      * The thread subject.
-     *
-     * @var string
      */
-    protected $subject;
+    private string $subject;
 
     public function __construct()
     {
         $this->recipients = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function getSubject()
+    public function getSubject() : string
     {
         return $this->subject;
     }
 
-    /**
-     * @param string $subject
-     */
-    public function setSubject($subject)
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getRecipients()
+    public function getRecipients() : ArrayCollection
     {
         return $this->recipients;
     }
 
     /**
      * Adds single recipient to collection.
-     *
-     * @param ParticipantInterface $recipient
      */
-    public function addRecipient(ParticipantInterface $recipient)
+    public function addRecipient(ParticipantInterface $recipient): void
     {
         if (!$this->recipients->contains($recipient)) {
             $this->recipients->add($recipient);
@@ -67,10 +52,8 @@ class NewThreadMultipleMessage extends AbstractMessage
 
     /**
      * Removes recipient from collection.
-     *
-     * @param ParticipantInterface $recipient
      */
-    public function removeRecipient(ParticipantInterface $recipient)
+    public function removeRecipient(ParticipantInterface $recipient): void
     {
         $this->recipients->removeElement($recipient);
     }

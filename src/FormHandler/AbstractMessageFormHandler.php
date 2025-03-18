@@ -1,13 +1,13 @@
 <?php
 
-namespace FOS\MessageBundle\FormHandler;
+namespace FOS\ChatBundle\FormHandler;
 
-use FOS\MessageBundle\Composer\ComposerInterface;
-use FOS\MessageBundle\FormModel\AbstractMessage;
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Security\ParticipantProviderInterface;
-use FOS\MessageBundle\Sender\SenderInterface;
+use FOS\ChatBundle\Composer\ComposerInterface;
+use FOS\ChatBundle\FormModel\AbstractMessage;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Sender\SenderInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,39 +19,19 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 abstract class AbstractMessageFormHandler
 {
-    protected $request;
-    protected $composer;
-    protected $sender;
-    protected $participantProvider;
-
-    /**
-     * @param Request|RequestStack         $request
-     * @param ComposerInterface            $composer
-     * @param SenderInterface              $sender
-     * @param ParticipantProviderInterface $participantProvider
-     */
-    public function __construct($request, ComposerInterface $composer, SenderInterface $sender, ParticipantProviderInterface $participantProvider)
-    {
-        if ($request instanceof Request) {
-            @trigger_error(sprintf('Using an instance of "%s" as first parameter of "%s" is deprecated since version 1.3 and won\'t be supported in 2.0. Use an instance of "Symfony\Component\HttpFoundation\RequestStack" instead.', get_class($request), __METHOD__), E_USER_DEPRECATED);
-        } elseif (!$request instanceof RequestStack) {
-            throw new \InvalidArgumentException(sprintf('AbstractMessageFormHandler expected a Request or RequestStack, %s given', is_object($request) ? get_class($request) : gettype($request)));
-        }
-
-        $this->request = $request;
-        $this->composer = $composer;
-        $this->sender = $sender;
-        $this->participantProvider = $participantProvider;
-    }
+    public function __construct
+    (
+        private RequestStack $requestStack, 
+        private ComposerInterface $composer,
+        private SenderInterface $sender, 
+        private ParticipantProviderInterface $participantProvider
+    )
+    {}
 
     /**
      * Processes the form with the request.
-     *
-     * @param Form $form
-     *
-     * @return MessageInterface|false the sent message if the form is bound and valid, false otherwise
      */
-    public function process(Form $form)
+    public function process(Form $form) : MessageInterface|false
     {
         $request = $this->getCurrentRequest();
 
@@ -70,12 +50,8 @@ abstract class AbstractMessageFormHandler
 
     /**
      * Processes the valid form, sends the message.
-     *
-     * @param Form $form
-     *
-     * @return MessageInterface the sent message
      */
-    public function processValidForm(Form $form)
+    public function processValidForm(Form $form) : MessageInterface
     {
         $message = $this->composeMessage($form->getData());
         $this->sender->send($message);
@@ -85,42 +61,30 @@ abstract class AbstractMessageFormHandler
 
     /**
      * Composes a message from the form data.
-     *
-     * @param AbstractMessage $message
-     *
-     * @return MessageInterface the composed message ready to be sent
      */
-    abstract protected function composeMessage(AbstractMessage $message);
+    abstract private function composeMessage(AbstractMessage $message) : MessageInterface;
 
     /**
      * Gets the current authenticated user.
-     *
-     * @return ParticipantInterface
      */
-    protected function getAuthenticatedParticipant()
+    private function getAuthenticatedParticipant() : ParticipantInterface
     {
         return $this->participantProvider->getAuthenticatedParticipant();
     }
 
     /**
      * BC layer to retrieve the current request directly or from a stack.
-     *
-     * @return Request
      */
-    private function getCurrentRequest()
+    private function getCurrentRequest() : Request
     {
-        if (!$this->request) {
+        if (!$this->requestStack) {
             throw new \RuntimeException('Current request was not provided to the form handler.');
         }
 
-        if ($this->request instanceof Request) {
-            return $this->request;
-        }
-
-        if (!$this->request->getCurrentRequest()) {
+        if (!$this->requestStack->getCurrentRequest() instanceof Request) {
             throw new \RuntimeException('Request stack provided to the form handler did not contains a current request.');
         }
 
-        return $this->request->getCurrentRequest();
+        return $this->requestStack->getCurrentRequest();
     }
 }

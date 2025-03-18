@@ -1,19 +1,17 @@
 <?php
 
-namespace FOS\MessageBundle\Entity;
+namespace FOS\ChatBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use FOS\MessageBundle\Model\Message as BaseMessage;
-use FOS\MessageBundle\Model\MessageMetadata as ModelMessageMetadata;
+use FOS\ChatBundle\Model\Message as BaseMessage;
+use FOS\ChatBundle\Model\MessageMetadata as ModelMessageMetadata;
 
 abstract class Message extends BaseMessage
 {
     /**
-     * Get the collection of MessageMetadata.
-     *
-     * @return Collection
+     * @return Collection<int, MessageMetadata>
      */
-    public function getAllMetadata()
+    public function getAllMetadata() : Collection
     {
         return $this->metadata;
     }
@@ -21,7 +19,8 @@ abstract class Message extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function addMetadata(ModelMessageMetadata $meta)
+    #[\Override]
+    public function addMetadata(ModelMessageMetadata $meta): void
     {
         $meta->setMessage($this);
         parent::addMetadata($meta);

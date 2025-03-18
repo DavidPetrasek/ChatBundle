@@ -1,10 +1,10 @@
 <?php
 
-namespace FOS\MessageBundle\Command;
+namespace FOS\ChatBundle\Command;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FOS\MessageBundle\Document\Message;
-use FOS\MessageBundle\Document\Thread;
+use FOS\ChatBundle\Document\Message;
+use FOS\ChatBundle\Document\Thread;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,30 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MongoDBMigrateMetadataCommand extends ContainerAwareCommand
 {
-    /**
-     * @var \MongoCollection
-     */
-    private $messageCollection;
+    private ?\MongoCollection $messageCollection = null;
 
-    /**
-     * @var \MongoCollection
-     */
-    private $threadCollection;
+    private ?\MongoCollection $threadCollection = null;
 
-    /**
-     * @var \MongoCollection
-     */
-    private $participantCollection;
+    private ?\MongoCollection $participantCollection = null;
 
-    /**
-     * @var array
-     */
-    private $updateOptions;
+    private ?array $updateOptions = null;
 
-    /**
-     * @var \Closure
-     */
-    private $printStatusCallback;
+    private ?\Closure $printStatusCallback = null;
 
     /**
      * {@inheritdoc}
@@ -53,7 +38,7 @@ class MongoDBMigrateMetadataCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    private function configure()
     {
         $this
             ->setName('fos:message:mongodb:migrate:metadata')
@@ -96,49 +81,49 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    private function initialize(InputInterface $input, OutputInterface $output)
     {
         $registry = $this->getContainer()->get('doctrine.odm.mongodb');
 
-        $this->messageCollection = $this->getMongoCollectionForClass($registry, $this->getContainer()->getParameter('fos_message.message_class'));
-        $this->threadCollection = $this->getMongoCollectionForClass($registry, $this->getContainer()->getParameter('fos_message.thread_class'));
+        $this->messageCollection = $this->getMongoCollectionForClass($registry, $this->getContainer()->getParameter('fos_chat.message_class'));
+        $this->threadCollection = $this->getMongoCollectionForClass($registry, $this->getContainer()->getParameter('fos_chat.thread_class'));
         $this->participantCollection = $this->getMongoCollectionForClass($registry, $input->getArgument('participantClass'));
 
-        $this->updateOptions = array(
+        $this->updateOptions = [
             'multiple' => false,
             'safe' => $input->getOption('safe'),
             'fsync' => $input->getOption('fsync'),
-        );
+        ];
 
-        $this->printStatusCallback = function () {
+        $this->printStatusCallback = function (): void {
         };
-        register_tick_function(array($this, 'printStatus'));
+        register_tick_function($this->printStatus(...));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    private function execute(InputInterface $input, OutputInterface $output)
     {
         $this->migrateMessages($output);
         $this->migrateThreads($output);
 
         $size = memory_get_peak_usage(true);
-        $unit = array('b', 'k', 'm', 'g', 't', 'p');
-        $output->writeln(sprintf('Peak Memory Usage: <comment>%s</comment>', round($size / pow(1024, $i = floor(log($size, 1024))), 2).$unit[$i]));
+        $unit = ['b', 'k', 'm', 'g', 't', 'p'];
+        $output->writeln(sprintf('Peak Memory Usage: <comment>%s</comment>', round($size / 1024 ** $i = floor(log($size, 1024)), 2).$unit[$i]));
     }
 
     /**
      * Migrate message documents.
      */
-    private function migrateMessages(OutputInterface $output)
+    private function migrateMessages(OutputInterface $output): void
     {
         $cursor = $this->messageCollection->find(
-            array('metadata' => array('$exists' => false)),
-            array(
+            ['metadata' => ['$exists' => false]],
+            [
                 'isReadByParticipant' => 1,
                 'isSpam' => 1,
-            )
+            ]
         );
         $cursor->snapshot();
 
@@ -150,7 +135,7 @@ EOT
             return;
         }
 
-        $this->printStatusCallback = function () use ($output, &$numProcessed, $numTotal) {
+        $this->printStatusCallback = function () use ($output, &$numProcessed, $numTotal): void {
             $output->write(sprintf("Processed: <info>%d</info> / Complete: <info>%d%%</info>\r", $numProcessed, round(100 * ($numProcessed / $numTotal))));
         };
 
@@ -160,11 +145,11 @@ EOT
                 $this->createMessageUnreadForParticipants($message);
 
                 $this->messageCollection->update(
-                    array('_id' => $message['_id']),
-                    array('$set' => array(
+                    ['_id' => $message['_id']],
+                    ['$set' => [
                         'metadata' => $message['metadata'],
                         'unreadForParticipants' => $message['unreadForParticipants'],
-                    )),
+                    ]],
                     $this->updateOptions
                 );
                 ++$numProcessed;
@@ -178,18 +163,18 @@ EOT
     /**
      * Migrate thread documents.
      */
-    private function migrateThreads(OutputInterface $output)
+    private function migrateThreads(OutputInterface $output): void
     {
         $cursor = $this->threadCollection->find(
-            array('metadata' => array('$exists' => false)),
-            array(
+            ['metadata' => ['$exists' => false]],
+            [
                 'datesOfLastMessageWrittenByOtherParticipant' => 1,
                 'datesOfLastMessageWrittenByParticipant' => 1,
                 'isDeletedByParticipant' => 1,
                 'isSpam' => 1,
                 'messages' => 1,
                 'participants' => 1,
-            )
+            ]
         );
 
         $numProcessed = 0;
@@ -200,7 +185,7 @@ EOT
             return;
         }
 
-        $this->printStatusCallback = function () use ($output, &$numProcessed, $numTotal) {
+        $this->printStatusCallback = function () use ($output, &$numProcessed, $numTotal): void {
             $output->write(sprintf("Processed: <info>%d</info> / Complete: <info>%d%%</info>\r", $numProcessed, round(100 * ($numProcessed / $numTotal))));
         };
 
@@ -211,14 +196,14 @@ EOT
                 $this->createThreadActiveParticipantArrays($thread);
 
                 $this->threadCollection->update(
-                    array('_id' => $thread['_id']),
-                    array('$set' => array(
+                    ['_id' => $thread['_id']],
+                    ['$set' => [
                         'activeParticipants' => $thread['activeParticipants'],
                         'activeRecipients' => $thread['activeRecipients'],
                         'activeSenders' => $thread['activeSenders'],
                         'lastMessageDate' => $thread['lastMessageDate'],
                         'metadata' => $thread['metadata'],
-                    )),
+                    ]],
                     $this->updateOptions
                 );
                 ++$numProcessed;
@@ -235,15 +220,15 @@ EOT
      * By default, Mongo will not include "$db" when creating the participant
      * reference. We'll add that manually to be consistent with Doctrine.
      */
-    private function createMessageMetadata(array &$message)
+    private function createMessageMetadata(array &$message): void
     {
-        $metadata = array();
+        $metadata = [];
 
         foreach ($message['isReadByParticipant'] as $participantId => $isRead) {
-            $metadata[] = array(
+            $metadata[] = [
                 'isRead' => $isRead,
-                'participant' => $this->participantCollection->createDBRef(array('_id' => new \MongoId($participantId))) + array('$db' => (string) $this->participantCollection->db),
-            );
+                'participant' => $this->participantCollection->createDBRef(['_id' => new \MongoId($participantId)]) + ['$db' => (string) $this->participantCollection->db],
+            ];
         }
 
         $message['metadata'] = $metadata;
@@ -253,12 +238,10 @@ EOT
      * Sets the unreadForParticipants array on the message.
      *
      * @see Message::doEnsureUnreadForParticipantsArray()
-     *
-     * @param array &$message
      */
-    private function createMessageUnreadForParticipants(array &$message)
+    private function createMessageUnreadForParticipants(array &$message): void
     {
-        $unreadForParticipants = array();
+        $unreadForParticipants = [];
 
         if (!$message['isSpam']) {
             foreach ($message['metadata'] as $metadata) {
@@ -276,20 +259,18 @@ EOT
      *
      * By default, Mongo will not include "$db" when creating the participant
      * reference. We'll add that manually to be consistent with Doctrine.
-     *
-     * @param array &$thread
      */
-    private function createThreadMetadata(array &$thread)
+    private function createThreadMetadata(array &$thread): void
     {
-        $metadata = array();
+        $metadata = [];
 
         $participantIds = array_keys($thread['datesOfLastMessageWrittenByOtherParticipant'] + $thread['datesOfLastMessageWrittenByParticipant'] + $thread['isDeletedByParticipant']);
 
         foreach ($participantIds as $participantId) {
-            $meta = array(
+            $meta = [
                 'isDeleted' => false,
-                'participant' => $this->participantCollection->createDBRef(array('_id' => new \MongoId($participantId))) + array('$db' => (string) $this->participantCollection->db),
-            );
+                'participant' => $this->participantCollection->createDBRef(['_id' => new \MongoId($participantId)]) + ['$db' => (string) $this->participantCollection->db],
+            ];
 
             if (isset($thread['isDeletedByParticipant'][$participantId])) {
                 $meta['isDeleted'] = $thread['isDeletedByParticipant'][$participantId];
@@ -311,35 +292,31 @@ EOT
 
     /**
      * Sets the lastMessageDate timestamp on the thread.
-     *
-     * @param array &$thread
      */
-    private function createThreadLastMessageDate(array &$thread)
+    private function createThreadLastMessageDate(array &$thread): void
     {
         $lastMessageRef = end($thread['messages']);
 
         if (false !== $lastMessageRef) {
             $lastMessage = $this->messageCollection->findOne(
-                array('_id' => $lastMessageRef['$id']),
-                array('createdAt' => 1)
+                ['_id' => $lastMessageRef['$id']],
+                ['createdAt' => 1]
             );
         }
 
-        $thread['lastMessageDate'] = isset($lastMessage['createdAt']) ? $lastMessage['createdAt'] : null;
+        $thread['lastMessageDate'] = $lastMessage['createdAt'] ?? null;
     }
 
     /**
      * Sets the active participant arrays on the thread.
      *
      * @see Thread::doEnsureActiveParticipantArrays()
-     *
-     * @param array $thread
      */
-    private function createThreadActiveParticipantArrays(array &$thread)
+    private function createThreadActiveParticipantArrays(array &$thread): void
     {
-        $activeParticipants = array();
-        $activeRecipients = array();
-        $activeSenders = array();
+        $activeParticipants = [];
+        $activeRecipients = [];
+        $activeSenders = [];
 
         foreach ($thread['participants'] as $participantRef) {
             foreach ($thread['metadata'] as $metadata) {
@@ -348,7 +325,8 @@ EOT
                 }
             }
 
-            $participantIsActiveRecipient = $participantIsActiveSender = false;
+            $participantIsActiveRecipient = false;
+            $participantIsActiveSender = false;
 
             foreach ($thread['messages'] as $messageRef) {
                 $message = $this->threadCollection->getDBRef($messageRef);
@@ -392,15 +370,9 @@ EOT
 
     /**
      * Get the MongoCollection for the given class.
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $class
-     *
      * @throws \RuntimeException if the class has no DocumentManager
-     *
-     * @return \MongoCollection
      */
-    private function getMongoCollectionForClass(ManagerRegistry $registry, $class)
+    private function getMongoCollectionForClass(ManagerRegistry $registry, string $class): \MongoCollection
     {
         if (!$dm = $registry->getManagerForClass($class)) {
             throw new \RuntimeException(sprintf('There is no DocumentManager for class "%s"', $class));
@@ -415,7 +387,7 @@ EOT
      * Since unregister_tick_function() does not support anonymous functions, it
      * is easier to register one method (this) and invoke a dynamic callback.
      */
-    public function printStatus()
+    public function printStatus(): void
     {
         call_user_func($this->printStatusCallback);
     }

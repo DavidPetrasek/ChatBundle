@@ -1,9 +1,11 @@
 <?php
 
-namespace FOS\MessageBundle\FormType;
+namespace FOS\ChatBundle\FormType;
 
-use FOS\MessageBundle\Util\LegacyFormHelper;
+use FOS\ChatBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -13,29 +15,30 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class NewThreadMultipleMessageFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('recipients', LegacyFormHelper::getType('FOS\MessageBundle\FormType\RecipientsType'), array(
+            ->add('recipients', LegacyFormHelper::getType(\FOS\ChatBundle\FormType\RecipientsType::class), [
                 'label' => 'recipients',
-                'translation_domain' => 'FOSMessageBundle',
-            ))
-            ->add('subject', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextType'), array(
+                'translation_domain' => 'FOSChatBundle',
+            ])
+            ->add('subject', LegacyFormHelper::getType(TextType::class), [
                 'label' => 'subject',
-                'translation_domain' => 'FOSMessageBundle',
-            ))
-            ->add('body', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextareaType'), array(
+                'translation_domain' => 'FOSChatBundle',
+            ])
+            ->add('body', LegacyFormHelper::getType(TextareaType::class), [
                 'label' => 'body',
-                'translation_domain' => 'FOSMessageBundle',
-            ));
+                'translation_domain' => 'FOSChatBundle',
+            ]);
     }
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
-        return 'fos_message_new_multiperson_thread';
+        return 'fos_chat_new_multiperson_thread';
     }
 
     /**

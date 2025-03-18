@@ -1,30 +1,21 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
-use FOS\MessageBundle\SpamDetection\SpamDetectorInterface;
+use FOS\ChatBundle\SpamDetection\SpamDetectorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class SpamValidator extends ConstraintValidator
 {
-    /**
-     * @var SpamDetectorInterface
-     */
-    protected $spamDetector;
-
-    public function __construct(SpamDetectorInterface $spamDetector)
+    public function __construct(private SpamDetectorInterface $spamDetector)
     {
-        $this->spamDetector = $spamDetector;
     }
 
     /**
      * Indicates whether the constraint is valid.
-     *
-     * @param object     $value
-     * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate(object $value, Constraint $constraint): void
     {
         if ($this->spamDetector->isSpam($value)) {
             $this->context->addViolation($constraint->message);

@@ -1,53 +1,37 @@
 <?php
 
-namespace FOS\MessageBundle\FormModel;
+namespace FOS\ChatBundle\FormModel;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
 
 class NewThreadMessage extends AbstractMessage
 {
     /**
      * The user who receives the message.
-     *
-     * @var ParticipantInterface
      */
-    protected $recipient;
+    private ParticipantInterface $recipient;
 
     /**
      * The thread subject.
-     *
-     * @var string
      */
-    protected $subject;
+    private string $subject;
 
-    /**
-     * @return string
-     */
-    public function getSubject()
+    public function getSubject() : string
     {
         return $this->subject;
     }
 
-    /**
-     * @param string
-     */
-    public function setSubject($subject)
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
     }
 
-    /**
-     * @return ParticipantInterface
-     */
-    public function getRecipient()
+    public function getRecipient() : ParticipantInterface
     {
         return $this->recipient;
     }
 
-    /**
-     * @param ParticipantInterface
-     */
-    public function setRecipient($recipient)
+    public function setRecipient(ParticipantInterface $recipient): void
     {
         $this->recipient = $recipient;
     }

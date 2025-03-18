@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Reader;
+namespace FOS\ChatBundle\Reader;
 
-use FOS\MessageBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
 
 /**
  * Marks messages and threads as read or unread.

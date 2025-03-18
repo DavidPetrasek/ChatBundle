@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\ModelManager;
+namespace FOS\ChatBundle\ModelManager;
 
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
 
 /**
  * Interface to be implemented by message managers. This adds an additional level
@@ -17,32 +17,21 @@ interface MessageManagerInterface extends ReadableManagerInterface
 {
     /**
      * Tells how many unread, non-spam, messages this participant has.
-     *
-     * @param ParticipantInterface $participant
-     *
-     * @return int the number of unread messages
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant);
+    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant) : int;
 
     /**
      * Creates an empty message instance.
-     *
-     * @return MessageInterface
      */
-    public function createMessage();
+    public function createMessage() : MessageInterface;
 
     /**
      * Saves a message.
-     *
-     * @param MessageInterface $message
-     * @param bool             $andFlush Whether to flush the changes (default true)
      */
-    public function saveMessage(MessageInterface $message, $andFlush = true);
+    public function saveMessage(MessageInterface $message, bool $andFlush = true);
 
     /**
      * Returns the message's fully qualified class MessageManagerInterface.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass() : string;
 }

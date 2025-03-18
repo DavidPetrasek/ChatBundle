@@ -1,8 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\Search;
+namespace FOS\ChatBundle\Search;
 
-use FOS\MessageBundle\Model\ThreadInterface;
+use Doctrine\ORM\QueryBuilder;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Finds threads of a participant, matching a given query.
@@ -13,19 +14,11 @@ interface FinderInterface
 {
     /**
      * Finds threads of a participant, matching a given query.
-     *
-     * @param Query $query
-     *
-     * @return ThreadInterface[]
      */
-    public function find(Query $query);
+    public function find(Query $query) : array;
 
     /**
      * Finds threads of a participant, matching a given query.
-     *
-     * @param Query $query
-     *
-     * @return Builder a query builder suitable for pagination
      */
-    public function getQueryBuilder(Query $query);
+    public function getQueryBuilder(Query $query) : QueryBuilder;
 }

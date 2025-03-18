@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Sender;
+namespace FOS\ChatBundle\Sender;
 
-use FOS\MessageBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\MessageInterface;
 
 /**
  * Sends messages.

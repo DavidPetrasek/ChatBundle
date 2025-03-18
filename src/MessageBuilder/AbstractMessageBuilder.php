@@ -1,10 +1,10 @@
 <?php
 
-namespace FOS\MessageBundle\MessageBuilder;
+namespace FOS\ChatBundle\MessageBuilder;
 
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Fluent interface message builder.
@@ -13,57 +13,38 @@ use FOS\MessageBundle\Model\ThreadInterface;
  */
 abstract class AbstractMessageBuilder
 {
-    /**
-     * The message we are building.
-     *
-     * @var MessageInterface
-     */
-    protected $message;
-
-    /**
-     * The thread the message goes in.
-     *
-     * @var ThreadInterface
-     */
-    protected $thread;
-
-    public function __construct(MessageInterface $message, ThreadInterface $thread)
+    public function __construct
+    (
+        /**
+         * The message we are building.
+         */
+        protected MessageInterface $message, 
+        /**
+         * The thread the message goes in.
+         */
+        protected ThreadInterface $thread
+    )
     {
-        $this->message = $message;
-        $this->thread = $thread;
-
-        $this->message->setThread($thread);
-        $thread->addMessage($message);
+        $this->message->setThread($this->thread);
+        $this->thread->addMessage($this->message);
     }
 
     /**
      * Gets the created message.
-     *
-     * @return MessageInterface the message created
      */
-    public function getMessage()
+    public function getMessage() : MessageInterface
     {
         return $this->message;
     }
 
-    /**
-     * @param  string
-     *
-     * @return AbstractMessageBuilder (fluent interface)
-     */
-    public function setBody($body)
+    public function setBody(string $body) : static
     {
         $this->message->setBody($body);
 
         return $this;
     }
 
-    /**
-     * @param ParticipantInterface $sender
-     *
-     * @return AbstractMessageBuilder (fluent interface)
-     */
-    public function setSender(ParticipantInterface $sender)
+    public function setSender(ParticipantInterface $sender) : static
     {
         $this->message->setSender($sender);
         $this->thread->addParticipant($sender);

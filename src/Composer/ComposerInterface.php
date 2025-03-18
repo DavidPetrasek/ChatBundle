@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\Composer;
+namespace FOS\ChatBundle\Composer;
 
-use FOS\MessageBundle\MessageBuilder\AbstractMessageBuilder;
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\MessageBuilder\AbstractMessageBuilder;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Factory for message builders.
@@ -14,15 +14,11 @@ interface ComposerInterface
 {
     /**
      * Starts composing a message, starting a new thread.
-     *
-     * @return AbstractMessageBuilder
      */
-    public function newThread();
+    public function newThread() : AbstractMessageBuilder;
 
     /**
      * Starts composing a message in a reply to a thread.
-     *
-     * @return AbstractMessageBuilder
      */
-    public function reply(ThreadInterface $thread);
+    public function reply(ThreadInterface $thread) : AbstractMessageBuilder;
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace FOS\MessageBundle\Sender;
+namespace FOS\ChatBundle\Sender;
 
-use FOS\MessageBundle\Event\FOSMessageEvents;
-use FOS\MessageBundle\Event\MessageEvent;
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\ModelManager\MessageManagerInterface;
-use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
+use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\MessageEvent;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\ModelManager\MessageManagerInterface;
+use FOS\ChatBundle\ModelManager\ThreadManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -16,32 +16,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Sender implements SenderInterface
 {
-    /**
-     * @var MessageManagerInterface
-     */
-    protected $messageManager;
-
-    /**
-     * @var ThreadManagerInterface
-     */
-    protected $threadManager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
-
-    public function __construct(MessageManagerInterface $messageManager, ThreadManagerInterface $threadManager, EventDispatcherInterface $dispatcher)
+    public function __construct(private MessageManagerInterface $messageManager, private ThreadManagerInterface $threadManager, private EventDispatcherInterface $dispatcher)
     {
-        $this->messageManager = $messageManager;
-        $this->threadManager = $threadManager;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(MessageInterface $message)
+    public function send(MessageInterface $message): void
     {
         $this->threadManager->saveThread($message->getThread(), false);
         $this->messageManager->saveMessage($message, false);
@@ -54,6 +36,6 @@ class Sender implements SenderInterface
         $message->getThread()->setIsDeleted(false);
         $this->messageManager->saveMessage($message);
 
-        $this->dispatcher->dispatch(FOSMessageEvents::POST_SEND, new MessageEvent($message));
+        $this->dispatcher->dispatch(new MessageEvent($message), FOSMessageEvents::POST_SEND);
     }
 }

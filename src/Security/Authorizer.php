@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\Security;
+namespace FOS\ChatBundle\Security;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Manages permissions to manipulate threads and messages.
@@ -12,20 +12,14 @@ use FOS\MessageBundle\Model\ThreadInterface;
  */
 class Authorizer implements AuthorizerInterface
 {
-    /**
-     * @var ParticipantProviderInterface
-     */
-    protected $participantProvider;
-
-    public function __construct(ParticipantProviderInterface $participantProvider)
+    public function __construct(private ParticipantProviderInterface $participantProvider)
     {
-        $this->participantProvider = $participantProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function canSeeThread(ThreadInterface $thread)
+    public function canSeeThread(ThreadInterface $thread): bool
     {
         return $this->getAuthenticatedParticipant() && $thread->isParticipant($this->getAuthenticatedParticipant());
     }
@@ -33,7 +27,7 @@ class Authorizer implements AuthorizerInterface
     /**
      * {@inheritdoc}
      */
-    public function canDeleteThread(ThreadInterface $thread)
+    public function canDeleteThread(ThreadInterface $thread): bool
     {
         return $this->canSeeThread($thread);
     }
@@ -41,17 +35,15 @@ class Authorizer implements AuthorizerInterface
     /**
      * {@inheritdoc}
      */
-    public function canMessageParticipant(ParticipantInterface $participant)
+    public function canMessageParticipant(ParticipantInterface $participant): bool
     {
         return true;
     }
 
     /**
      * Gets the current authenticated user.
-     *
-     * @return ParticipantInterface
      */
-    protected function getAuthenticatedParticipant()
+    private function getAuthenticatedParticipant() : ParticipantInterface
     {
         return $this->participantProvider->getAuthenticatedParticipant();
     }

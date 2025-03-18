@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\MessageBundle\Document;
+namespace FOS\ChatBundle\Document;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\Thread as AbstractThread;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\Thread as AbstractThread;
 
 abstract class Thread extends AbstractThread
 {
@@ -12,51 +12,39 @@ abstract class Thread extends AbstractThread
      *
      * This denormalization field is used for sorting threads in the inbox and
      * sent list.
-     *
-     * @var \DateTime
      */
-    protected $lastMessageDate;
+    protected \DateTimeImmutable $lastMessageDate;
 
     /**
      * All text contained in the thread messages
      * Used for the full text search.
-     *
-     * @var string
      */
-    protected $keywords = '';
+    protected string $keywords = '';
 
     /**
      * The activeParticipants array is a union of the activeRecipients and
      * activeSenders arrays.
-     *
-     * @var array of participant ID's
      */
-    protected $activeParticipants = array();
+    protected array $activeParticipants = [];
 
     /**
      * The activeRecipients array will contain a participant's ID if the thread
      * is not deleted for the participant, the thread is not spam and at least
      * one message in the thread is not created by the participant.
-     *
-     * @var array of participant ID's
      */
-    protected $activeRecipients = array();
+    protected array $activeRecipients = [];
 
     /**
      * The activeSenders array will contain a participant's ID if the thread is
      * not deleted for the participant and at least one message in the thread
      * is created by the participant.
-     *
-     * @var array of participant ID's
      */
-    protected $activeSenders = array();
+    protected array $activeSenders = [];
 
     /**
      * Gets the users participating in this conversation.
-     *
-     * @return ParticipantInterface[]
      */
-    public function getParticipants()
+    public function getParticipants() : array
     {
         return $this->participants->toArray();
     }
@@ -64,10 +52,8 @@ abstract class Thread extends AbstractThread
     /**
      * Adds a participant to the thread
      * If it already exists, nothing is done.
-     *
-     * @param ParticipantInterface $participant
      */
-    public function addParticipant(ParticipantInterface $participant)
+    public function addParticipant(ParticipantInterface $participant): void
     {
         if (!$this->isParticipant($participant)) {
             $this->participants->add($participant);
@@ -76,12 +62,8 @@ abstract class Thread extends AbstractThread
 
     /**
      * Tells if the user participates to the conversation.
-     *
-     * @param ParticipantInterface $participant
-     *
-     * @return bool
      */
-    public function isParticipant(ParticipantInterface $participant)
+    public function isParticipant(ParticipantInterface $participant) : bool
     {
         return $this->participants->contains($participant);
     }
@@ -95,7 +77,7 @@ abstract class Thread extends AbstractThread
     /**
      * Performs denormalization tricks.
      */
-    public function denormalize()
+    public function denormalize(): void
     {
         $this->doCreatedByAndAt();
         $this->doLastMessageDate();
@@ -110,7 +92,7 @@ abstract class Thread extends AbstractThread
      */
     protected function doCreatedByAndAt()
     {
-        if (null !== $this->getCreatedBy()) {
+        if ($this->getCreatedBy() instanceof ParticipantInterface) {
             return;
         }
 
@@ -172,10 +154,8 @@ abstract class Thread extends AbstractThread
                     if (null === $meta->getLastMessageDate() || $meta->getLastMessageDate()->getTimestamp() < $message->getTimestamp()) {
                         $meta->setLastMessageDate($message->getCreatedAt());
                     }
-                } else {
-                    if (null === $meta->getLastParticipantMessageDate() || $meta->getLastParticipantMessageDate()->getTimestamp() < $message->getTimestamp()) {
-                        $meta->setLastParticipantMessageDate($message->getCreatedAt());
-                    }
+                } elseif (null === $meta->getLastParticipantMessageDate() || $meta->getLastParticipantMessageDate()->getTimestamp() < $message->getTimestamp()) {
+                    $meta->setLastParticipantMessageDate($message->getCreatedAt());
                 }
             }
         }
@@ -186,16 +166,17 @@ abstract class Thread extends AbstractThread
      */
     protected function doEnsureActiveParticipantArrays()
     {
-        $this->activeParticipants = array();
-        $this->activeRecipients = array();
-        $this->activeSenders = array();
+        $this->activeParticipants = [];
+        $this->activeRecipients = [];
+        $this->activeSenders = [];
 
         foreach ($this->getParticipants() as $participant) {
             if ($this->isDeletedByParticipant($participant)) {
                 continue;
             }
 
-            $participantIsActiveRecipient = $participantIsActiveSender = false;
+            $participantIsActiveRecipient = false;
+            $participantIsActiveSender = false;
 
             foreach ($this->getMessages() as $message) {
                 if ($message->getSender()->getId() === $participant->getId()) {

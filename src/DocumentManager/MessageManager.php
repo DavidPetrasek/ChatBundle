@@ -1,16 +1,17 @@
 <?php
 
-namespace FOS\MessageBundle\DocumentManager;
+namespace FOS\ChatBundle\DocumentManager;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use FOS\MessageBundle\Document\Message;
-use FOS\MessageBundle\Document\MessageMetadata;
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ReadableInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\ModelManager\MessageManager as BaseMessageManager;
+use FOS\ChatBundle\Document\Message;
+use FOS\ChatBundle\Document\MessageMetadata;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\MessageMetadata as ModelMessageMetadata;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 
 /**
  * Default MongoDB MessageManager.
@@ -19,34 +20,14 @@ use FOS\MessageBundle\ModelManager\MessageManager as BaseMessageManager;
  */
 class MessageManager extends BaseMessageManager
 {
-    /**
-     * @var DocumentManager
-     */
-    protected $dm;
+    private $repository;
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    private string $class;
 
-    /**
-     * @var string
-     */
-    protected $class;
+    private string $metaClass;
 
-    /**
-     * @var string
-     */
-    protected $metaClass;
-
-    /**
-     * @param DocumentManager $dm
-     * @param string          $class
-     * @param string          $metaClass
-     */
-    public function __construct(DocumentManager $dm, $class, $metaClass)
+    public function __construct(private DocumentManager $dm, string $class, string $metaClass)
     {
-        $this->dm = $dm;
         $this->repository = $dm->getRepository($class);
         $this->class = $dm->getClassMetadata($class)->name;
         $this->metaClass = $dm->getClassMetadata($metaClass)->name;
@@ -55,7 +36,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant)
+    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant) : int
     {
         return $this->repository->createQueryBuilder()
             ->field('unreadForParticipants')->equals($participant->getId())
@@ -66,7 +47,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
+    public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
         $this->markIsReadByParticipant($readable, $participant, true);
     }
@@ -74,35 +55,27 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
+    public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
         $this->markIsReadByParticipant($readable, $participant, false);
     }
 
     /**
      * Marks all messages of this thread as read by this participant.
-     *
-     * @param ThreadInterface      $thread
-     * @param ParticipantInterface $participant
-     * @param bool                 $isRead
      */
-    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, $isRead)
+    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $isRead): void
     {
-        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($thread) {
+        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($thread): void {
             $queryBuilder->field('thread.$id')->equals(new \MongoId($thread->getId()));
         });
     }
 
     /**
      * Marks the message as read or unread by this participant.
-     *
-     * @param MessageInterface     $message
-     * @param ParticipantInterface $participant
-     * @param bool                 $isRead
      */
-    protected function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, $isRead)
+    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead)
     {
-        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($message) {
+        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($message): void {
             $queryBuilder->field('_id')->equals(new \MongoId($message->getId()));
         });
     }
@@ -110,12 +83,8 @@ class MessageManager extends BaseMessageManager
     /**
      * Marks messages as read/unread
      * by updating directly the storage.
-     *
-     * @param ParticipantInterface $participant
-     * @param bool                 $isRead
-     * @param \Closure             $condition
      */
-    protected function markIsReadByCondition(ParticipantInterface $participant, $isRead, \Closure $condition)
+    private function markIsReadByCondition(ParticipantInterface $participant, bool $isRead, \Closure $condition)
     {
         $queryBuilder = $this->repository->createQueryBuilder();
         $condition($queryBuilder);
@@ -132,8 +101,8 @@ class MessageManager extends BaseMessageManager
         }
 
         $queryBuilder
-            ->field('metadata.$.isRead')->set((bool) $isRead)
-            ->getQuery(array('multiple' => true))
+            ->field('metadata.$.isRead')->set($isRead)
+            ->getQuery(['multiple' => true])
             ->execute();
 
         /* If marking the message as unread for a participant, add their ID to
@@ -147,7 +116,7 @@ class MessageManager extends BaseMessageManager
                 ->field('metadata.participant.$id')->equals(new \MongoId($participant->getId()))
                 ->field('isSpam')->equals(false)
                 ->field('unreadForParticipants')->addToSet($participant->getId())
-                ->getQuery(array('multiple' => true))
+                ->getQuery(['multiple' => true])
                 ->execute();
         }
     }
@@ -155,7 +124,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function saveMessage(MessageInterface $message, $andFlush = true)
+    public function saveMessage(MessageInterface $message, $andFlush = true): void
     {
         $message->denormalize();
         $this->dm->persist($message);
@@ -167,17 +136,15 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
     /**
      * Creates a new MessageMetadata instance.
-     *
-     * @return MessageMetadata
      */
-    protected function createMessageMetadata()
+    private function createMessageMetadata() : MessageMetadata
     {
         return new $this->metaClass();
     }
@@ -187,13 +154,10 @@ class MessageManager extends BaseMessageManager
      *
      * All following methods are relative to denormalization
      */
-
     /**
      * Performs denormalization tricks.
-     *
-     * @param Message $message
      */
-    public function denormalize(Message $message)
+    public function denormalize(Message $message): void
     {
         $this->doEnsureMessageMetadataExists($message);
         $message->denormalize();
@@ -201,17 +165,15 @@ class MessageManager extends BaseMessageManager
 
     /**
      * Ensures that the message has metadata for each thread participant.
-     *
-     * @param Message $message
      */
-    protected function doEnsureMessageMetadataExists(Message $message)
+    private function doEnsureMessageMetadataExists(Message $message)
     {
         if (!$thread = $message->getThread()) {
             throw new \InvalidArgumentException(sprintf('No thread is referenced in message with id "%s"', $message->getId()));
         }
 
         foreach ($thread->getParticipants() as $participant) {
-            if (!$meta = $message->getMetadataForParticipant($participant)) {
+            if (!($meta = $message->getMetadataForParticipant($participant)) instanceof ModelMessageMetadata) {
                 $meta = $this->createMessageMetadata();
                 $meta->setParticipant($participant);
                 $message->addMetadata($meta);

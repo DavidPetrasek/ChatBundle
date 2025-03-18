@@ -1,27 +1,22 @@
 <?php
 
-namespace FOS\MessageBundle\FormModel;
+namespace FOS\ChatBundle\FormModel;
 
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 class ReplyMessage extends AbstractMessage
 {
     /**
      * The thread we reply to.
-     *
-     * @var ThreadInterface
      */
-    protected $thread;
+    private ThreadInterface $thread;
 
-    /**
-     * @return ThreadInterface
-     */
-    public function getThread()
+    public function getThread() : ThreadInterface
     {
         return $this->thread;
     }
 
-    public function setThread(ThreadInterface $thread)
+    public function setThread(ThreadInterface $thread): void
     {
         $this->thread = $thread;
     }

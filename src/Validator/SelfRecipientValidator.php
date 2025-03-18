@@ -1,30 +1,21 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
-use FOS\MessageBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class SelfRecipientValidator extends ConstraintValidator
 {
-    /**
-     * @var ParticipantProviderInterface
-     */
-    protected $participantProvider;
-
-    public function __construct(ParticipantProviderInterface $participantProvider)
+    public function __construct(private ParticipantProviderInterface $participantProvider)
     {
-        $this->participantProvider = $participantProvider;
     }
 
     /**
      * Indicates whether the constraint is valid.
-     *
-     * @param object     $recipient
-     * @param Constraint $constraint
      */
-    public function validate($recipient, Constraint $constraint)
+    public function validate(object $recipient, Constraint $constraint): void
     {
         if ($recipient === $this->participantProvider->getAuthenticatedParticipant()) {
             $this->context->addViolation($constraint->message);

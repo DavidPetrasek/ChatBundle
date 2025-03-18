@@ -1,19 +1,41 @@
 {
-    "name": "psys/chat-bundle",
-    "type": "library",
-    "autoload": {
-        "psr-4": {
-            "Psys\\ChatBundle\\": "src/"
-        }
-    },
+    "name": "fos/chat-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides user-to-user messaging features for your Symfony application.",
+    "keywords": ["symfony", "message", "messaging"],
+    "homepage": "https://github.com/FriendsOfSymfony/FOSMessageBundle",
+    "license": "MIT",
     "authors": [
         {
-            "name": "David Petrásek",
-            "email": "davidpetrasek@hotmail.cz"
+            "name": "Thibault Duplessis",
+            "email": "thibault.duplessis@gmail.com",
+            "homepage": "http://ornicar.github.com"
+        },
+        {
+            "name": "FriendsOfSymfony Community",
+            "homepage": "https://github.com/friendsofsymfony/FOSMessageBundle/contributors"
         }
     ],
+    
+    "autoload": {
+        "psr-4": {
+            "FOS\\ChatBundle\\": "src/"
+        }
+    },
     "minimum-stability": "stable",
     "require": {
+        "php": ">=8.3",
+        "symfony/framework-bundle": "7.2.*",
+        "symfony/form": "7.2.*",
+        "symfony/security-bundle": "7.2.*",
+        "symfony/twig-bundle": "7.2.*",
         "doctrine/orm": "^3.3"
+    },
+    "suggest": {
+        "doctrine/doctrine-bundle": "^2.13.2",
+        "doctrine/mongodb-odm-bundle": "dev-master"
+    },
+    "require-dev": {
+        "rector/rector": "^2.0"
     }
 }

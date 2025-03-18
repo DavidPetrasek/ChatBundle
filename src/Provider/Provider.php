@@ -1,15 +1,17 @@
 <?php
 
-namespace FOS\MessageBundle\Provider;
+namespace FOS\ChatBundle\Provider;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\ModelManager\MessageManagerInterface;
-use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
-use FOS\MessageBundle\Reader\ReaderInterface;
-use FOS\MessageBundle\Security\AuthorizerInterface;
-use FOS\MessageBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\ModelManager\MessageManagerInterface;
+use FOS\ChatBundle\ModelManager\ThreadManagerInterface;
+use FOS\ChatBundle\Reader\ReaderInterface;
+use FOS\ChatBundle\Security\AuthorizerInterface;
+use FOS\ChatBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 
 /**
  * Provides threads for the current authenticated user.
@@ -18,54 +20,20 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class Provider implements ProviderInterface
 {
-    /**
-     * The thread manager.
-     *
-     * @var ThreadManagerInterface
-     */
-    protected $threadManager;
-
-    /**
-     * The message manager.
-     *
-     * @var MessageManagerInterface
-     */
-    protected $messageManager;
-
-    /**
-     * The reader used to mark threads as read.
-     *
-     * @var ReaderInterface
-     */
-    protected $threadReader;
-
-    /**
-     * The authorizer manager.
-     *
-     * @var authorizerInterface
-     */
-    protected $authorizer;
-
-    /**
-     * The participant provider instance.
-     *
-     * @var ParticipantProviderInterface
-     */
-    protected $participantProvider;
-
-    public function __construct(ThreadManagerInterface $threadManager, MessageManagerInterface $messageManager, ReaderInterface $threadReader, AuthorizerInterface $authorizer, ParticipantProviderInterface $participantProvider)
-    {
-        $this->threadManager = $threadManager;
-        $this->messageManager = $messageManager;
-        $this->threadReader = $threadReader;
-        $this->authorizer = $authorizer;
-        $this->participantProvider = $participantProvider;
-    }
+    public function __construct
+    (
+        private ThreadManagerInterface $threadManager, 
+        private MessageManagerInterface $messageManager, 
+        private ReaderInterface $threadReader, 
+        private AuthorizerInterface $authorizer, 
+        private ParticipantProviderInterface $participantProvider
+    )
+    {}
 
     /**
      * {@inheritdoc}
      */
-    public function getInboxThreads()
+    public function getInboxThreads(): array
     {
         $participant = $this->getAuthenticatedParticipant();
 
@@ -75,7 +43,7 @@ class Provider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSentThreads()
+    public function getSentThreads(): array
     {
         $participant = $this->getAuthenticatedParticipant();
 
@@ -85,7 +53,7 @@ class Provider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDeletedThreads()
+    public function getDeletedThreads(): array
     {
         $participant = $this->getAuthenticatedParticipant();
 
@@ -95,15 +63,17 @@ class Provider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getThread($threadId)
+    public function getThread($threadId): ThreadInterface
     {
         $thread = $this->threadManager->findThreadById($threadId);
-        if (!$thread) {
+        if (!$thread instanceof ThreadInterface) {
             throw new NotFoundHttpException('There is no such thread');
         }
+
         if (!$this->authorizer->canSeeThread($thread)) {
             throw new AccessDeniedException('You are not allowed to see this thread');
         }
+
         // Load the thread messages before marking them as read
         // because we want to see the unread messages
         $thread->getMessages();
@@ -115,17 +85,15 @@ class Provider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessages()
+    public function getNbUnreadMessages(): int
     {
         return $this->messageManager->getNbUnreadMessageByParticipant($this->getAuthenticatedParticipant());
     }
 
     /**
      * Gets the current authenticated user.
-     *
-     * @return ParticipantInterface
      */
-    protected function getAuthenticatedParticipant()
+    private function getAuthenticatedParticipant() : ParticipantInterface
     {
         return $this->participantProvider->getAuthenticatedParticipant();
     }

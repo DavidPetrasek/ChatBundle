@@ -1,26 +1,17 @@
 <?php
 
-namespace FOS\MessageBundle\Event;
+namespace FOS\ChatBundle\Event;
 
-use FOS\MessageBundle\Model\ThreadInterface;
-use Symfony\Component\EventDispatcher\Event;
+use FOS\ChatBundle\Model\ThreadInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ThreadEvent extends Event
 {
-    /**
-     * @var ThreadInterface
-     */
-    private $thread;
-
-    public function __construct(ThreadInterface $thread)
+    public function __construct(private readonly ThreadInterface $thread)
     {
-        $this->thread = $thread;
     }
 
-    /**
-     * @return ThreadInterface
-     */
-    public function getThread()
+    public function getThread() : ThreadInterface
     {
         return $this->thread;
     }

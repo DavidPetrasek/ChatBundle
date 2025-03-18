@@ -1,34 +1,30 @@
 <?php
 
-namespace FOS\MessageBundle\Entity;
+namespace FOS\ChatBundle\Entity;
 
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\Model\ThreadMetadata as BaseThreadMetadata;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ThreadMetadata as BaseThreadMetadata;
 
 abstract class ThreadMetadata extends BaseThreadMetadata
 {
-    protected $id;
-    protected $thread;
+    protected ?int $id;
+
+    protected ThreadInterface $thread;
 
     /**
      * Gets the thread map id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return ThreadInterface
-     */
-    public function getThread()
+    public function getThread() : ThreadInterface
     {
         return $this->thread;
     }
 
-    public function setThread(ThreadInterface $thread)
+    public function setThread(ThreadInterface $thread): void
     {
         $this->thread = $thread;
     }

@@ -1,26 +1,17 @@
 <?php
 
-namespace FOS\MessageBundle\Event;
+namespace FOS\ChatBundle\Event;
 
-use FOS\MessageBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class ReadableEvent extends Event
 {
-    /**
-     * @var ReadableInterface
-     */
-    private $readable;
-
-    public function __construct(ReadableInterface $readable)
+    public function __construct(private readonly ReadableInterface $readable)
     {
-        $this->readable = $readable;
     }
 
-    /**
-     * @return ReadableInterface
-     */
-    public function getReadable()
+    public function getReadable() : ReadableInterface
     {
         return $this->readable;
     }

@@ -1,84 +1,66 @@
 <?php
 
-namespace FOS\MessageBundle\Twig\Extension;
+namespace FOS\ChatBundle\Twig\Extension;
 
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ReadableInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\Provider\ProviderInterface;
-use FOS\MessageBundle\Security\AuthorizerInterface;
-use FOS\MessageBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Provider\ProviderInterface;
+use FOS\ChatBundle\Security\AuthorizerInterface;
+use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MessageExtension extends AbstractExtension
 {
-    protected $participantProvider;
-    protected $provider;
-    protected $authorizer;
+    private $nbUnreadMessagesCache;
 
-    protected $nbUnreadMessagesCache;
-
-    public function __construct(ParticipantProviderInterface $participantProvider, ProviderInterface $provider, AuthorizerInterface $authorizer)
+    public function __construct(private ParticipantProviderInterface $participantProvider, private ProviderInterface $provider, private AuthorizerInterface $authorizer)
     {
-        $this->participantProvider = $participantProvider;
-        $this->provider = $provider;
-        $this->authorizer = $authorizer;
     }
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions()
     {
-        return array(
-            new TwigFunction('fos_message_is_read', array($this, 'isRead')),
-            new TwigFunction('fos_message_nb_unread', array($this, 'getNbUnread')),
-            new TwigFunction('fos_message_can_delete_thread', array($this, 'canDeleteThread')),
-            new TwigFunction('fos_message_deleted_by_participant', array($this, 'isThreadDeletedByParticipant')),
-        );
+        return [
+            new TwigFunction('fos_chat_is_read', $this->isRead(...)),
+            new TwigFunction('fos_chat_nb_unread', $this->getNbUnread(...)),
+            new TwigFunction('fos_chat_can_delete_thread', $this->canDeleteThread(...)),
+            new TwigFunction('fos_chat_deleted_by_participant', $this->isThreadDeletedByParticipant(...)),
+        ];
     }
 
     /**
-     * Tells if this readable (thread or message) is read by the current user.
-     *
-     * @return bool
+     * Tells if this readable (thread or message) is read by the current user. 
      */
-    public function isRead(ReadableInterface $readable)
+    public function isRead(ReadableInterface $readable) : bool
     {
         return $readable->isReadByParticipant($this->getAuthenticatedParticipant());
     }
 
     /**
      * Checks if the participant can mark a thread as deleted.
-     *
-     * @param ThreadInterface $thread
-     *
-     * @return bool true if participant can mark a thread as deleted, false otherwise
      */
-    public function canDeleteThread(ThreadInterface $thread)
+    public function canDeleteThread(ThreadInterface $thread) : bool
     {
         return $this->authorizer->canDeleteThread($thread);
     }
 
     /**
      * Checks if the participant has marked the thread as deleted.
-     *
-     * @param ThreadInterface $thread
-     *
-     * @return bool true if participant has marked the thread as deleted, false otherwise
      */
-    public function isThreadDeletedByParticipant(ThreadInterface $thread)
+    public function isThreadDeletedByParticipant(ThreadInterface $thread) : bool
     {
         return $thread->isDeletedByParticipant($this->getAuthenticatedParticipant());
     }
 
     /**
      * Gets the number of unread messages for the current user.
-     *
-     * @return int
      */
-    public function getNbUnread()
+    public function getNbUnread() : int
     {
         if (null === $this->nbUnreadMessagesCache) {
             $this->nbUnreadMessagesCache = $this->provider->getNbUnreadMessages();
@@ -89,10 +71,8 @@ class MessageExtension extends AbstractExtension
 
     /**
      * Gets the current authenticated user.
-     *
-     * @return ParticipantInterface
      */
-    protected function getAuthenticatedParticipant()
+    private function getAuthenticatedParticipant() : ParticipantInterface
     {
         return $this->participantProvider->getAuthenticatedParticipant();
     }
@@ -100,8 +80,8 @@ class MessageExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
-        return 'fos_message';
+        return 'fos_chat';
     }
 }

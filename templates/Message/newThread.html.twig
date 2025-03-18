@@ -1,0 +1,13 @@
+{% extends '@FOSMessage/layout.html.twig' %}
+
+{% block fos_chat_content %}
+
+<h2>{% trans from 'FOSChatBundle' %}send_new{% endtrans %}</h2>
+
+<form action="{{ url('fos_chat_thread_new') }}" method="post">
+    {{ form_widget(form) }}
+
+    <input type="submit" />
+</form>
+
+{% endblock %}

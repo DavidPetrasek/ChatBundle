@@ -1,13 +1,13 @@
 <?php
 
-namespace FOS\MessageBundle\EntityManager;
+namespace FOS\ChatBundle\EntityManager;
 
 use Doctrine\ORM\EntityManager;
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\ParticipantInterface;
-use FOS\MessageBundle\Model\ReadableInterface;
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\ModelManager\MessageManager as BaseMessageManager;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 
 /**
  * Default ORM MessageManager.
@@ -16,43 +16,23 @@ use FOS\MessageBundle\ModelManager\MessageManager as BaseMessageManager;
  */
 class MessageManager extends BaseMessageManager
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    private $repository;
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    private string $class;
 
-    /**
-     * @var string
-     */
-    protected $class;
+    private string $metaClass;
 
-    /**
-     * @var string
-     */
-    protected $metaClass;
-
-    /**
-     * @param EntityManager $em
-     * @param string        $class
-     * @param string        $metaClass
-     */
-    public function __construct(EntityManager $em, $class, $metaClass)
+    public function __construct(private EntityManager $em, string $class, string $metaClass)
     {
-        $this->em = $em;
-        $this->repository = $em->getRepository($class);
-        $this->class = $em->getClassMetadata($class)->name;
-        $this->metaClass = $em->getClassMetadata($metaClass)->name;
+        $this->repository = $this->em->getRepository($class);
+        $this->class = $this->em->getClassMetadata($class)->name;
+        $this->metaClass = $this->em->getClassMetadata($metaClass)->name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant)
+    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant): int
     {
         $builder = $this->repository->createQueryBuilder('m');
 
@@ -78,7 +58,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
+    public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
         $readable->setIsReadByParticipant($participant, true);
     }
@@ -86,19 +66,15 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
+    public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
         $readable->setIsReadByParticipant($participant, false);
     }
 
     /**
      * Marks all messages of this thread as read by this participant.
-     *
-     * @param ThreadInterface      $thread
-     * @param ParticipantInterface $participant
-     * @param bool                 $isRead
      */
-    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, $isRead)
+    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $isRead): void
     {
         foreach ($thread->getMessages() as $message) {
             $this->markIsReadByParticipant($message, $participant, $isRead);
@@ -107,12 +83,8 @@ class MessageManager extends BaseMessageManager
 
     /**
      * Marks the message as read or unread by this participant.
-     *
-     * @param MessageInterface     $message
-     * @param ParticipantInterface $participant
-     * @param bool                 $isRead
      */
-    protected function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, $isRead)
+    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead)
     {
         $meta = $message->getMetadataForParticipant($participant);
         if (!$meta || $meta->getIsRead() == $isRead) {
@@ -122,7 +94,7 @@ class MessageManager extends BaseMessageManager
         $this->em->createQueryBuilder()
             ->update($this->metaClass, 'm')
             ->set('m.isRead', '?1')
-            ->setParameter('1', (bool) $isRead, \PDO::PARAM_BOOL)
+            ->setParameter('1', $isRead, \PDO::PARAM_BOOL)
 
             ->where('m.id = :id')
             ->setParameter('id', $meta->getId())
@@ -134,7 +106,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function saveMessage(MessageInterface $message, $andFlush = true)
+    public function saveMessage(MessageInterface $message, $andFlush = true): void
     {
         $this->denormalize($message);
         $this->em->persist($message);
@@ -146,7 +118,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -160,7 +132,7 @@ class MessageManager extends BaseMessageManager
     /**
      * Performs denormalization tricks.
      */
-    protected function denormalize(MessageInterface $message)
+    private function denormalize(MessageInterface $message)
     {
         $this->doMetadata($message);
     }
@@ -168,12 +140,12 @@ class MessageManager extends BaseMessageManager
     /**
      * Ensures that the message metadata are up to date.
      */
-    protected function doMetadata(MessageInterface $message)
+    private function doMetadata(MessageInterface $message)
     {
         foreach ($message->getThread()->getAllMetadata() as $threadMeta) {
             $meta = $message->getMetadataForParticipant($threadMeta->getParticipant());
             if (!$meta) {
-                $meta = $this->createMessageMetadata();
+                $meta = $this->createMessageMetadata();     
                 $meta->setParticipant($threadMeta->getParticipant());
 
                 $message->addMetadata($meta);
@@ -181,7 +153,7 @@ class MessageManager extends BaseMessageManager
         }
     }
 
-    protected function createMessageMetadata()
+    private function createMessageMetadata()
     {
         return new $this->metaClass();
     }

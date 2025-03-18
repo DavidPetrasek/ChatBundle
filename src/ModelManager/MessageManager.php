@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\ModelManager;
+namespace FOS\ChatBundle\ModelManager;
 
-use FOS\MessageBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\MessageInterface;
 
 /**
  * Abstract Message Manager implementation which can be used as base by
@@ -14,10 +14,8 @@ abstract class MessageManager implements MessageManagerInterface
 {
     /**
      * Creates an empty message instance.
-     *
-     * @return MessageInterface
      */
-    public function createMessage()
+    public function createMessage() : MessageInterface
     {
         $class = $this->getClass();
 

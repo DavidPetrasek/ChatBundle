@@ -1,15 +1,15 @@
 <?php
 
-namespace FOS\MessageBundle\SpamDetection;
+namespace FOS\ChatBundle\SpamDetection;
 
-use FOS\MessageBundle\FormModel\NewThreadMessage;
+use FOS\ChatBundle\FormModel\NewThreadMessage;
 
 class NoopSpamDetector implements SpamDetectorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function isSpam(NewThreadMessage $message)
+    public function isSpam(NewThreadMessage $message): bool
     {
         return false;
     }

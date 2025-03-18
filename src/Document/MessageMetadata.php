@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Document;
+namespace FOS\ChatBundle\Document;
 
-use FOS\MessageBundle\Model\MessageMetadata as BaseMessageMetadata;
+use FOS\ChatBundle\Model\MessageMetadata as BaseMessageMetadata;
 
 abstract class MessageMetadata extends BaseMessageMetadata
 {

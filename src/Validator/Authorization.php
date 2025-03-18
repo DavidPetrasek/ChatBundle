@@ -1,22 +1,22 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
 class Authorization extends Constraint
 {
-    public $message = 'fos_message.not_authorized';
+    public $message = 'fos_chat.not_authorized';
 
-    public function validatedBy()
+    public function validatedBy() : string
     {
-        return 'fos_message.validator.authorization';
+        return 'fos_chat.validator.authorization';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets() : array|string
     {
         return self::PROPERTY_CONSTRAINT;
     }

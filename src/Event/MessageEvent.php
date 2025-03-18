@@ -1,15 +1,12 @@
 <?php
 
-namespace FOS\MessageBundle\Event;
+namespace FOS\ChatBundle\Event;
 
-use FOS\MessageBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\MessageInterface;
 
 class MessageEvent extends ThreadEvent
 {
-    /**
-     * @var MessageInterface
-     */
-    private $message;
+    private readonly \FOS\ChatBundle\Model\MessageInterface $message;
 
     public function __construct(MessageInterface $message)
     {
@@ -18,10 +15,7 @@ class MessageEvent extends ThreadEvent
         $this->message = $message;
     }
 
-    /**
-     * @return MessageInterface
-     */
-    public function getMessage()
+    public function getMessage() : MessageInterface
     {
         return $this->message;
     }

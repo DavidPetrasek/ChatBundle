@@ -1,169 +1,131 @@
 <?php
 
-namespace FOS\MessageBundle\Controller;
+namespace FOS\ChatBundle\Controller;
 
-use FOS\MessageBundle\Provider\ProviderInterface;
+use FOS\ChatBundle\FormFactory\ReplyMessageFormFactory;
+use FOS\ChatBundle\FormHandler\ReplyMessageFormHandler;
+use FOS\ChatBundle\Provider\ProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+
+// TODO: replace all $this->container->get... with argument dependency injection
+
 
 class MessageController extends AbstractController
 {
-    public function __construct(ContainerInterface $container)
-    {
-        $this->setContainer($container);
-    }
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * Displays the authenticated participant inbox.
-     *
-     * @return Response
      */
-    public function inboxAction()
+    public function inbox(ProviderInterface $provider) : Response
     {
-        $threads = $this->getProvider()->getInboxThreads();
+        $threads = $provider->getInboxThreads();
 
-        return $this->render('@FOSMessage/Message/inbox.html.twig', array(
+        return $this->render('@FOSMessage/Message/inbox.html.twig', [
             'threads' => $threads,
-        ));
+        ]);
     }
 
     /**
      * Displays the authenticated participant messages sent.
-     *
-     * @return Response
      */
-    public function sentAction()
+    public function sent(ProviderInterface $provider) : Response
     {
-        $threads = $this->getProvider()->getSentThreads();
+        $threads = $provider->getSentThreads();
 
-        return $this->render('@FOSMessage/Message/sent.html.twig', array(
+        return $this->render('@FOSMessage/Message/sent.html.twig', [
             'threads' => $threads,
-        ));
+        ]);
     }
 
     /**
      * Displays the authenticated participant deleted threads.
-     *
-     * @return Response
      */
-    public function deletedAction()
+    public function deleted(ProviderInterface $provider) : Response
     {
-        $threads = $this->getProvider()->getDeletedThreads();
+        $threads = $provider->getDeletedThreads();
 
-        return $this->render('@FOSMessage/Message/deleted.html.twig', array(
+        return $this->render('@FOSMessage/Message/deleted.html.twig', [
             'threads' => $threads,
-        ));
+        ]);
     }
 
     /**
      * Displays a thread, also allows to reply to it.
-     *
-     * @param string $threadId the thread id
-     *
-     * @return Response
      */
-    public function threadAction($threadId)
+    public function thread(string $threadId, ProviderInterface $provider, ReplyMessageFormFactory $replyMessageFormFactory, ReplyMessageFormHandler $formHandler) : Response
     {
-        $thread = $this->getProvider()->getThread($threadId);
-        $form = $this->container->get('fos_message.reply_form.factory')->create($thread);
-        $formHandler = $this->container->get('fos_message.reply_form.handler');
+        $thread = $provider->getThread($threadId);
+        $form = $replyMessageFormFactory->create($thread);
 
         if ($message = $formHandler->process($form)) {
-            return new RedirectResponse($this->container->get('router')->generate('fos_message_thread_view', array(
+            return new RedirectResponse($this->generateUrl('fos_chat_thread_view', [
                 'threadId' => $message->getThread()->getId(),
-            )));
+            ]));
         }
 
-        return $this->render('@FOSMessage/Message/thread.html.twig', array(
+        return $this->render('@FOSMessage/Message/thread.html.twig', [
             'form' => $form->createView(),
             'thread' => $thread,
-        ));
+        ]);
     }
 
     /**
      * Create a new message thread.
-     *
-     * @return Response
      */
-    public function newThreadAction()
+    public function newThread() : Response
     {
-        $form = $this->container->get('fos_message.new_thread_form.factory')->create();
-        $formHandler = $this->container->get('fos_message.new_thread_form.handler');
+        $form = $this->container->get('fos_chat.new_thread_form.factory')->create();
+        $formHandler = $this->container->get('fos_chat.new_thread_form.handler');
 
         if ($message = $formHandler->process($form)) {
-            return new RedirectResponse($this->container->get('router')->generate('fos_message_thread_view', array(
+            return new RedirectResponse($this->container->get('router')->generate('fos_chat_thread_view', [
                 'threadId' => $message->getThread()->getId(),
-            )));
+            ]));
         }
 
-        return $this->render('@FOSMessage/Message/newThread.html.twig', array(
+        return $this->render('@FOSMessage/Message/newThread.html.twig', [
             'form' => $form->createView(),
             'data' => $form->getData(),
-        ));
+        ]);
     }
 
     /**
      * Deletes a thread.
-     *
-     * @param string $threadId the thread id
-     *
-     * @return RedirectResponse
      */
-    public function deleteAction($threadId)
+    public function delete(string $threadId, ProviderInterface $provider) : RedirectResponse
     {
-        $thread = $this->getProvider()->getThread($threadId);
-        $this->container->get('fos_message.deleter')->markAsDeleted($thread);
-        $this->container->get('fos_message.thread_manager')->saveThread($thread);
+        $thread = $provider->getThread($threadId);
+        $this->container->get('fos_chat.deleter')->markAsDeleted($thread);
+        $this->container->get('fos_chat.thread_manager')->saveThread($thread);
 
-        return new RedirectResponse($this->container->get('router')->generate('fos_message_inbox'));
+        return new RedirectResponse($this->container->get('router')->generate('fos_chat_inbox'));
     }
 
     /**
      * Undeletes a thread.
-     *
-     * @param string $threadId
-     *
-     * @return RedirectResponse
      */
-    public function undeleteAction($threadId)
+    public function undelete(string $threadId, ProviderInterface $provider) : RedirectResponse
     {
-        $thread = $this->getProvider()->getThread($threadId);
-        $this->container->get('fos_message.deleter')->markAsUndeleted($thread);
-        $this->container->get('fos_message.thread_manager')->saveThread($thread);
+        $thread = $provider->getThread($threadId);
+        $this->container->get('fos_chat.deleter')->markAsUndeleted($thread);
+        $this->container->get('fos_chat.thread_manager')->saveThread($thread);
 
-        return new RedirectResponse($this->container->get('router')->generate('fos_message_inbox'));
+        return new RedirectResponse($this->container->get('router')->generate('fos_chat_inbox'));
     }
 
     /**
      * Searches for messages in the inbox and sentbox.
-     *
-     * @return Response
      */
-    public function searchAction()
+    public function search() : Response
     {
-        $query = $this->container->get('fos_message.search_query_factory')->createFromRequest();
-        $threads = $this->container->get('fos_message.search_finder')->find($query);
+        $query = $this->container->get('fos_chat.search_query_factory')->createFromRequest();
+        $threads = $this->container->get('fos_chat.search_finder')->find($query);
 
-        return $this->render('@FOSMessage/Message/search.html.twig', array(
+        return $this->render('@FOSMessage/Message/search.html.twig', [
             'query' => $query,
             'threads' => $threads,
-        ));
-    }
-
-    /**
-     * Gets the provider service.
-     *
-     * @return ProviderInterface
-     */
-    protected function getProvider()
-    {
-        return $this->container->get('fos_message.provider');
+        ]);
     }
 }

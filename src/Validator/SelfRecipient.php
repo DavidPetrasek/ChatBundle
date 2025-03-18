@@ -1,22 +1,22 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
 class SelfRecipient extends Constraint
 {
-    public $message = 'fos_message.self_recipient';
+    public $message = 'fos_chat.self_recipient';
 
-    public function validatedBy()
+    public function validatedBy() : string
     {
-        return 'fos_message.validator.self_recipient';
+        return 'fos_chat.validator.self_recipient';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets() : array|string
     {
         return self::PROPERTY_CONSTRAINT;
     }

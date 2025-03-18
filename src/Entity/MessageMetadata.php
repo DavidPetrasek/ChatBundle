@@ -1,32 +1,27 @@
 <?php
 
-namespace FOS\MessageBundle\Entity;
+namespace FOS\ChatBundle\Entity;
 
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\MessageMetadata as BaseMessageMetadata;
+use FOS\ChatBundle\Model\MessageInterface;
+use FOS\ChatBundle\Model\MessageMetadata as BaseMessageMetadata;
 
 abstract class MessageMetadata extends BaseMessageMetadata
 {
-    protected $id;
-    protected $message;
+    protected ?int $id;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    protected MessageInterface $message;
+
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return MessageInterface
-     */
-    public function getMessage()
+    public function getMessage() : MessageInterface
     {
         return $this->message;
     }
 
-    public function setMessage(MessageInterface $message)
+    public function setMessage(MessageInterface $message): void
     {
         $this->message = $message;
     }

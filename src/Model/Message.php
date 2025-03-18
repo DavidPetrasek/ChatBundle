@@ -1,9 +1,12 @@
 <?php
 
-namespace FOS\MessageBundle\Model;
+namespace FOS\ChatBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use FOS\ChatBundle\Model\MessageMetadata;
+use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Abstract message model.
@@ -14,59 +17,44 @@ abstract class Message implements MessageInterface
 {
     /**
      * Unique id of the message.
-     *
-     * @var mixed
      */
-    protected $id;
+    protected ?int $id;
 
     /**
      * User who sent the message.
-     *
-     * @var ParticipantInterface
      */
-    protected $sender;
+    protected ParticipantInterface $sender;
 
     /**
      * Text body of the message.
-     *
-     * @var string
      */
-    protected $body;
+    protected string $body;
 
     /**
      * Date when the message was sent.
-     *
-     * @var \DateTime
      */
-    protected $createdAt;
+    protected \DateTimeImmutable $createdAt;
 
     /**
      * Thread the message belongs to.
-     *
-     * @var ThreadInterface
      */
-    protected $thread;
+    protected ThreadInterface $thread;
 
     /**
      * Collection of MessageMetadata.
-     *
-     * @var Collection|MessageMetadata[]
      */
-    protected $metadata;
+    protected Collection $metadata;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
         $this->metadata = new ArrayCollection();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -74,7 +62,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getThread()
+    public function getThread(): ThreadInterface
     {
         return $this->thread;
     }
@@ -82,7 +70,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setThread(ThreadInterface $thread)
+    public function setThread(ThreadInterface $thread): void
     {
         $this->thread = $thread;
     }
@@ -90,7 +78,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -98,7 +86,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
@@ -106,7 +94,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setBody($body)
+    public function setBody($body): void
     {
         $this->body = $body;
     }
@@ -114,7 +102,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getSender()
+    public function getSender(): ParticipantInterface
     {
         return $this->sender;
     }
@@ -122,39 +110,31 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setSender(ParticipantInterface $sender)
+    public function setSender(ParticipantInterface $sender): void
     {
         $this->sender = $sender;
     }
 
     /**
      * Gets the created at timestamp.
-     *
-     * @return int
      */
-    public function getTimestamp()
+    public function getTimestamp() : int
     {
         return $this->getCreatedAt()->getTimestamp();
     }
 
     /**
      * Adds MessageMetadata to the metadata collection.
-     *
-     * @param MessageMetadata $meta
      */
-    public function addMetadata(MessageMetadata $meta)
+    public function addMetadata(MessageMetadata $meta): void
     {
         $this->metadata->add($meta);
     }
 
     /**
      * Get the MessageMetadata for a participant.
-     *
-     * @param ParticipantInterface $participant
-     *
-     * @return MessageMetadata
      */
-    public function getMetadataForParticipant(ParticipantInterface $participant)
+    public function getMetadataForParticipant(ParticipantInterface $participant) : ?MessageMetadata
     {
         foreach ($this->metadata as $meta) {
             if ($meta->getParticipant()->getId() == $participant->getId()) {
@@ -168,9 +148,9 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function isReadByParticipant(ParticipantInterface $participant)
+    public function isReadByParticipant(ParticipantInterface $participant): bool
     {
-        if ($meta = $this->getMetadataForParticipant($participant)) {
+        if (($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             return $meta->getIsRead();
         }
 
@@ -180,9 +160,9 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead)
+    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead): void
     {
-        if (!$meta = $this->getMetadataForParticipant($participant)) {
+        if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
         }
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace FOS\MessageBundle\Composer;
+namespace FOS\ChatBundle\Composer;
 
-use FOS\MessageBundle\MessageBuilder\NewThreadMessageBuilder;
-use FOS\MessageBundle\MessageBuilder\ReplyMessageBuilder;
-use FOS\MessageBundle\Model\ThreadInterface;
-use FOS\MessageBundle\ModelManager\MessageManagerInterface;
-use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
+use FOS\ChatBundle\MessageBuilder\NewThreadMessageBuilder;
+use FOS\ChatBundle\MessageBuilder\ReplyMessageBuilder;
+use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\ModelManager\MessageManagerInterface;
+use FOS\ChatBundle\ModelManager\ThreadManagerInterface;
 
 /**
  * Factory for message builders.
@@ -15,32 +15,23 @@ use FOS\MessageBundle\ModelManager\ThreadManagerInterface;
  */
 class Composer implements ComposerInterface
 {
-    /**
-     * Message manager.
-     *
-     * @var MessageManagerInterface
-     */
-    protected $messageManager;
-
-    /**
-     * Thread manager.
-     *
-     * @var ThreadManagerInterface
-     */
-    protected $threadManager;
-
-    public function __construct(MessageManagerInterface $messageManager, ThreadManagerInterface $threadManager)
+    public function __construct(
+        /**
+         * Message manager.
+         */
+        private MessageManagerInterface $messageManager,
+        /**
+         * Thread manager.
+         */
+        private ThreadManagerInterface $threadManager
+    )
     {
-        $this->messageManager = $messageManager;
-        $this->threadManager = $threadManager;
     }
 
     /**
      * Starts composing a message, starting a new thread.
-     *
-     * @return NewThreadMessageBuilder
      */
-    public function newThread()
+    public function newThread(): NewThreadMessageBuilder
     {
         $thread = $this->threadManager->createThread();
         $message = $this->messageManager->createMessage();
@@ -50,10 +41,8 @@ class Composer implements ComposerInterface
 
     /**
      * Starts composing a message in a reply to a thread.
-     *
-     * @return ReplyMessageBuilder
      */
-    public function reply(ThreadInterface $thread)
+    public function reply(ThreadInterface $thread): ReplyMessageBuilder
     {
         $message = $this->messageManager->createMessage();
 

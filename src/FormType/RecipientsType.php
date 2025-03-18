@@ -1,10 +1,11 @@
 <?php
 
-namespace FOS\MessageBundle\FormType;
+namespace FOS\ChatBundle\FormType;
 
-use FOS\MessageBundle\DataTransformer\RecipientsDataTransformer;
-use FOS\MessageBundle\Util\LegacyFormHelper;
+use FOS\ChatBundle\DataTransformer\RecipientsDataTransformer;
+use FOS\ChatBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,23 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class RecipientsType extends AbstractType
 {
-    /**
-     * @var RecipientsDataTransformer
-     */
-    private $recipientsTransformer;
-
-    /**
-     * @param RecipientsDataTransformer $transformer
-     */
-    public function __construct(RecipientsDataTransformer $transformer)
+    public function __construct(private readonly RecipientsDataTransformer $recipientsTransformer)
     {
-        $this->recipientsTransformer = $transformer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->recipientsTransformer);
     }
@@ -40,14 +32,14 @@ class RecipientsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'invalid_message' => 'The selected recipient does not exist',
-        ));
+        ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
@@ -55,6 +47,7 @@ class RecipientsType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'recipients_selector';
@@ -63,9 +56,10 @@ class RecipientsType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getParent()
     {
-        return LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextType');
+        return LegacyFormHelper::getType(TextType::class);
     }
 
     /**

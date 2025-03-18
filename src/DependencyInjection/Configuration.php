@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\MessageBundle\DependencyInjection;
+namespace FOS\ChatBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -8,17 +8,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This class defines the configuration information for the bundle.
  */
-class Configuration implements ConfigurationInterface
+class Configuration
 {
-    const ROOT_NAME = 'fos_message';
+    const ROOT_NAME = 'fos_chat';
 
     /**
      * Generates the configuration tree.
-     *
-     * @return TreeBuilder
      */
     public function getConfigTreeBuilder()
     {
+        return;
+
         $treeBuilder = new TreeBuilder(self::ROOT_NAME);
         if (\method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
@@ -28,48 +28,46 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('thread_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('message_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('message_manager')->defaultValue('fos_message.message_manager.default')->cannotBeEmpty()->end()
-                ->scalarNode('thread_manager')->defaultValue('fos_message.thread_manager.default')->cannotBeEmpty()->end()
-                ->scalarNode('sender')->defaultValue('fos_message.sender.default')->cannotBeEmpty()->end()
-                ->scalarNode('composer')->defaultValue('fos_message.composer.default')->cannotBeEmpty()->end()
-                ->scalarNode('provider')->defaultValue('fos_message.provider.default')->cannotBeEmpty()->end()
-                ->scalarNode('participant_provider')->defaultValue('fos_message.participant_provider.default')->cannotBeEmpty()->end()
-                ->scalarNode('authorizer')->defaultValue('fos_message.authorizer.default')->cannotBeEmpty()->end()
-                ->scalarNode('message_reader')->defaultValue('fos_message.message_reader.default')->cannotBeEmpty()->end()
-                ->scalarNode('thread_reader')->defaultValue('fos_message.thread_reader.default')->cannotBeEmpty()->end()
-                ->scalarNode('deleter')->defaultValue('fos_message.deleter.default')->cannotBeEmpty()->end()
-                ->scalarNode('spam_detector')->defaultValue('fos_message.noop_spam_detector')->cannotBeEmpty()->end()
-                ->scalarNode('twig_extension')->defaultValue('fos_message.twig_extension.default')->cannotBeEmpty()->end()
+                
+                ->scalarNode('message_manager')->defaultValue('fos_chat.message_manager.default')->cannotBeEmpty()->end()
+                ->scalarNode('thread_manager')->defaultValue('fos_chat.thread_manager.default')->cannotBeEmpty()->end()
+                ->scalarNode('sender')->defaultValue('fos_chat.sender.default')->cannotBeEmpty()->end()
+                ->scalarNode('composer')->defaultValue('fos_chat.composer.default')->cannotBeEmpty()->end()
+                ->scalarNode('provider')->defaultValue('fos_chat.provider.default')->cannotBeEmpty()->end()
+                ->scalarNode('participant_provider')->defaultValue('fos_chat.participant_provider.default')->cannotBeEmpty()->end()
+                ->scalarNode('authorizer')->defaultValue('fos_chat.authorizer.default')->cannotBeEmpty()->end()
+                ->scalarNode('message_reader')->defaultValue('fos_chat.message_reader.default')->cannotBeEmpty()->end()
+                ->scalarNode('thread_reader')->defaultValue('fos_chat.thread_reader.default')->cannotBeEmpty()->end()
+                ->scalarNode('deleter')->defaultValue('fos_chat.deleter.default')->cannotBeEmpty()->end()
+                ->scalarNode('spam_detector')->defaultValue('fos_chat.noop_spam_detector')->cannotBeEmpty()->end()
+                ->scalarNode('twig_extension')->defaultValue('fos_chat.twig_extension.default')->cannotBeEmpty()->end()
                 ->scalarNode('user_transformer')->defaultValue('fos_user.user_to_username_transformer')->cannotBeEmpty()->end()
                 ->arrayNode('search')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('query_factory')->defaultValue('fos_message.search_query_factory.default')->cannotBeEmpty()->end()
-                        ->scalarNode('finder')->defaultValue('fos_message.search_finder.default')->cannotBeEmpty()->end()
+                        ->scalarNode('query_factory')->defaultValue('fos_chat.search_query_factory.default')->cannotBeEmpty()->end()
+                        ->scalarNode('finder')->defaultValue('fos_chat.search_finder.default')->cannotBeEmpty()->end()
                         ->scalarNode('query_parameter')->defaultValue('q')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
                 ->arrayNode('new_thread_form')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('factory')->defaultValue('fos_message.new_thread_form.factory.default')->cannotBeEmpty()->end()
-                        ->scalarNode('type')->defaultValue('FOS\MessageBundle\FormType\NewThreadMessageFormType')->cannotBeEmpty()->end()
-                        ->scalarNode('handler')->defaultValue('fos_message.new_thread_form.handler.default')->cannotBeEmpty()->end()
+                        ->scalarNode('factory')->defaultValue('fos_chat.new_thread_form.factory.default')->cannotBeEmpty()->end()
+                        ->scalarNode('type')->defaultValue(\FOS\ChatBundle\FormType\NewThreadMessageFormType::class)->cannotBeEmpty()->end()
+                        ->scalarNode('handler')->defaultValue('fos_chat.new_thread_form.handler.default')->cannotBeEmpty()->end()
                         ->scalarNode('name')->defaultValue('message')->cannotBeEmpty()->end()
-                        ->scalarNode('model')->defaultValue('FOS\MessageBundle\FormModel\NewThreadMessage')->end()
+                        ->scalarNode('model')->defaultValue(\FOS\ChatBundle\FormModel\NewThreadMessage::class)->end()
                     ->end()
                 ->end()
                 ->arrayNode('reply_form')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('factory')->defaultValue('fos_message.reply_form.factory.default')->cannotBeEmpty()->end()
-                        ->scalarNode('type')->defaultValue('FOS\MessageBundle\FormType\ReplyMessageFormType')->cannotBeEmpty()->end()
-                        ->scalarNode('handler')->defaultValue('fos_message.reply_form.handler.default')->cannotBeEmpty()->end()
+                        ->scalarNode('factory')->defaultValue('fos_chat.reply_form.factory.default')->cannotBeEmpty()->end()
+                        ->scalarNode('type')->defaultValue(\FOS\ChatBundle\FormType\ReplyMessageFormType::class)->cannotBeEmpty()->end()
+                        ->scalarNode('handler')->defaultValue('fos_chat.reply_form.handler.default')->cannotBeEmpty()->end()
                         ->scalarNode('name')->defaultValue('message')->cannotBeEmpty()->end()
-                        ->scalarNode('model')->defaultValue('FOS\MessageBundle\FormModel\ReplyMessage')->end()
+                        ->scalarNode('model')->defaultValue(\FOS\ChatBundle\FormModel\ReplyMessage::class)->end()
                     ->end()
                 ->end()
             ->end();

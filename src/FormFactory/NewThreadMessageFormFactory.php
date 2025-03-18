@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\MessageBundle\FormFactory;
+namespace FOS\ChatBundle\FormFactory;
 
 use Symfony\Component\Form\FormInterface;
 
@@ -13,10 +13,8 @@ class NewThreadMessageFormFactory extends AbstractMessageFormFactory
 {
     /**
      * Creates a new thread message.
-     *
-     * @return FormInterface
      */
-    public function create()
+    public function create(): FormInterface
     {
         return $this->formFactory->createNamed($this->formName, $this->formType, $this->createModelInstance());
     }

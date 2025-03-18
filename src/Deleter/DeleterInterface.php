@@ -1,8 +1,8 @@
 <?php
 
-namespace FOS\MessageBundle\Deleter;
+namespace FOS\ChatBundle\Deleter;
 
-use FOS\MessageBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ThreadInterface;
 
 /**
  * Marks threads as deleted.

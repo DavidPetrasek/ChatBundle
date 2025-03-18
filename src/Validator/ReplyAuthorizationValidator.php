@@ -1,37 +1,22 @@
 <?php
 
-namespace FOS\MessageBundle\Validator;
+namespace FOS\ChatBundle\Validator;
 
-use FOS\MessageBundle\Security\AuthorizerInterface;
-use FOS\MessageBundle\Security\ParticipantProviderInterface;
+use FOS\ChatBundle\Security\AuthorizerInterface;
+use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ReplyAuthorizationValidator extends ConstraintValidator
 {
-    /**
-     * @var AuthorizerInterface
-     */
-    protected $authorizer;
-
-    /**
-     * @var ParticipantProviderInterface
-     */
-    protected $participantProvider;
-
-    public function __construct(AuthorizerInterface $authorizer, ParticipantProviderInterface $participantProvider)
+    public function __construct(private AuthorizerInterface $authorizer, private ParticipantProviderInterface $participantProvider)
     {
-        $this->authorizer = $authorizer;
-        $this->participantProvider = $participantProvider;
     }
 
     /**
      * Indicates whether the constraint is valid.
-     *
-     * @param object     $value
-     * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate(object $value, Constraint $constraint): void
     {
         $sender = $this->participantProvider->getAuthenticatedParticipant();
         $recipients = $value->getThread()->getOtherParticipants($sender);
