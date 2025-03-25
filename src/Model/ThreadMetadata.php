@@ -8,6 +8,8 @@ abstract class ThreadMetadata
 
     protected bool $isDeleted = false;
 
+    protected ?int $participantStatus = null;
+
     /**
      * Date of last message written by the participant.
      */
@@ -17,6 +19,7 @@ abstract class ThreadMetadata
      * Date of last message written by another participant.
      */
     protected \DateTimeImmutable $lastMessageDate;
+
 
     public function getParticipant() : ParticipantInterface
     {
@@ -36,6 +39,22 @@ abstract class ThreadMetadata
     public function setIsDeleted(bool $isDeleted): void
     {
         $this->isDeleted = $isDeleted;
+    }
+
+    public function getParticipantStatus(): ?ParticipantStatus
+    {
+        if (!is_int($this->participantStatus)) {return null;}
+
+        return ParticipantStatus::from($this->participantStatus);
+    }
+
+    public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): self
+    {
+        if ($participantStatus instanceof ParticipantStatus) {$participantStatus = $participantStatus->value;}   
+        
+        $this->participantStatus = $participantStatus;
+
+        return $this;
     }
 
     public function getLastParticipantMessageDate() : \DateTimeImmutable

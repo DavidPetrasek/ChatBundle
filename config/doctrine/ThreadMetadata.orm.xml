@@ -8,6 +8,12 @@
 
         <field name="isDeleted" column="is_deleted" type="boolean" />
 
+        <field name="participantStatus" column="participant_status" type="smallint" nullable="true">
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </field>
+
         <field name="lastParticipantMessageDate" column="last_participant_message_date" type="datetime_immutable" nullable="true" />
 
         <field name="lastMessageDate" column="last_message_date" type="datetime_immutable" nullable="true" />
