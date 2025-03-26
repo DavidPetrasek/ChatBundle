@@ -1,7 +1,7 @@
 Configuration Reference
 =======================
 
-All configuration options are listed below::
+All configuration options are listed below:
 
 ```yaml
 # app/config/config.yml

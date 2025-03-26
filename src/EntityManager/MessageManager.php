@@ -2,6 +2,7 @@
 
 namespace FOS\ChatBundle\EntityManager;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
@@ -95,6 +96,9 @@ class MessageManager extends BaseMessageManager
             ->update($this->metaClass, 'm')
             ->set('m.isRead', '?1')
             ->setParameter('1', $isRead, \PDO::PARAM_BOOL)
+
+            ->set('m.readAt', '?2')
+            ->setParameter('2', $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
 
             ->where('m.id = :id')
             ->setParameter('id', $meta->getId())

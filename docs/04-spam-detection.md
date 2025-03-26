@@ -6,7 +6,7 @@ Using Akismet
 
 Install AkismetBundle (https://github.com/ornicar/OrnicarAkismetBundle).
 
-Then, set the spam detector service accordingly::
+Then, set the spam detector service accordingly:
 
 ```yaml
 # app/config/config.yml

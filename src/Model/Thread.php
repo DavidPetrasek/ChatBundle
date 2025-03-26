@@ -182,6 +182,7 @@ abstract class Thread implements ThreadInterface
         }
 
         $meta->setIsDeleted($isDeleted);
+        $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
 
         if ($isDeleted) {
             // also mark all thread messages as read

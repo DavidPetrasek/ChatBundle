@@ -1,7 +1,7 @@
 Templating Helpers for FOSChatBundle
 =======================================
 
-MessageBundle provides a few twig functions::
+MessageBundle provides a few twig functions:
 
 ```html+jinja
 {# template.html.twig #}

@@ -8,6 +8,11 @@ abstract class MessageMetadata
 
     protected bool $isRead = false;
 
+    /**
+     * Date when the message was marked as read.
+     */
+    protected ?\DateTimeImmutable $readAt = null;
+
     
     public function getParticipant() : ParticipantInterface
     {
@@ -27,5 +32,15 @@ abstract class MessageMetadata
     public function setIsRead(bool $isRead): void
     {
         $this->isRead = $isRead;
+    }
+
+    public function getReadAt() : ?\DateTimeImmutable
+    {
+        return $this->readAt;
+    }
+
+    public function setReadAt(?\DateTimeImmutable $readAt): void
+    {
+        $this->readAt = $readAt;
     }
 }

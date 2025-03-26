@@ -8,6 +8,11 @@ abstract class ThreadMetadata
 
     protected bool $isDeleted = false;
 
+    /**
+     * Date when the message was marked as deleted.
+     */
+    protected ?\DateTimeImmutable $deletedAt = null;
+
     protected ?int $participantStatus = null;
 
     /**
@@ -41,6 +46,16 @@ abstract class ThreadMetadata
         $this->isDeleted = $isDeleted;
     }
 
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
     public function getParticipantStatus(): ?ParticipantStatus
     {
         if (!is_int($this->participantStatus)) {return null;}
@@ -48,13 +63,11 @@ abstract class ThreadMetadata
         return ParticipantStatus::from($this->participantStatus);
     }
 
-    public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): self
+    public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): void
     {
         if ($participantStatus instanceof ParticipantStatus) {$participantStatus = $participantStatus->value;}   
         
         $this->participantStatus = $participantStatus;
-
-        return $this;
     }
 
     public function getLastParticipantMessageDate() : \DateTimeImmutable
