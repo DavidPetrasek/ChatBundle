@@ -29,7 +29,7 @@ class Reader implements ReaderInterface
         /**
          * The event dispatcher.
          */
-        private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+        private EventDispatcherInterface $dispatcher
     )
     {
     }

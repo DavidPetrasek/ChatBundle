@@ -36,9 +36,5 @@ class FOSChatBundle extends AbstractBundle
             ;
 
         $container->import('../config/'.$config['db_driver'].'.php');
-        // $container->import('../config/doctrine/Message.'.$config['db_driver'].'.xml');
-        // $container->import('../config/doctrine/Thread.'.$config['db_driver'].'.xml');
-        // $container->import('../config/doctrine/MessageMetadata.'.$config['db_driver'].'.xml');
-        // $container->import('../config/doctrine/ThreadMetadata.'.$config['db_driver'].'.xml');
     }
 }

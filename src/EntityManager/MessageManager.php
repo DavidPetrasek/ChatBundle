@@ -95,10 +95,10 @@ class MessageManager extends BaseMessageManager
         $this->em->createQueryBuilder()
             ->update($this->metaClass, 'm')
             ->set('m.isRead', '?1')
-            ->setParameter('1', $isRead, \PDO::PARAM_BOOL)
+            ->setParameter(1, $isRead, \PDO::PARAM_BOOL)
 
             ->set('m.readAt', '?2')
-            ->setParameter('2', $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
+            ->setParameter(2, $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
 
             ->where('m.id = :id')
             ->setParameter('id', $meta->getId())
