@@ -8,6 +8,7 @@ use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
+use FOS\ChatBundle\EntityManager\MessageManager;
 
 /**
  * Default ORM ThreadManager.
@@ -28,7 +29,7 @@ class ThreadManager extends BaseThreadManager
      */
     private string $metaClass;
 
-    public function __construct(private EntityManager $em, string $class, string $metaClass, private \FOS\ChatBundle\EntityManager\MessageManager $messageManager)
+    public function __construct(private EntityManager $em, string $class, string $metaClass, private MessageManager $messageManager)
     {
         $this->repository = $this->em->getRepository($class);
         $this->class = $this->em->getClassMetadata($class)->name;
@@ -41,6 +42,19 @@ class ThreadManager extends BaseThreadManager
     public function findThreadById($id): ?ThreadInterface
     {
         return $this->repository->find($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('t')
+            ->innerJoin('t.metadata', 'tm')
+            ->innerJoin('tm.participant', 'p')
+            
+            ->where('p.id = ?1')
+            ->setParameter(1, $participant->getId());
     }
 
     /**
@@ -179,14 +193,21 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findThreadsCreatedBy(ParticipantInterface $participant): array
+    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.createdBy', 'p')
-
-            ->where('p.id = :participant_id')
-            ->setParameter('participant_id', $participant->getId())
-
+            
+            ->where('p.id = ?1')
+            ->setParameter(1, $participant->getId());
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function findThreadsCreatedBy(ParticipantInterface $participant): array
+    {
+        return $this->getThreadsCreatedByParticipantQueryBuilder($participant)
             ->getQuery()
             ->execute();
     }

@@ -4,6 +4,7 @@ namespace FOS\ChatBundle\EntityManager;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
@@ -33,27 +34,134 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant): int
+    public function getMessageByThreadQueryBuilder(int|ThreadInterface $thread): QueryBuilder
     {
-        $builder = $this->repository->createQueryBuilder('m');
+        return $this->repository->createQueryBuilder('m')
+            ->where('m.thread = ?1')
+            ->setParameter(1, $thread);
+    }
 
-        return (int) $builder
-            ->select($builder->expr()->count('mm.id'))
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbSentMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('m')
+            ->select('count(m.id)')
 
+            ->where('m.sender = ?1 AND m.thread = ?2')
+            ->setParameter(1, $participant)
+            ->setParameter(2, $thread);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbSentMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread): int
+    {
+        return $this->getNbSentMessageByParticipantAndThreadQueryBuilder($participant, $thread)->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('m')
             ->innerJoin('m.metadata', 'mm')
             ->innerJoin('mm.participant', 'p')
 
             ->where('p.id = :participant_id')
-            ->setParameter('participant_id', $participant->getId())
+            ->setParameter('participant_id', $participant)
 
             ->andWhere('m.sender != :sender')
-            ->setParameter('sender', $participant->getId())
+            ->setParameter('sender', $participant)
 
             ->andWhere('mm.isRead = :isRead')
-            ->setParameter('isRead', false, \PDO::PARAM_BOOL)
+            ->setParameter('isRead', false, \PDO::PARAM_BOOL);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    {
+        $builder = $this->getUnreadMessageByParticipantQueryBuilder($participant);
+
+        return $builder
+            ->select($builder->expr()->count('mm.id'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant): int
+    {
+        return (int) $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    {
+        return $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
+            ->andWhere('m.thread = ?1')
+            ->setParameter(1, $thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread): int
+    {
+        return (int) $this->getNbUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstMessageByThreadQueryBuilder(ThreadInterface $thread): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('m')            
+            ->where('m.thread = ?1')
+            ->setParameter(1, $thread)
+
+            ->orderBy('m.id', 'ASC')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstMessageByThread(ThreadInterface $thread): ?MessageInterface
+    {
+        return $this->getFirstMessageByThreadQueryBuilder($thread)->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastMessageByThreadQueryBuilder(ThreadInterface $thread): QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('m')            
+            ->where('m.thread = ?1')
+            ->setParameter(1, $thread)
+
+            ->orderBy('m.id', 'DESC')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastMessageByThread(ThreadInterface $thread): ?MessageInterface
+    {
+        return $this->getLastMessageByThreadQueryBuilder($thread)->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -101,7 +209,7 @@ class MessageManager extends BaseMessageManager
             ->setParameter(2, $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
 
             ->where('m.id = :id')
-            ->setParameter('id', $meta->getId())
+            ->setParameter('id', $meta)
 
             ->getQuery()
             ->execute();
@@ -148,9 +256,13 @@ class MessageManager extends BaseMessageManager
     {
         foreach ($message->getThread()->getAllMetadata() as $threadMeta) {
             $meta = $message->getMetadataForParticipant($threadMeta->getParticipant());
-            if (!$meta) {
+            if (!$meta) 
+            {
+                $threadParticipant = $threadMeta->getParticipant();
                 $meta = $this->createMessageMetadata();     
-                $meta->setParticipant($threadMeta->getParticipant());
+                $meta->setParticipant($threadParticipant);
+                
+                if ($message->getSender() === $threadParticipant) {$meta->setIsRead(true);}
 
                 $message->addMetadata($meta);
             }

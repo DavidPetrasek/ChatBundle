@@ -22,6 +22,11 @@ interface ThreadManagerInterface extends ReadableManagerInterface
     public function findThreadById($id) : ?ThreadInterface;
 
     /**
+     * Finds all threads in which a participant is involved.
+     */
+    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder;
+
+    /**
      * Finds not deleted threads for a participant,
      * containing at least one message not written by this participant,
      * ordered by last message not written by this participant in reverse order.
@@ -78,6 +83,11 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * ordered by last message not written by this participant in reverse order.
      */
     public function findParticipantThreadsBySearch(ParticipantInterface $participant, string $search) : array;
+
+    /**
+     * Gets threads created by a participant.
+     */
+    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant) : QueryBuilder;
 
     /**
      * Gets threads created by a participant.
