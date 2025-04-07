@@ -14,6 +14,7 @@ return function(ContainerConfigurator $container): void
                 param('fos_chat.message_class'),
                 param('fos_chat.message_meta_class'),
             ])
+            ->alias(MessageManager::class, 'fos_chat.message_manager')
         
         ->set('fos_chat.thread_manager', ThreadManager::class)
             ->args([
@@ -22,5 +23,6 @@ return function(ContainerConfigurator $container): void
                 param('fos_chat.thread_meta_class'),
                 service('fos_chat.message_manager'),
             ])
+            ->alias(ThreadManager::class, 'fos_chat.thread_manager')
     ;
 };
