@@ -22,15 +22,15 @@ class Deleter implements DeleterInterface
         /**
          * The authorizer instance.
          */
-        private AuthorizerInterface $authorizer,
+        private readonly AuthorizerInterface $authorizer,
         /**
          * The participant provider instance.
          */
-        private ParticipantProviderInterface $participantProvider,
+        private readonly ParticipantProviderInterface $participantProvider,
         /**
          * The event dispatcher.
          */
-        private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+        private readonly \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
     )
     {
     }

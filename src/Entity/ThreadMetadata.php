@@ -7,7 +7,7 @@ use FOS\ChatBundle\Model\ThreadMetadata as BaseThreadMetadata;
 
 abstract class ThreadMetadata extends BaseThreadMetadata
 {
-    protected ?int $id;
+    protected ?int $id = null;
 
     protected ThreadInterface $thread;
 

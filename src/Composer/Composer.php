@@ -19,11 +19,11 @@ class Composer implements ComposerInterface
         /**
          * Message manager.
          */
-        private MessageManagerInterface $messageManager,
+        private readonly MessageManagerInterface $messageManager,
         /**
          * Thread manager.
          */
-        private ThreadManagerInterface $threadManager
+        private readonly ThreadManagerInterface $threadManager
     )
     {
     }

@@ -22,11 +22,11 @@ class MessageManager extends BaseMessageManager
 {
     private $repository;
 
-    private string $class;
+    private readonly string $class;
 
-    private string $metaClass;
+    private readonly string $metaClass;
 
-    public function __construct(private DocumentManager $dm, string $class, string $metaClass)
+    public function __construct(private readonly DocumentManager $dm, string $class, string $metaClass)
     {
         $this->repository = $dm->getRepository($class);
         $this->class = $dm->getClassMetadata($class)->name;
@@ -73,7 +73,7 @@ class MessageManager extends BaseMessageManager
     /**
      * Marks the message as read or unread by this participant.
      */
-    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead)
+    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead): void
     {
         $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($message): void {
             $queryBuilder->field('_id')->equals(new \MongoId($message->getId()));
@@ -84,7 +84,7 @@ class MessageManager extends BaseMessageManager
      * Marks messages as read/unread
      * by updating directly the storage.
      */
-    private function markIsReadByCondition(ParticipantInterface $participant, bool $isRead, \Closure $condition)
+    private function markIsReadByCondition(ParticipantInterface $participant, bool $isRead, \Closure $condition): void
     {
         $queryBuilder = $this->repository->createQueryBuilder();
         $condition($queryBuilder);
@@ -166,7 +166,7 @@ class MessageManager extends BaseMessageManager
     /**
      * Ensures that the message has metadata for each thread participant.
      */
-    private function doEnsureMessageMetadataExists(Message $message)
+    private function doEnsureMessageMetadataExists(Message $message): void
     {
         if (!$thread = $message->getThread()) {
             throw new \InvalidArgumentException(sprintf('No thread is referenced in message with id "%s"', $message->getId()));

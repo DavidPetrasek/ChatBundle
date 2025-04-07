@@ -21,11 +21,11 @@ class ThreadManager extends BaseThreadManager
 {
     private $repository;
 
-    private string $class;
+    private readonly string $class;
 
-    private string $metaClass;
+    private readonly string $metaClass;
 
-    public function __construct(private DocumentManager $dm, string $class, string $metaClass, private MessageManager $messageManager)
+    public function __construct(private readonly DocumentManager $dm, string $class, string $metaClass, private readonly MessageManager $messageManager)
     {
         $this->repository = $dm->getRepository($class);
         $this->class = $dm->getClassMetadata($class)->name;
@@ -204,7 +204,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Performs denormalization tricks.
      */
-    private function denormalize(Thread $thread)
+    private function denormalize(Thread $thread): void
     {
         $this->doParticipants($thread);
         $this->doEnsureThreadMetadataExists($thread);
@@ -218,7 +218,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Ensures that the thread participants are up to date.
      */
-    private function doParticipants(Thread $thread)
+    private function doParticipants(Thread $thread): void
     {
         foreach ($thread->getMessages() as $message) {
             $thread->addParticipant($message->getSender());
@@ -229,7 +229,7 @@ class ThreadManager extends BaseThreadManager
      * Ensures that metadata exists for each thread participant and that the
      * last message dates are current.
      */
-    private function doEnsureThreadMetadataExists(Thread $thread)
+    private function doEnsureThreadMetadataExists(Thread $thread): void
     {
         foreach ($thread->getParticipants() as $participant) {
             if (!($meta = $thread->getMetadataForParticipant($participant)) instanceof ModelThreadMetadata) {

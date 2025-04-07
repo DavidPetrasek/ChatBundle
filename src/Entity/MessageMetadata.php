@@ -7,7 +7,7 @@ use FOS\ChatBundle\Model\MessageMetadata as BaseMessageMetadata;
 
 abstract class MessageMetadata extends BaseMessageMetadata
 {
-    protected ?int $id;
+    protected ?int $id = null;
 
     protected MessageInterface $message;
 
