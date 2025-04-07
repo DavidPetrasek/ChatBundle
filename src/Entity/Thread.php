@@ -58,7 +58,8 @@ abstract class Thread extends BaseThread
      */
     protected function getParticipantsCollection() : ArrayCollection
     {
-        if (null === $this->participants) {
+        if (!isset($this->participants)) 
+        {
             $this->participants = new ArrayCollection();
 
             foreach ($this->metadata as $data) {
