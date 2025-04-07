@@ -24,7 +24,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.2",
         "symfony/framework-bundle": "7.2.*",
         "symfony/form": "7.2.*",
         "symfony/security-bundle": "7.2.*",

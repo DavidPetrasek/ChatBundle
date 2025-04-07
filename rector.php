@@ -10,7 +10,7 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
     ])
-    ->withPhpSets(php83: true)
+    ->withPhpSets(php82: true)
     ->withSets([
         SymfonySetList::SYMFONY_72,
         SymfonySetList::SYMFONY_CODE_QUALITY,
@@ -31,3 +31,17 @@ return RectorConfig::configure()
     )
     ->withAttributesSets(symfony: true, doctrine: true)
 ;
+
+
+// USE THIS FOR DOWNGRADE
+// use Rector\Set\ValueObject\DowngradeLevelSetList;
+// use Rector\Config\RectorConfig;
+
+// return static function (RectorConfig $rectorConfig): void {
+//     $rectorConfig->sets([
+//         DowngradeLevelSetList::DOWN_TO_PHP_82
+//     ]);
+//     $rectorConfig->paths([
+//         __DIR__ . '/src',
+//     ]);
+// };
