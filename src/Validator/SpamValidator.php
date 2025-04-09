@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SpamValidator extends ConstraintValidator
 {
-    public function __construct(private SpamDetectorInterface $spamDetector)
+    public function __construct(private readonly SpamDetectorInterface $spamDetector)
     {
     }
 

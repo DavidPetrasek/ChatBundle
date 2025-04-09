@@ -13,7 +13,7 @@ class NewThreadMultipleMessage extends AbstractMessage
     /**
      * The user who receives the message.
      */
-    private ArrayCollection $recipients;
+    private readonly ArrayCollection $recipients;
 
     /**
      * The thread subject.

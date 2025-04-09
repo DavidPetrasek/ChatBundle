@@ -18,7 +18,7 @@ abstract class Message implements MessageInterface
     /**
      * Unique id of the message.
      */
-    protected ?int $id;
+    protected ?int $id = null;
 
     /**
      * User who sent the message.

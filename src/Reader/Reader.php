@@ -21,15 +21,15 @@ class Reader implements ReaderInterface
         /**
          * The participantProvider instance.
          */
-        private ParticipantProviderInterface $participantProvider,
+        private readonly ParticipantProviderInterface $participantProvider,
         /**
          * The readable manager.
          */
-        private ReadableManagerInterface $readableManager,
+        private readonly ReadableManagerInterface $readableManager,
         /**
          * The event dispatcher.
          */
-        private EventDispatcherInterface $dispatcher
+        private readonly EventDispatcherInterface $dispatcher
     )
     {
     }

@@ -10,8 +10,8 @@ class AkismetSpamDetector implements SpamDetectorInterface
 {
     public function __construct
     (
-        private AkismetInterface $akismet, 
-        private ParticipantProviderInterface $participantProvider
+        private readonly AkismetInterface $akismet, 
+        private readonly ParticipantProviderInterface $participantProvider
     )
     {}
 

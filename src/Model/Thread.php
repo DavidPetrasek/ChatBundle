@@ -18,7 +18,7 @@ abstract class Thread implements ThreadInterface
     /**
      * Unique id of the thread.
      */
-    protected ?int $id;
+    protected ?int $id = null;
 
     /**
      * Text subject of the thread.

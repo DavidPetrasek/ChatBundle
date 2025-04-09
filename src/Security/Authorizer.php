@@ -12,7 +12,7 @@ use FOS\ChatBundle\Model\ThreadInterface;
  */
 class Authorizer implements AuthorizerInterface
 {
-    public function __construct(private ParticipantProviderInterface $participantProvider)
+    public function __construct(private readonly ParticipantProviderInterface $participantProvider)
     {
     }
 

@@ -13,9 +13,9 @@ use Twig\TwigFunction;
 
 class MessageExtension extends AbstractExtension
 {
-    private $nbUnreadMessagesCache;
+    private ?int $nbUnreadMessagesCache = null;
 
-    public function __construct(private ParticipantProviderInterface $participantProvider, private ProviderInterface $provider, private AuthorizerInterface $authorizer)
+    public function __construct(private readonly ParticipantProviderInterface $participantProvider, private readonly ProviderInterface $provider, private readonly AuthorizerInterface $authorizer)
     {
     }
 

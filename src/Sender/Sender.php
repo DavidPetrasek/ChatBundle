@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Sender implements SenderInterface
 {
-    public function __construct(private MessageManagerInterface $messageManager, private ThreadManagerInterface $threadManager, private EventDispatcherInterface $dispatcher)
+    public function __construct(private readonly MessageManagerInterface $messageManager, private readonly ThreadManagerInterface $threadManager, private readonly EventDispatcherInterface $dispatcher)
     {
     }
 

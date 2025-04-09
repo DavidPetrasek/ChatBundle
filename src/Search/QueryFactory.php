@@ -14,7 +14,7 @@ class QueryFactory implements QueryFactoryInterface
      * Instanciates a new TermGetter.
      */
     public function __construct(
-        private RequestStack|Request $request,
+        private readonly RequestStack|Request $request,
         /**
          * The query parameter containing the search term.
          */
@@ -44,7 +44,7 @@ class QueryFactory implements QueryFactoryInterface
         $this->queryParameter = $queryParameter;
     }
 
-    private function escapeTerm($term)
+    private function escapeTerm(string $term): string
     {
         return $term;
     }

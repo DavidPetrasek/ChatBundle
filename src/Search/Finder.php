@@ -18,11 +18,11 @@ class Finder implements FinderInterface
         /**
          * The participant provider instance.
          */
-        private ParticipantProviderInterface $participantProvider,
+        private readonly ParticipantProviderInterface $participantProvider,
         /**
          * The thread manager.
          */
-        private ThreadManagerInterface $threadManager
+        private readonly ThreadManagerInterface $threadManager
     )
     {
     }

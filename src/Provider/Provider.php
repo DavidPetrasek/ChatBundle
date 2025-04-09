@@ -22,11 +22,11 @@ class Provider implements ProviderInterface
 {
     public function __construct
     (
-        private ThreadManagerInterface $threadManager, 
-        private MessageManagerInterface $messageManager, 
-        private ReaderInterface $threadReader, 
-        private AuthorizerInterface $authorizer, 
-        private ParticipantProviderInterface $participantProvider
+        private readonly ThreadManagerInterface $threadManager, 
+        private readonly MessageManagerInterface $messageManager, 
+        private readonly ReaderInterface $threadReader, 
+        private readonly AuthorizerInterface $authorizer, 
+        private readonly ParticipantProviderInterface $participantProvider
     )
     {}
 

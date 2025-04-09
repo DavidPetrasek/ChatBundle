@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ReplyAuthorizationValidator extends ConstraintValidator
 {
-    public function __construct(private AuthorizerInterface $authorizer, private ParticipantProviderInterface $participantProvider)
+    public function __construct(private readonly AuthorizerInterface $authorizer, private readonly ParticipantProviderInterface $participantProvider)
     {
     }
 

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SelfRecipientValidator extends ConstraintValidator
 {
-    public function __construct(private ParticipantProviderInterface $participantProvider)
+    public function __construct(private readonly ParticipantProviderInterface $participantProvider)
     {
     }
 

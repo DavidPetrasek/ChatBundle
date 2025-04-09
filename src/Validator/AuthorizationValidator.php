@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class AuthorizationValidator extends ConstraintValidator
 {
-    public function __construct(private AuthorizerInterface $authorizer)
+    public function __construct(private readonly AuthorizerInterface $authorizer)
     {
     }
 

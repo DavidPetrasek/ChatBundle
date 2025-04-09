@@ -17,19 +17,19 @@ use FOS\ChatBundle\EntityManager\MessageManager;
  */
 class ThreadManager extends BaseThreadManager
 {
-    private $repository;
+    private readonly \Doctrine\ORM\EntityRepository $repository;
 
     /**
      * The model class.
      */
-    private string $class;
+    private readonly string $class;
 
     /**
      * The model class.
      */
-    private string $metaClass;
+    private readonly string $metaClass;
 
-    public function __construct(private EntityManager $em, string $class, string $metaClass, private MessageManager $messageManager)
+    public function __construct(private readonly EntityManager $em, string $class, string $metaClass, private readonly MessageManager $messageManager)
     {
         $this->repository = $this->em->getRepository($class);
         $this->class = $this->em->getClassMetadata($class)->name;
@@ -266,7 +266,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Performs denormalization tricks.
      */
-    private function denormalize(ThreadInterface $thread)
+    private function denormalize(ThreadInterface $thread): void
     {
         $this->doMetadata($thread);
         $this->doCreatedByAndAt($thread);
@@ -276,7 +276,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Ensures that the thread metadata are up to date.
      */
-    private function doMetadata(ThreadInterface $thread)
+    private function doMetadata(ThreadInterface $thread): void
     {
         // Participants
         foreach ($thread->getParticipants() as $participant) {
@@ -305,7 +305,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Ensures that the createdBy & createdAt properties are set.
      */
-    private function doCreatedByAndAt(ThreadInterface $thread)
+    private function doCreatedByAndAt(ThreadInterface $thread): void
     {
         if (!($message = $thread->getFirstMessage())) {
             return;
@@ -323,7 +323,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * Update the dates of last message written by other participants.
      */
-    private function doDatesOfLastMessageWrittenByOtherParticipant(ThreadInterface $thread)
+    private function doDatesOfLastMessageWrittenByOtherParticipant(ThreadInterface $thread): void
     {
         foreach ($thread->getAllMetadata() as $meta) {
             $participantId = $meta->getParticipant()->getId();

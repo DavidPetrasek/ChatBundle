@@ -18,13 +18,13 @@ use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
  */
 class MessageManager extends BaseMessageManager
 {
-    private $repository;
+    private readonly \Doctrine\ORM\EntityRepository $repository;
 
-    private string $class;
+    private readonly string $class;
 
-    private string $metaClass;
+    private readonly string $metaClass;
 
-    public function __construct(private EntityManager $em, string $class, string $metaClass)
+    public function __construct(private readonly EntityManager $em, string $class, string $metaClass)
     {
         $this->repository = $this->em->getRepository($class);
         $this->class = $this->em->getClassMetadata($class)->name;
@@ -193,10 +193,10 @@ class MessageManager extends BaseMessageManager
     /**
      * Marks the message as read or unread by this participant.
      */
-    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead)
+    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead): void
     {
         $meta = $message->getMetadataForParticipant($participant);
-        if (!$meta || $meta->getIsRead() == $isRead) {
+        if (!$meta || $meta->getIsRead() === $isRead) {
             return;
         }
 
@@ -244,7 +244,7 @@ class MessageManager extends BaseMessageManager
     /**
      * Performs denormalization tricks.
      */
-    private function denormalize(MessageInterface $message)
+    private function denormalize(MessageInterface $message): void
     {
         $this->doMetadata($message);
     }
@@ -252,7 +252,7 @@ class MessageManager extends BaseMessageManager
     /**
      * Ensures that the message metadata are up to date.
      */
-    private function doMetadata(MessageInterface $message)
+    private function doMetadata(MessageInterface $message): void
     {
         foreach ($message->getThread()->getAllMetadata() as $threadMeta) {
             $meta = $message->getMetadataForParticipant($threadMeta->getParticipant());
