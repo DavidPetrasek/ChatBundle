@@ -3,7 +3,6 @@
 namespace FOS\ChatBundle\FormType;
 
 use FOS\ChatBundle\DataTransformer\RecipientsDataTransformer;
-use FOS\ChatBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -59,14 +58,6 @@ class RecipientsType extends AbstractType
     #[\Override]
     public function getParent()
     {
-        return LegacyFormHelper::getType(TextType::class);
-    }
-
-    /**
-     * @deprecated To remove when supporting only Symfony 3
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        return TextType::class;
     }
 }
