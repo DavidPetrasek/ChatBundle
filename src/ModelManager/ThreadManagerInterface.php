@@ -109,4 +109,9 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * This is not participant deletion but real deletion.
      */
     public function deleteThread(ThreadInterface $thread) : void;
+
+    /**
+     * Returns the thread's fully qualified class
+     */
+    public function getClass() : string;
 }

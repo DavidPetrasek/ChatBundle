@@ -92,7 +92,7 @@ interface MessageManagerInterface extends ReadableManagerInterface
     public function saveMessage(MessageInterface $message, bool $andFlush = true);
 
     /**
-     * Returns the message's fully qualified class MessageManagerInterface.
+     * Returns the message's fully qualified class.
      */
     public function getClass() : string;
 }
