@@ -2,6 +2,7 @@
 
 namespace FOS\ChatBundle\Security;
 
+use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 
@@ -30,6 +31,15 @@ class Authorizer implements AuthorizerInterface
     public function canDeleteThread(ThreadInterface $thread): bool
     {
         return $this->canSeeThread($thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canDeleteMessage(MessageInterface $message): bool
+    {
+        $authenticatedParticipant = $this->getAuthenticatedParticipant();
+        return $this->getAuthenticatedParticipant() && $message->getSender() === $authenticatedParticipant;
     }
 
     /**

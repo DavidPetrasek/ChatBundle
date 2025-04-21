@@ -2,6 +2,7 @@
 
 namespace FOS\ChatBundle\Security;
 
+use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 
@@ -23,6 +24,12 @@ interface AuthorizerInterface
      * to delete this thread.
      */
     public function canDeleteThread(ThreadInterface $thread) : bool;
+
+    /**
+     * Tells if the current participant is allowed
+     * to delete this message.
+     */
+    public function canDeleteMessage(MessageInterface $message) : bool;
 
     /**
      * Tells if the current participant is allowed

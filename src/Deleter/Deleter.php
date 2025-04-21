@@ -3,8 +3,10 @@
 namespace FOS\ChatBundle\Deleter;
 
 use FOS\ChatBundle\Event\FOSMessageEvents;
-use FOS\ChatBundle\Event\ThreadEvent;
+use FOS\ChatBundle\Event\ReadableEvent;
+use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\Security\AuthorizerInterface;
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
@@ -12,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Marks threads as deleted.
+ * Marks readables as deleted.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  */
@@ -38,29 +40,35 @@ class Deleter implements DeleterInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsDeleted(ThreadInterface $thread): void
+    public function markAsDeleted(ReadableInterface $readable): void
     {
-        if (!$this->authorizer->canDeleteThread($thread)) {
+        if ($readable instanceof ThreadInterface  &&  !$this->authorizer->canDeleteThread($readable)) {
             throw new AccessDeniedException('You are not allowed to delete this thread');
         }
+        else if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
+            throw new AccessDeniedException('You are not allowed to delete this message');
+        }
 
-        $thread->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), true);
+        $readable->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), true);
 
-        $this->dispatcher->dispatch(new ThreadEvent($thread), FOSMessageEvents::POST_DELETE);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_DELETE);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function markAsUndeleted(ThreadInterface $thread): void
+    public function markAsUndeleted(ReadableInterface $readable): void
     {
-        if (!$this->authorizer->canDeleteThread($thread)) {
-            throw new AccessDeniedException('You are not allowed to delete this thread');
+        if ($readable instanceof ThreadInterface  &&  !$this->authorizer->canDeleteThread($readable)) {
+            throw new AccessDeniedException('You are not allowed to undelete this thread');
+        }
+        else if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
+            throw new AccessDeniedException('You are not allowed to undelete this message');
         }
 
-        $thread->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), false);
+        $readable->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), false);
 
-        $this->dispatcher->dispatch(new ThreadEvent($thread), FOSMessageEvents::POST_UNDELETE);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_UNDELETE);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace FOS\ChatBundle\Event;
 
 use FOS\ChatBundle\Model\ReadableInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ReadableEvent extends Event
 {

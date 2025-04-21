@@ -35,4 +35,14 @@ interface MessageInterface extends ReadableInterface
     public function getAllMetadata() : Collection;
 
     public function getMetadataForParticipant(ParticipantInterface $participant) : ?MessageMetadata;
+
+    /**
+     * Tells if this message is deleted by this participant.
+     */
+    public function isDeletedByParticipant(ParticipantInterface $participant) : bool;
+
+    /**
+     * Sets the message as deleted or not deleted for all recipients including the sender.
+     */
+    public function setIsDeleted(bool $isDeleted);
 }

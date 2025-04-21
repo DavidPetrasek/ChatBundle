@@ -10,6 +10,10 @@
 
         <field name="readAt" column="read_at" type="datetime_immutable" nullable="true" />
 
+        <field name="isDeleted" column="is_deleted" type="boolean" />
+
+        <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
+
         <!--<many-to-one field="message" target-entity="MyProject\MessageBundle\Entity\Message" inversed-by="metadata" />-->
 
         <!--<many-to-one field="participant" target-entity="MyProject\UserBundle\Entity\User" />-->

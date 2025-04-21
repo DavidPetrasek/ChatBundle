@@ -168,4 +168,51 @@ abstract class Message implements MessageInterface
 
         $meta->setIsRead($isRead);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDeletedByParticipant(ParticipantInterface $participant): bool
+    {
+        if (($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
+            return $meta->getIsDeleted();
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsDeletedByParticipant(ParticipantInterface $participant, $isDeleted): void
+    {
+        if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
+            throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
+        }
+
+        $meta->setIsDeleted($isDeleted);
+        $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+
+        if ($isDeleted) {
+            // also mark this message as read
+            $meta->setIsRead(true);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsDeleted($isDeleted): void
+    {
+        foreach ($this->metadata as $meta) 
+        {
+            $meta->setIsDeleted($isDeleted);
+            $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+
+            if ($isDeleted) {
+                // also mark this message as read
+                $meta->setIsRead(true);
+            }
+        }
+    }
 }

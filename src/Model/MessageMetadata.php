@@ -13,6 +13,14 @@ abstract class MessageMetadata
      */
     protected ?\DateTimeImmutable $readAt = null;
 
+    protected bool $isDeleted = false;
+    
+    /**
+     * Date when the message was marked as deleted.
+     */
+    protected ?\DateTimeImmutable $deletedAt = null;
+
+
     
     public function getParticipant() : ParticipantInterface
     {
@@ -42,5 +50,26 @@ abstract class MessageMetadata
     public function setReadAt(?\DateTimeImmutable $readAt): void
     {
         $this->readAt = $readAt;
+    }
+
+
+    public function getIsDeleted() : bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): void
+    {
+        $this->isDeleted = $isDeleted;
+    }
+
+    public function getDeletedAt() : ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace FOS\ChatBundle\Twig\Extension;
 
+use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
@@ -29,6 +30,7 @@ class MessageExtension extends AbstractExtension
             new TwigFunction('fos_chat_is_read', $this->isRead(...)),
             new TwigFunction('fos_chat_nb_unread', $this->getNbUnread(...)),
             new TwigFunction('fos_chat_can_delete_thread', $this->canDeleteThread(...)),
+            new TwigFunction('fos_chat_can_delete_message', $this->canDeleteMessage(...)),
             new TwigFunction('fos_chat_deleted_by_participant', $this->isThreadDeletedByParticipant(...)),
         ];
     }
@@ -47,6 +49,14 @@ class MessageExtension extends AbstractExtension
     public function canDeleteThread(ThreadInterface $thread) : bool
     {
         return $this->authorizer->canDeleteThread($thread);
+    }
+
+    /**
+     * Checks if the participant can mark a message as deleted.
+     */
+    public function canDeleteMessage(MessageInterface $message) : bool
+    {
+        return $this->authorizer->canDeleteMessage($message);
     }
 
     /**

@@ -82,11 +82,6 @@ interface ThreadInterface extends ReadableInterface
     public function isDeletedByParticipant(ParticipantInterface $participant) : bool;
 
     /**
-     * Sets whether or not this participant has deleted this thread.
-     */
-    public function setIsDeletedByParticipant(ParticipantInterface $participant, bool $isDeleted);
-
-    /**
      * Sets the thread as deleted or not deleted for all participants.
      */
     public function setIsDeleted(bool $isDeleted);
