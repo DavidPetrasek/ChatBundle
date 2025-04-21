@@ -28,9 +28,7 @@ class QueryFactory implements QueryFactoryInterface
         $original = $this->requestStack->getCurrentRequest()->query->get($this->queryParameter);
         $original = trim((string) $original);
 
-        $escaped = $this->escapeTerm($original);
-
-        return new Query($original, $escaped);
+        return new Query($original);
     }
 
     /**
@@ -39,10 +37,5 @@ class QueryFactory implements QueryFactoryInterface
     public function setQueryParameter(string $queryParameter): void
     {
         $this->queryParameter = $queryParameter;
-    }
-
-    private function escapeTerm(string $term): string
-    {
-        return $term;
     }
 }

@@ -7,40 +7,30 @@ namespace FOS\ChatBundle\Search;
  */
 class Query implements \Stringable
 {
-    public function __construct(private string $original, private string $escaped)
+    public function __construct(private string $term)
     {
     }
 
-    public function getOriginal() : string
+    public function getTerm() : string
     {
-        return $this->original;
+        return $this->term;
     }
 
-    public function setOriginal(string $original): void
+    public function setTerm(string $term): void
     {
-        $this->original = $original;
-    }
-
-    public function getEscaped() : string
-    {
-        return $this->escaped;
-    }
-
-    public function setEscaped(string $escaped): void
-    {
-        $this->escaped = $escaped;
+        $this->term = $term;
     }
 
     /**
-     * Converts to the original term string.
+     * Converts to the term string.
      */
     public function __toString(): string
     {
-        return $this->getOriginal();
+        return $this->getTerm();
     }
 
     public function isEmpty(): bool
     {
-        return empty($this->original);
+        return empty($this->term);
     }
 }

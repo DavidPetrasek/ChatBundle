@@ -32,7 +32,7 @@ class Finder implements FinderInterface
      */
     public function find(Query $query): array
     {
-        return $this->threadManager->findParticipantThreadsBySearch($this->getAuthenticatedParticipant(), $query->getEscaped());
+        return $this->threadManager->findParticipantThreadsBySearch($this->getAuthenticatedParticipant(), $query->getTerm());
     }
 
     /**
@@ -40,7 +40,7 @@ class Finder implements FinderInterface
      */
     public function getQueryBuilder(Query $query): QueryBuilder
     {
-        return $this->threadManager->getParticipantThreadsBySearchQueryBuilder($this->getAuthenticatedParticipant(), $query->getEscaped());
+        return $this->threadManager->getParticipantThreadsBySearchQueryBuilder($this->getAuthenticatedParticipant(), $query->getTerm());
     }
 
     /**
