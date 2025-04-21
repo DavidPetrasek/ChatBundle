@@ -2,22 +2,22 @@
 
 namespace FOS\ChatBundle\Deleter;
 
-use FOS\ChatBundle\Model\ThreadInterface;
+use FOS\ChatBundle\Model\ReadableInterface;
 
 /**
- * Marks threads as deleted.
+ * Marks readables as deleted.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  */
 interface DeleterInterface
 {
     /**
-     * Marks the thread as deleted by the current authenticated user.
+     * Marks the readable as deleted by the current authenticated user.
      */
-    public function markAsDeleted(ThreadInterface $thread);
+    public function markAsDeleted(ReadableInterface $thread);
 
     /**
-     * Marks the thread as undeleted by the current authenticated user.
+     * Marks the readable as undeleted by the current authenticated user.
      */
-    public function markAsUndeleted(ThreadInterface $thread);
+    public function markAsUndeleted(ReadableInterface $thread);
 }

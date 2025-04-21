@@ -10,7 +10,6 @@ use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\Security\AuthorizerInterface;
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
