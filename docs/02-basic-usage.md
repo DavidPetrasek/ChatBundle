@@ -21,7 +21,7 @@ And the threads in the sentbox:
 $threads = $provider->getSentThreads();
 ```
 
-To get a single thread, check it belongs to the authenticated user and mark it as read:
+Get a single thread and check it belongs to the authenticated user:
 
 ```php
 $thread = $provider->getThread($threadId);

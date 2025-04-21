@@ -29,7 +29,6 @@ interface ProviderInterface
     /**
      * Gets a thread by its ID
      * Performs authorization checks
-     * Marks the thread as read.
      */
     public function getThread($threadId) : ThreadInterface;
 

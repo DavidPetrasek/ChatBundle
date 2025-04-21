@@ -5,7 +5,6 @@ namespace FOS\ChatBundle\Provider;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\ModelManager\MessageManagerInterface;
 use FOS\ChatBundle\ModelManager\ThreadManagerInterface;
-use FOS\ChatBundle\Reader\ReaderInterface;
 use FOS\ChatBundle\Security\AuthorizerInterface;
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
@@ -23,8 +22,7 @@ class Provider implements ProviderInterface
     public function __construct
     (
         private readonly ThreadManagerInterface $threadManager, 
-        private readonly MessageManagerInterface $messageManager, 
-        private readonly ReaderInterface $threadReader, 
+        private readonly MessageManagerInterface $messageManager,
         private readonly AuthorizerInterface $authorizer, 
         private readonly ParticipantProviderInterface $participantProvider
     )
@@ -73,11 +71,6 @@ class Provider implements ProviderInterface
         if (!$this->authorizer->canSeeThread($thread)) {
             throw new AccessDeniedException('You are not allowed to see this thread');
         }
-
-        // Load the thread messages before marking them as read
-        // because we want to see the unread messages
-        $thread->getMessages();
-        $this->threadReader->markAsRead($thread);
 
         return $thread;
     }
