@@ -17,7 +17,6 @@ return function(ContainerConfigurator $container): void
             ->args([
                 service('fos_chat.thread_manager'),
                 service('fos_chat.message_manager'),
-                service('fos_chat.thread_reader'),
                 service('fos_chat.authorizer'),
                 service('fos_chat.participant_provider'),
             ])
