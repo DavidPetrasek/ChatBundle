@@ -192,11 +192,6 @@ abstract class Message implements MessageInterface
 
         $meta->setIsDeleted($isDeleted);
         $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
-
-        if ($isDeleted) {
-            // also mark this message as read
-            $meta->setIsRead(true);
-        }
     }
 
     /**
@@ -208,11 +203,6 @@ abstract class Message implements MessageInterface
         {
             $meta->setIsDeleted($isDeleted);
             $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
-
-            if ($isDeleted) {
-                // also mark this message as read
-                $meta->setIsRead(true);
-            }
         }
     }
 }
