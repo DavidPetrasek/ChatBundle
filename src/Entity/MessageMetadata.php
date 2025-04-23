@@ -21,8 +21,10 @@ abstract class MessageMetadata extends BaseMessageMetadata
         return $this->message;
     }
 
-    public function setMessage(MessageInterface $message): void
+    public function setMessage(MessageInterface $message): self
     {
         $this->message = $message;
+
+        return $this;
     }
 }

@@ -34,8 +34,10 @@ class QueryFactory implements QueryFactoryInterface
     /**
      * Sets: the query parameter containing the search term.
      */
-    public function setQueryParameter(string $queryParameter): void
+    public function setQueryParameter(string $queryParameter): self
     {
         $this->queryParameter = $queryParameter;
+
+        return $this;
     }
 }

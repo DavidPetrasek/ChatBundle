@@ -21,9 +21,11 @@ class NewThreadMessage extends AbstractMessage
         return $this->subject;
     }
 
-    public function setSubject(string $subject): void
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
+
+        return $this;
     }
 
     public function getRecipient() : ParticipantInterface
@@ -31,8 +33,10 @@ class NewThreadMessage extends AbstractMessage
         return $this->recipient;
     }
 
-    public function setRecipient(ParticipantInterface $recipient): void
+    public function setRecipient(ParticipantInterface $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
     }
 }

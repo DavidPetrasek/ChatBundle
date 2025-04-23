@@ -70,9 +70,11 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setThread(ThreadInterface $thread): void
+    public function setThread(ThreadInterface $thread): self
     {
         $this->thread = $thread;
+
+        return $this;
     }
 
     /**
@@ -94,9 +96,11 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setBody($body): void
+    public function setBody($body): self
     {
         $this->body = $body;
+
+        return $this;
     }
 
     /**
@@ -110,9 +114,11 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setSender(ParticipantInterface $sender): void
+    public function setSender(ParticipantInterface $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
     }
 
     /**
@@ -160,13 +166,15 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead): void
+    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead): self
     {
         if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
         }
 
         $meta->setIsRead($isRead);
+
+        return $this;
     }
 
     /**
@@ -184,7 +192,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsDeletedByParticipant(ParticipantInterface $participant, $isDeleted): void
+    public function setIsDeletedByParticipant(ParticipantInterface $participant, $isDeleted): self
     {
         if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
@@ -192,17 +200,21 @@ abstract class Message implements MessageInterface
 
         $meta->setIsDeleted($isDeleted);
         $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setIsDeleted($isDeleted): void
+    public function setIsDeleted($isDeleted): self
     {
         foreach ($this->metadata as $meta) 
         {
             $meta->setIsDeleted($isDeleted);
             $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
         }
+        
+        return $this;
     }
 }

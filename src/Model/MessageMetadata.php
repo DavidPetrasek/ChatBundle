@@ -27,9 +27,11 @@ abstract class MessageMetadata
         return $this->participant;
     }
 
-    public function setParticipant(ParticipantInterface $participant): void
+    public function setParticipant(ParticipantInterface $participant): self
     {
         $this->participant = $participant;
+
+        return $this;
     }
 
     public function getIsRead() : bool
@@ -37,9 +39,11 @@ abstract class MessageMetadata
         return $this->isRead;
     }
 
-    public function setIsRead(bool $isRead): void
+    public function setIsRead(bool $isRead): self
     {
         $this->isRead = $isRead;
+
+        return $this;
     }
 
     public function getReadAt() : ?\DateTimeImmutable
@@ -47,9 +51,11 @@ abstract class MessageMetadata
         return $this->readAt;
     }
 
-    public function setReadAt(?\DateTimeImmutable $readAt): void
+    public function setReadAt(?\DateTimeImmutable $readAt): self
     {
         $this->readAt = $readAt;
+
+        return $this;
     }
 
 
@@ -58,9 +64,11 @@ abstract class MessageMetadata
         return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): void
+    public function setIsDeleted(bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 
     public function getDeletedAt() : ?\DateTimeImmutable
@@ -68,8 +76,10 @@ abstract class MessageMetadata
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
     }
 }

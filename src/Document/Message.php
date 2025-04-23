@@ -18,9 +18,11 @@ abstract class Message extends BaseMessage
      */
     protected array $unreadForParticipants = [];
 
-    public function setIsSpam(bool $isSpam): void
+    public function setIsSpam(bool $isSpam): self
     {
         $this->isSpam = $isSpam;
+
+        return $this;
     }
 
     /*

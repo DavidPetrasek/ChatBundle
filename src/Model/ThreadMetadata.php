@@ -31,9 +31,11 @@ abstract class ThreadMetadata
         return $this->participant;
     }
 
-    public function setParticipant(ParticipantInterface $participant): void
+    public function setParticipant(ParticipantInterface $participant): self
     {
         $this->participant = $participant;
+
+        return $this;
     }
 
     public function getIsDeleted() : bool
@@ -41,9 +43,11 @@ abstract class ThreadMetadata
         return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): void
+    public function setIsDeleted(bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeImmutable
@@ -51,9 +55,11 @@ abstract class ThreadMetadata
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
     }
 
     public function getParticipantStatus(): ?ParticipantStatus
@@ -63,11 +69,13 @@ abstract class ThreadMetadata
         return ParticipantStatus::from($this->participantStatus);
     }
 
-    public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): void
+    public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): self
     {
         if ($participantStatus instanceof ParticipantStatus) {$participantStatus = $participantStatus->value;}   
         
         $this->participantStatus = $participantStatus;
+
+        return $this;
     }
 
     public function getLastParticipantMessageDate() : \DateTimeImmutable
@@ -75,9 +83,11 @@ abstract class ThreadMetadata
         return $this->lastParticipantMessageDate;
     }
 
-    public function setLastParticipantMessageDate(\DateTimeImmutable $date): void
+    public function setLastParticipantMessageDate(\DateTimeImmutable $date): self
     {
         $this->lastParticipantMessageDate = $date;
+
+        return $this;
     }
 
     public function getLastMessageDate() : \DateTimeImmutable
@@ -85,8 +95,10 @@ abstract class ThreadMetadata
         return $this->lastMessageDate;
     }
 
-    public function setLastMessageDate(\DateTimeImmutable $date): void
+    public function setLastMessageDate(\DateTimeImmutable $date): self
     {
         $this->lastMessageDate = $date;
+
+        return $this;
     }
 }

@@ -16,9 +16,11 @@ class Query implements \Stringable
         return $this->term;
     }
 
-    public function setTerm(string $term): void
+    public function setTerm(string $term): self
     {
         $this->term = $term;
+
+        return $this;
     }
 
     /**
