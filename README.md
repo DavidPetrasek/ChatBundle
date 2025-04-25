@@ -1,6 +1,18 @@
 DEVELOPMENT IN PROGRESS !!
 ================
 
+Almost no work done or untested:
+
+* Forms
+* Spam detection
+* MongoDb
+* Events
+* Docs (partial update)
+* Tests
+
+##
+
+
 FOSChatBundle
 ================
 
