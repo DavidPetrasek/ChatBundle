@@ -2,7 +2,6 @@
 
 namespace FOS\ChatBundle\ModelManager;
 
-use Doctrine\ORM\QueryBuilder;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 
@@ -24,7 +23,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
     /**
      * Finds all threads in which a participant is involved.
      */
-    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder;
+    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant);
 
     /**
      * Finds not deleted threads for a participant,
@@ -32,7 +31,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * ordered by last message not written by this participant in reverse order.
      * In one word: an inbox.
      */
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder;
+    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant);
 
     /**
      * Finds not deleted threads for a participant,
@@ -48,7 +47,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * ordered by last message written by this participant in reverse order.
      * In one word: an sentbox.
      */
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder;
+    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant);
 
     /**
      * Finds not deleted threads from a participant,
@@ -62,7 +61,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * Finds deleted threads from a participant,
      * ordered by last message date.
      */
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder;
+    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant);
 
     /**
      * Finds deleted threads from a participant,
@@ -75,7 +74,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
      * matching the given search term
      * ordered by last message not written by this participant in reverse order.
      */
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, string $search) : QueryBuilder;
+    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, string $search);
 
     /**
      * Finds not deleted threads for a participant,
@@ -87,7 +86,7 @@ interface ThreadManagerInterface extends ReadableManagerInterface
     /**
      * Gets threads created by a participant.
      */
-    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant) : QueryBuilder;
+    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant);
 
     /**
      * Gets threads created by a participant.
