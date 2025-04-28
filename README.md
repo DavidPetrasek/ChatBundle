@@ -1,14 +1,12 @@
-DEVELOPMENT IN PROGRESS !!
+DEVELOPMENT IN PROGRESS
 ================
-
-Almost no work done or untested:
-
-* Forms
-* Spam detection
-* MongoDb
-* Events
-* Docs (partial update)
-* Tests
+### TODO:
+- [ ] MongoDb
+- [ ] Events
+- [ ] Forms
+- [ ] Spam detection
+- [ ] Documentation
+- [ ] Tests
 
 ##
 
@@ -18,9 +16,9 @@ FOSChatBundle
 
 This bundle provides chat features for a Symfony application. Features available include:
 
-- Support for both the Doctrine ORM and ODM (not yet) for message storage
+- Support for both the Doctrine ORM and ODM for message storage
 - Threaded conversations
-- Spam detection support (not yet)
+- Spam detection support
 - Soft deletion of threads and messages
 - Permissions for messaging
 
