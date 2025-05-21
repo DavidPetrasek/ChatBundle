@@ -60,6 +60,17 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
+    public function getNbParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    {
+        $builder = $this->getParticipantThreadsQueryBuilder($participant);
+
+        return $builder
+            ->select('count(t.id)');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')

@@ -26,6 +26,11 @@ interface ThreadManagerInterface extends ReadableManagerInterface
     public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant);
 
     /**
+     * Finds in how many threads a participant is involved.
+     */
+    public function getNbParticipantThreadsQueryBuilder(ParticipantInterface $participant);
+
+    /**
      * Finds not deleted threads for a participant,
      * containing at least one message not written by this participant,
      * ordered by last message not written by this participant in reverse order.
