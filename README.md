@@ -1,12 +1,5 @@
-DEVELOPMENT IN PROGRESS
+DEVELOPMENT IN PROGRESS --> SEE ISSUES
 ================
-### TODO:
-- [ ] MongoDb
-- [ ] Events
-- [ ] Forms
-- [ ] Spam detection
-- [ ] Documentation
-- [ ] Tests
 
 ##
 
