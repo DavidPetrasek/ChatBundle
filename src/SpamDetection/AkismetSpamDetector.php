@@ -2,7 +2,6 @@
 
 namespace FOS\ChatBundle\SpamDetection;
 
-use FOS\ChatBundle\FormModel\NewThreadMessage;
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Ornicar\AkismetBundle\Akismet\AkismetInterface;
 
@@ -18,7 +17,7 @@ class AkismetSpamDetector implements SpamDetectorInterface
     /**
      * {@inheritdoc}
      */
-    public function isSpam(NewThreadMessage $message): bool
+    public function isSpam($message): bool
     {
         return $this->akismet->isSpam([
             'comment_author' => (string) $this->participantProvider->getAuthenticatedParticipant(),

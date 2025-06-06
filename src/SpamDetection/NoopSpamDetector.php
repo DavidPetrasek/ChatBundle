@@ -2,14 +2,12 @@
 
 namespace FOS\ChatBundle\SpamDetection;
 
-use FOS\ChatBundle\FormModel\NewThreadMessage;
-
 class NoopSpamDetector implements SpamDetectorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function isSpam(NewThreadMessage $message): bool
+    public function isSpam($message): bool
     {
         return false;
     }

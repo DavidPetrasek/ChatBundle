@@ -8,7 +8,6 @@ use FOS\ChatBundle\Tests\Functional\Entity\Thread;
 use FOS\ChatBundle\Tests\Functional\Entity\UserProvider;
 use FOS\ChatBundle\Tests\Functional\EntityManager\MessageManager;
 use FOS\ChatBundle\Tests\Functional\EntityManager\ThreadManager;
-use FOS\ChatBundle\Tests\Functional\Form\UserToUsernameTransformer;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;

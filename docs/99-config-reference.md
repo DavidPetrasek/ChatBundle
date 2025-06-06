@@ -22,19 +22,4 @@ fos_chat:
     deleter:                fos_chat.deleter                 # See Deleter\DeleterInterface
     spam_detector:          fos_chat.noop_spam_detector      # See SpamDetection\SpamDetectorInterface
     twig_extension:         fos_chat.twig_extension          # See Twig\Extension\MessageExtension
-    user_transformer:       fos_user.user_transformer           # See Symfony\Component\Form\DataTransformerInterface
-    search:
-        finder:             fos_chat.search_finder           # See Finder\FinderInterface
-        query_factory:      fos_chat.search_query_factory    # See Finder\QueryFactoryInterface
-        query_parameter:    'q'                                     # Request query parameter containing the term
-    new_thread_form:
-        factory:            fos_chat.new_thread_form.factory # See FormFactory\NewThreadMessageFormFactory
-        type:               FOS\ChatBundle\FormType\NewThreadMessageFormType
-        handler:            fos_chat.new_thread_form.handler # See FormHandler\NewThreadMessageFormHandler
-        name:               message
-    reply_form:
-        factory:            fos_chat.reply_form.factory      # See FormFactory\ReplyMessageFormFactory
-        type:               FOS\ChatBundle\FormType\ReplyMessageFormType
-        handler:            fos_chat.reply_form.handler      # See FormHandler\ReplyMessageFormHandler
-        name:               message
 ```

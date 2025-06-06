@@ -1,14 +1,6 @@
 Sending a message programatically
 =================================
 
-This bundle comes with a set of forms that already should make it easy for your
-users to start sending messages to one another. Sometimes however you want to be
-able to send a message from your code without any form being involved.
-
-- A welcome message
-- A message thread for a team that was just created
-- A service notification message
-
 Composing a message
 -------------------
 
