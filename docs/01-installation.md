@@ -46,20 +46,7 @@ We provide examples for both Mongo DB and ORM.
 - [Example entities for Doctrine ORM][]
 - [Example documents for Doctrine ODM][]
 
-
-### Step 4 - Import the bundle routing
-
-Add FOSChatBundle's routing to your application with an optional routing prefix.
-
-```yaml
-# app/config/routing.yml
-
-fos_chat:
-    resource: "@FOSChatBundle/Resources/config/routing.xml"
-    prefix: /optional_routing_prefix
-```
-
-### Step 5 - Check templating
+### Step 4 - Check templating
 
 Make sure to add this to `framwork.yaml` (and check twig is installed) if you run into the non-existant service `templating` issue:
 

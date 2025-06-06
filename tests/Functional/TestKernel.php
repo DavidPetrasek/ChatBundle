@@ -42,14 +42,6 @@ class TestKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    private function configureRoutes(RouteCollectionBuilder $routes)
-    {
-        $routes->import('@FOSChatBundle/Resources/config/routing.xml');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     private function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
         $c->loadFromExtension('framework', [
