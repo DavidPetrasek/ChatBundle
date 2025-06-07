@@ -3,10 +3,6 @@ Setting up FOSChatBundle
 
 ### Step 1 - Requirements and Installing the bundle
 
-> **Note** FOSChatBundle by default has a requirement for FOSUserBundle for some of its
-> interfaces which can be swapped out if you're not using FOSUserBundle. See
-> [Using other UserBundles][] for more information.
-
 The first step is to tell composer that you want to download FOSChatBundle which can
 be achieved by typing the following at the command prompt:
 
@@ -45,16 +41,6 @@ We provide examples for both Mongo DB and ORM.
 
 - [Example entities for Doctrine ORM][]
 - [Example documents for Doctrine ODM][]
-
-### Step 4 - Check templating
-
-Make sure to add this to `framwork.yaml` (and check twig is installed) if you run into the non-existant service `templating` issue:
-
-```yaml
-templating:
-    engines:
-        twig
-```
 
 
 ## Installation Finished

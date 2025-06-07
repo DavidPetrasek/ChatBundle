@@ -13,9 +13,10 @@ class FOSChatBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-                ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('thread_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('message_class')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('thread_class')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('message_class')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('spam_detector')->defaultNull()->end()
             ->end()
         ;
     }
@@ -36,5 +37,11 @@ class FOSChatBundle extends AbstractBundle
             ;
 
         $container->import('../config/'.$config['db_driver'].'.php');
+
+        // Load one of default spam detectors
+        if (in_array(strtolower((string) $config['spam_detector']), ['akismet'])) 
+        {
+            $container->import('../config/spam_detector/'.$config['spam_detector'].'.php');
+        }
     }
 }
