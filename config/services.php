@@ -5,7 +5,6 @@ use FOS\ChatBundle\Composer\Composer;
 use FOS\ChatBundle\Provider\Provider;
 use FOS\ChatBundle\Reader\Reader;
 use FOS\ChatBundle\Security\Authorizer;
-use FOS\ChatBundle\Security\ParticipantProvider;
 use FOS\ChatBundle\Sender\Sender;
 
 
@@ -43,7 +42,6 @@ return function(ContainerConfigurator $container): void
             service('fos_chat.thread_manager'),
             service('event_dispatcher')
         ])
-            // ->alias(Reader::class, 'fos_chat.thread_reader')
 
         ->set('fos_chat.message_reader', Reader::class)
         ->args([
@@ -51,16 +49,10 @@ return function(ContainerConfigurator $container): void
             service('fos_chat.message_manager'),
             service('event_dispatcher')
         ])
-            // ->alias(Reader::class, 'fos_chat.message_reader')
 
         ->set('fos_chat.authorizer', Authorizer::class)
         ->args([
             service('fos_chat.participant_provider')
-        ])
-
-        ->set('fos_chat.participant_provider', ParticipantProvider::class)
-        ->args([
-            service('security.helper')
         ])
     ;
 }; 

@@ -10,8 +10,10 @@ This is probably all you will need in many cases.
 To compose a message we retrieve the composer service and compose our message:
 
 ```php
-$sender = $this->get('security.context')->getToken()->getUser();
-$threadBuilder = $this->get('fos_chat.composer')->newThread();
+/** @var Symfony\Bundle\SecurityBundle\Security $security  */
+$sender = $security->getUser();
+/** @var FOS\ChatBundle\Composer\Composer $chatComposer  */
+$threadBuilder = $chatComposer->newThread();
 $threadBuilder
     ->addRecipient($recipient) // Retrieved from your backend, your user manager or ...
     ->setSender($sender)
@@ -25,7 +27,7 @@ Sending a message
 Now all you have to do to send your message is get the sender and tell it to send
 
 ```php
-$sender = $this->get('fos_chat.sender');
+/** @var FOS\ChatBundle\Sender\Sender $sender  */
 $sender->send($threadBuilder->getMessage());
 ```
 

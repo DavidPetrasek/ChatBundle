@@ -4,7 +4,7 @@ Spam detection
 Using Akismet
 -------------
 
-Install AkismetBundle (https://github.com/ornicar/OrnicarAkismetBundle).
+Install AkismetBundle (https://github.com/ornicar/OrnicarAkismetBundle). #TODO: replace with up to date bundle
 
 Then, set the spam detector service accordingly:
 
@@ -12,10 +12,10 @@ Then, set the spam detector service accordingly:
 # app/config/config.yml
 
 fos_chat:
-    spam_detector: fos_chat.akismet_spam_detector
+    spam_detector: akismet
 ```
 
-Other strategies
+Custom implementation
 ----------------
 
 You can use any spam detector service, including one of your own, provided the

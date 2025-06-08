@@ -1,16 +1,18 @@
 Configuration Reference
 =======================
 
-All configuration options are listed below:
+All configuration options with default values. Possible values are commented out:
 
 ```yaml
 # app/config/config.yml
 
 fos_chat:
-    db_driver:              orm
-    thread_class:           App\Entity\Thread
-    message_class:          App\Entity\Message
-    participant_provider:   fos_chat.participant_provider    # See Security\ParticipantProviderInterface
-    authorizer:             fos_chat.authorizer              # See Security\AuthorizerInterface
-    spam_detector:          fos_chat.akismet_spam_detector   # See SpamDetection\SpamDetectorInterface
+    # Required 
+    db_driver:      # orm | mongodb
+    thread_class:   # custom FQCN
+    message_class:  # custom FQCN
+
+    # Optional
+    spam_detector:                                       # akismet | custom FQCN or service id
+    participant_provider: fos_chat.participant_provider  # custom FQCN or service id
 ```
