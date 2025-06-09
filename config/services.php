@@ -42,6 +42,7 @@ return function(ContainerConfigurator $container): void
             service('fos_chat.thread_manager'),
             service('event_dispatcher')
         ])
+        ->alias(Reader::class, 'fos_chat.thread_reader')
 
         ->set('fos_chat.message_reader', Reader::class)
         ->args([
@@ -49,6 +50,7 @@ return function(ContainerConfigurator $container): void
             service('fos_chat.message_manager'),
             service('event_dispatcher')
         ])
+        ->alias(Reader::class, 'fos_chat.message_reader')
 
         ->set('fos_chat.authorizer', Authorizer::class)
         ->args([
