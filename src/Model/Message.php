@@ -173,6 +173,7 @@ abstract class Message implements MessageInterface
         }
 
         $meta->setIsRead($isRead);
+        $meta->setReadAt($isRead ? new \DateTimeImmutable() : null);
 
         return $this;
     }
