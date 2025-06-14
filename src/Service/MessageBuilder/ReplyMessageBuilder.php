@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\MessageBuilder;
+namespace FOS\ChatBundle\Service\MessageBuilder;
 
 /**
  * Fluent interface message builder for reply to a thread.

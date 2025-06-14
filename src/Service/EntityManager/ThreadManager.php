@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\EntityManager;
+namespace FOS\ChatBundle\Service\EntityManager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -8,7 +8,7 @@ use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
-use FOS\ChatBundle\EntityManager\MessageManager;
+use FOS\ChatBundle\Service\EntityManager\MessageManager;
 
 /**
  * Default ORM ThreadManager.

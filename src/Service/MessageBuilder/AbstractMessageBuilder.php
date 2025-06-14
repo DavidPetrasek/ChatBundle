@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\MessageBuilder;
+namespace FOS\ChatBundle\Service\MessageBuilder;
 
 use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;

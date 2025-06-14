@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\Provider;
+namespace FOS\ChatBundle\Service\Provider;
 
 use FOS\ChatBundle\Model\ThreadInterface;
 

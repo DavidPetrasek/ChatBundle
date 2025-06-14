@@ -2,7 +2,7 @@
 
 namespace FOS\ChatBundle\Validator;
 
-use FOS\ChatBundle\SpamDetection\SpamDetectorInterface;
+use FOS\ChatBundle\Service\SpamDetection\SpamDetectorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

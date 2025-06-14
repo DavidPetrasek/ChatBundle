@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\Reader;
+namespace FOS\ChatBundle\Service\Reader;
 
 use FOS\ChatBundle\Event\FOSMessageEvents;
 use FOS\ChatBundle\Event\ReadableEvent;

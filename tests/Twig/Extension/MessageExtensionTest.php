@@ -27,7 +27,7 @@ class MessageExtensionTest extends TestCase
     public function setUpBeforeTest(): void
     {
         $this->participantProvider = $this->getMockBuilder(\FOS\ChatBundle\Security\ParticipantProviderInterface::class)->getMock();
-        $this->provider = $this->getMockBuilder(\FOS\ChatBundle\Provider\ProviderInterface::class)->getMock();
+        $this->provider = $this->getMockBuilder(\FOS\ChatBundle\Service\Provider\ProviderInterface::class)->getMock();
         $this->authorizer = $this->getMockBuilder(\FOS\ChatBundle\Security\AuthorizerInterface::class)->getMock();
         $this->participant = $this->getMockBuilder(\FOS\ChatBundle\Model\ParticipantInterface::class)->getMock();
         $this->extension = new MessageExtension($this->participantProvider, $this->provider, $this->authorizer);

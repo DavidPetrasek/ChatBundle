@@ -1,8 +1,7 @@
 <?php
+namespace FOS\ChatBundle\Service\Composer;
 
-namespace FOS\ChatBundle\Composer;
-
-use FOS\ChatBundle\MessageBuilder\AbstractMessageBuilder;
+use FOS\ChatBundle\Service\MessageBuilder\AbstractMessageBuilder;
 use FOS\ChatBundle\Model\ThreadInterface;
 
 /**

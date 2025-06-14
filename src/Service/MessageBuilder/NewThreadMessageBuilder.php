@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\MessageBuilder;
+namespace FOS\ChatBundle\Service\MessageBuilder;
 
 use Doctrine\Common\Collections\Collection;
 use FOS\ChatBundle\Model\ParticipantInterface;

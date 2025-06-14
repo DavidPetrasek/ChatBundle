@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\Reader;
+namespace FOS\ChatBundle\Service\Reader;
 
 use FOS\ChatBundle\Model\ReadableInterface;
 

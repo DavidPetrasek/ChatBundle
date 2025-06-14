@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\Sender;
+namespace FOS\ChatBundle\Service\Sender;
 
 use FOS\ChatBundle\Event\FOSMessageEvents;
 use FOS\ChatBundle\Event\MessageEvent;

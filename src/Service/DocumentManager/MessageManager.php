@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\DocumentManager;
+namespace FOS\ChatBundle\Service\DocumentManager;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;

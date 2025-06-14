@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\SpamDetection;
+namespace FOS\ChatBundle\Service\SpamDetection;
 
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Ornicar\AkismetBundle\Akismet\AkismetInterface;

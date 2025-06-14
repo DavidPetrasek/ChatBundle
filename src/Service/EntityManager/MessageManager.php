@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\EntityManager;
+namespace FOS\ChatBundle\Service\EntityManager;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;

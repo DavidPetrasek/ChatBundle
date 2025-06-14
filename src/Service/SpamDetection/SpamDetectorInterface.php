@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\SpamDetection;
+namespace FOS\ChatBundle\Service\SpamDetection;
 
 /**
  * Tells whether or not a new message looks like spam.

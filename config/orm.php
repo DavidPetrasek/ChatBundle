@@ -1,8 +1,8 @@
 <?php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use FOS\ChatBundle\EntityManager\MessageManager;
-use FOS\ChatBundle\EntityManager\ThreadManager;
+use FOS\ChatBundle\Service\EntityManager\MessageManager;
+use FOS\ChatBundle\Service\EntityManager\ThreadManager;
 
 return function(ContainerConfigurator $container): void 
 {

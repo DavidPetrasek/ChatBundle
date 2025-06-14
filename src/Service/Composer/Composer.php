@@ -1,9 +1,9 @@
 <?php
 
-namespace FOS\ChatBundle\Composer;
+namespace FOS\ChatBundle\Service\Composer;
 
-use FOS\ChatBundle\MessageBuilder\NewThreadMessageBuilder;
-use FOS\ChatBundle\MessageBuilder\ReplyMessageBuilder;
+use FOS\ChatBundle\Service\MessageBuilder\NewThreadMessageBuilder;
+use FOS\ChatBundle\Service\MessageBuilder\ReplyMessageBuilder;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\ModelManager\MessageManagerInterface;
 use FOS\ChatBundle\ModelManager\ThreadManagerInterface;

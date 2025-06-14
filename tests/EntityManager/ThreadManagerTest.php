@@ -2,7 +2,7 @@
 
 namespace FOS\ChatBundle\Tests\EntityManager;
 
-use FOS\ChatBundle\EntityManager\ThreadManager;
+use FOS\ChatBundle\Service\EntityManager\ThreadManager;
 use FOS\ChatBundle\Model\ThreadInterface;
 use PHPUnit\Framework\TestCase;
 

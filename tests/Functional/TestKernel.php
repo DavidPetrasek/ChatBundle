@@ -68,7 +68,6 @@ class TestKernel extends Kernel
             'message_class' => Message::class,
         ]);
 
-        $c->register('fos_user.user_to_username_transformer', UserToUsernameTransformer::class);
         $c->register('app.user_provider', UserProvider::class);
         $c->addCompilerPass(new RegisteringManagersPass());
     }

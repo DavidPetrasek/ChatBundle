@@ -6,7 +6,7 @@ use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
-use FOS\ChatBundle\Provider\ProviderInterface;
+use FOS\ChatBundle\Service\Provider\ProviderInterface;
 use FOS\ChatBundle\Security\AuthorizerInterface;
 use FOS\ChatBundle\Security\ParticipantProviderInterface;
 use Twig\Extension\AbstractExtension;

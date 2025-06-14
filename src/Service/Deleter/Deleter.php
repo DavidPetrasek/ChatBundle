@@ -1,6 +1,6 @@
 <?php
 
-namespace FOS\ChatBundle\Deleter;
+namespace FOS\ChatBundle\Service\Deleter;
 
 use FOS\ChatBundle\Event\FOSMessageEvents;
 use FOS\ChatBundle\Event\ReadableEvent;

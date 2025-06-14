@@ -1,7 +1,7 @@
 <?php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use FOS\ChatBundle\SpamDetection\AkismetSpamDetector;
+use FOS\ChatBundle\Service\SpamDetection\AkismetSpamDetector;
 
 
 return function(ContainerConfigurator $container): void 

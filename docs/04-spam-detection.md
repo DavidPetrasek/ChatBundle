@@ -19,6 +19,6 @@ Custom implementation
 ----------------
 
 You can use any spam detector service, including one of your own, provided the
-class implements ``FOS\ChatBundle\SpamDetection\SpamDetectorInterface``.
+class implements ``FOS\ChatBundle\Service\SpamDetection\SpamDetectorInterface``.
 
 [Return to the documentation index](00-index.md)

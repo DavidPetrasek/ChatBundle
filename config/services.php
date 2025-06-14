@@ -1,11 +1,11 @@
 <?php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use FOS\ChatBundle\Composer\Composer;
-use FOS\ChatBundle\Provider\Provider;
-use FOS\ChatBundle\Reader\Reader;
+use FOS\ChatBundle\Service\Composer\Composer;
+use FOS\ChatBundle\Service\Provider\Provider;
+use FOS\ChatBundle\Service\Reader\Reader;
 use FOS\ChatBundle\Security\Authorizer;
-use FOS\ChatBundle\Sender\Sender;
+use FOS\ChatBundle\Service\Sender\Sender;
 
 
 return function(ContainerConfigurator $container): void 
