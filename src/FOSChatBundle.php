@@ -54,7 +54,7 @@ class FOSChatBundle extends AbstractBundle
         // or set an alias for a custom registered spam detector service
         else if (!is_null($config['spam_detector']))
         {
-            $builder->setAlias('fos_chat.spam_detector', $config['spam_detector'])->setPublic(true);
+            $builder->setAlias('fos_chat.spam_detector', $config['spam_detector']);
         }
         
         // Register default participant provider
