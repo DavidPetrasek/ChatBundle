@@ -9,7 +9,7 @@ Install AkismetBundle (https://github.com/ornicar/OrnicarAkismetBundle).
 Then, set the spam detector service accordingly:
 
 ```yaml
-# app/config/config.yml
+# config/packages/fos_chat.yaml
 
 fos_chat:
     spam_detector: akismet

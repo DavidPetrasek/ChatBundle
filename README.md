@@ -31,4 +31,4 @@ This bundle provides chat features for a Symfony application. Features available
 Documentation
 -------------
 
-https://github.com/FriendsOfSymfony/FOSChatBundle/blob/master/docs/00-index.md (or check docs folder)
+https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md

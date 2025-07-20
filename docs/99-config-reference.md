@@ -4,7 +4,7 @@ Configuration Reference
 All configuration options with default values. Possible values are commented out:
 
 ```yaml
-# app/config/config.yml
+# config/packages/fos_chat.yaml
 
 fos_chat:
     # Required 

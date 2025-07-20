@@ -7,10 +7,10 @@ ORM.
 Given the examples below with their namespaces and class names, you need to configure
 FOSChatBundle to tell them about these classes.
 
-Add the following to your `app/config/config.yml` file.
+Add the following to your `config/packages/fos_chat.yaml` file.
 
 ```yaml
-# app/config/config.yml
+# config/packages/fos_chat.yaml
 
 fos_chat:
     db_driver: orm

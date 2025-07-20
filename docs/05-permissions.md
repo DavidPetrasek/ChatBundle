@@ -8,7 +8,7 @@ You can implement your own permissions service to replace the built in service a
 FOSChatBundle about it:
 
 ```yaml
-# app/config/config.yml
+# config/packages/fos_chat.yaml
 
 fos_chat:
     authorizer: app.authorizer

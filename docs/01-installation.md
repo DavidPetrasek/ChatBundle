@@ -1,10 +1,9 @@
+[Return to index][].
+
 Setting up FOSChatBundle
 ===========================
 
-### Step 1 - Requirements and Installing the bundle
-
-The first step is to tell composer that you want to download FOSChatBundle which can
-be achieved by typing the following at the command prompt:
+### Step 1
 
 ```bash
 composer require friendsofsymfony/chat-bundle
@@ -43,12 +42,7 @@ We provide examples for both Mongo DB and ORM.
 - [Example documents for Doctrine ODM][]
 
 
-## Installation Finished
-
-At this point, the bundle has been installed and configured and should be ready for use.
-You can continue reading documentation by returning to the [index][].
-
 [Example entities for Doctrine ORM]: 01a-orm-models.md
 [Example documents for Doctrine ODM]: 01b-odm-models.md
-[index]: 00-index.md
+[Return to index]: 00-index.md
 [Using other UserBundles]: 99-using-other-user-bundles.md
