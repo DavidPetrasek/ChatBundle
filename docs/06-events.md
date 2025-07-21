@@ -1,3 +1,5 @@
+[Back to index](00-index.md)
+
 FOSChatBundle Events
 =======================
 
@@ -46,5 +48,3 @@ final class FOSMessageEvents
     const string POST_UNREAD = 'fos_chat.post_unread';
 }
 ```
-
-[Return to the documentation index](00-index.md)

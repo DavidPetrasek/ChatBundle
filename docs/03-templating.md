@@ -1,3 +1,5 @@
+[Back to index](00-index.md)
+
 Templating Helpers for FOSChatBundle
 =======================================
 
@@ -15,5 +17,3 @@ MessageBundle provides a few twig functions:
 {# Get the number of new threads for the authenticated participant #}
 You have {{ fos_chat_nb_unread() }} new messages
 ```
-
-[Return to the documentation index](00-index.md)

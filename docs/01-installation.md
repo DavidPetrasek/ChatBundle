@@ -1,4 +1,4 @@
-[Return to index][].
+[Back to index](00-index.md)
 
 Setting up FOSChatBundle
 ===========================
@@ -44,5 +44,4 @@ We provide examples for both Mongo DB and ORM.
 
 [Example entities for Doctrine ORM]: 01a-orm-models.md
 [Example documents for Doctrine ODM]: 01b-odm-models.md
-[Return to index]: 00-index.md
 [Using other UserBundles]: 99-using-other-user-bundles.md

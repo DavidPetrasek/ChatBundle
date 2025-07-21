@@ -3,8 +3,6 @@ Getting started with FOSChatBundle
 
 ## Installation
 
-Installation of FOSChatBundle is handled through composer.
-
 [See the installation instructions](01-installation.md)
 
 [See the configuration Reference](99-config-reference.md)

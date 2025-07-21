@@ -1,3 +1,5 @@
+[Back to index](00-index.md)
+
 Messaging permissions
 ======================
 
@@ -15,5 +17,3 @@ fos_chat:
 ```
 
 Any such service must implement `FOS\ChatBundle\Security\AuthorizerInterface`.
-
-[Return to the documentation index](00-index.md)

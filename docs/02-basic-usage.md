@@ -1,3 +1,5 @@
+[Back to index](00-index.md)
+
 Basic Usage of FOSChatBundle
 ===============================
 
@@ -118,5 +120,3 @@ $provider->getNbUnreadMessages();
 ```
 
 Will return an integer, the number of unread messages.
-
-[Return to the documentation index](00-index.md)
