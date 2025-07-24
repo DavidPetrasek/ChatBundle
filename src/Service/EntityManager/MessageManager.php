@@ -78,7 +78,7 @@ class MessageManager extends BaseMessageManager
             ->setParameter('sender', $participant)
 
             ->andWhere('mm.isRead = :isRead')
-            ->setParameter('isRead', false, \PDO::PARAM_BOOL);
+            ->setParameter('isRead', false, Types::BOOLEAN);
     }
 
     /**
@@ -203,7 +203,7 @@ class MessageManager extends BaseMessageManager
         $this->em->createQueryBuilder()
             ->update($this->metaClass, 'm')
             ->set('m.isRead', '?1')
-            ->setParameter(1, $isRead, \PDO::PARAM_BOOL)
+            ->setParameter(1, $isRead, Types::BOOLEAN)
 
             ->set('m.readAt', '?2')
             ->setParameter(2, $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)

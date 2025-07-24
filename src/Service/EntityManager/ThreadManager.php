@@ -2,6 +2,7 @@
 
 namespace FOS\ChatBundle\Service\EntityManager;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use FOS\ChatBundle\Model\ParticipantInterface;
@@ -83,11 +84,11 @@ class ThreadManager extends BaseThreadManager
 
             // the thread does not contain spam or flood
             ->andWhere('t.isSpam = :isSpam')
-            ->setParameter('isSpam', false, \PDO::PARAM_BOOL)
+            ->setParameter('isSpam', false, Types::BOOLEAN)
 
             // the thread is not deleted by this participant
             ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', false, \PDO::PARAM_BOOL)
+            ->setParameter('isDeleted', false, Types::BOOLEAN)
 
             // there is at least one message written by an other participant
             ->andWhere('tm.lastMessageDate IS NOT NULL')
@@ -122,11 +123,11 @@ class ThreadManager extends BaseThreadManager
 
             // the thread does not contain spam or flood
             ->andWhere('t.isSpam = :isSpam')
-            ->setParameter('isSpam', false, \PDO::PARAM_BOOL)
+            ->setParameter('isSpam', false, Types::BOOLEAN)
 
             // the thread is not deleted by this participant
             ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', false, \PDO::PARAM_BOOL)
+            ->setParameter('isDeleted', false, Types::BOOLEAN)
 
             // there is at least one message written by this participant
             ->andWhere('tm.lastParticipantMessageDate IS NOT NULL')
@@ -161,7 +162,7 @@ class ThreadManager extends BaseThreadManager
 
             // the thread is deleted by this participant
             ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', true, \PDO::PARAM_BOOL)
+            ->setParameter('isDeleted', true, Types::BOOLEAN)
 
             // sort by date of last message
             ->orderBy('tm.lastMessageDate', 'DESC')
