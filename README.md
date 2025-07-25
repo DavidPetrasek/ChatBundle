@@ -1,20 +1,3 @@
-BUNDLE WORKS, BUT IT'S STILL UNDER DEVELOPMENT (SEE ISSUES)
-================
-## How to test
-- You might need to fork this repo before and then swap the url bellow
-1) Add the following to your composer.json:
-```json
-"repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:DavidPetrasek/ChatBundle.git"
-        }
-    ]
-```
-2) Run: `composer require davidpetrasek/chat-bundle @dev`
-##
-
-
 FOSChatBundle
 ================
 
@@ -32,3 +15,21 @@ Documentation
 -------------
 
 https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
+
+
+
+BUNDLE WORKS, BUT IT'S STILL UNDER DEVELOPMENT (SEE ISSUES)
+================
+## How to test
+- You might need to fork this repo before and then swap the url bellow
+1) Add the following to your composer.json:
+```json
+"repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:DavidPetrasek/ChatBundle.git"
+        }
+    ]
+```
+2) Run: `composer require davidpetrasek/chat-bundle @dev`
+##
