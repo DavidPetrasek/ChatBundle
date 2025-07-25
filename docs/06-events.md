@@ -1,10 +1,7 @@
 [Back to index](00-index.md)
 
-FOSChatBundle Events
-=======================
-
-FOSChatBundle will dispatch events inside the Symfony2 `EventDispatcher` which allows
-you to write listeners to modify or augment behaviour of the MessageBundle process.
+Events
+======
 
 You can see definitions and explanations of each event as defined in `Event\FOSMessageEvents`:
 

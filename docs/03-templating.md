@@ -1,7 +1,7 @@
 [Back to index](00-index.md)
 
-Templating Helpers for FOSChatBundle
-=======================================
+Templating Helpers
+==================
 
 MessageBundle provides a few twig functions:
 

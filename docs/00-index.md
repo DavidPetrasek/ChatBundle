@@ -1,9 +1,16 @@
 Getting started with FOSChatBundle
-=====================================
+===================================
 
 ## Installation
 
-[See the installation instructions](01-installation.md)
+```bash
+composer require friendsofsymfony/chat-bundle
+```
+
+Finish installation with:
+```bash
+symfony console fos_chat:configure
+```
 
 [See the configuration Reference](99-config-reference.md)
 
@@ -16,4 +23,4 @@ Below is a collection of documentation on how to use and interact with FOSChatBu
 - [Templating](03-templating.md)
 - [Spam Detection](04-spam-detection.md)
 - [Permissions](05-permissions.md)
-- [Bundle Events](06-events.md)
+- [Events](06-events.md)

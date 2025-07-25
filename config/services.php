@@ -1,6 +1,8 @@
 <?php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use FOS\ChatBundle\Command\ConfigureCommand;
+use FOS\ChatBundle\Maker\Entities;
 use FOS\ChatBundle\Service\Composer\Composer;
 use FOS\ChatBundle\Service\Provider\Provider;
 use FOS\ChatBundle\Service\Reader\Reader;
@@ -11,6 +13,16 @@ use FOS\ChatBundle\Service\Sender\Sender;
 return function(ContainerConfigurator $container): void 
 {
     $container->services()
+
+         ->set(ConfigureCommand::class)
+            ->args([
+                param('kernel.project_dir'),
+            ])
+            ->tag('console.command')
+
+        ->set(Entities::class)
+            ->tag('maker.command')
+
 
         ->set('fos_chat.provider', Provider::class)
             ->args([

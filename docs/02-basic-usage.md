@@ -1,10 +1,7 @@
 [Back to index](00-index.md)
 
-Basic Usage of FOSChatBundle
-===============================
-
-Basic operations involving FOSChatBundle can be seen in the
-`Controller/MessageController` file.
+Basic Usage
+===========
 
 Get user threads
 ----------------

@@ -25,11 +25,14 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.2",
+        "symfony/console": ">=7.0",
         "symfony/framework-bundle": ">=7.0",
         "symfony/form": ">=7.0",
+        "symfony/maker-bundle": ">=1.63.0",
         "symfony/security-bundle": ">=7.0",
+        "symfony/string": ">=7.0",
         "symfony/twig-bundle": ">=7.0",
-        "doctrine/orm": "^3.3"
+        "doctrine/orm": ">=3.3"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "^2.13.2",

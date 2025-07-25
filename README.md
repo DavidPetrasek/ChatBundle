@@ -1,4 +1,4 @@
-DEVELOPMENT IN PROGRESS --> SEE ISSUES
+BUNDLE WORKS, BUT IT'S STILL IN DEVELOPMENT (SEE ISSUES)
 ================
 ## How to test
 - You might need to fork this repo before and then swap the url bellow
