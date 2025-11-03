@@ -45,4 +45,14 @@ interface MessageInterface extends ReadableInterface
      * Sets the message as deleted or not deleted for all recipients including the sender.
      */
     public function setIsDeleted(bool $isDeleted);
+
+    /**
+     * Sets whether this message was sent by the system and not by a real user
+     */
+    public function setAutomaticReply(bool $automatic_reply);
+
+    /**
+     * Tells if this message was sent by the system and not by a real user
+     */
+    public function isAutomaticReply(): bool;
 }

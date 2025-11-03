@@ -21,7 +21,6 @@ abstract class MessageMetadata
     protected ?\DateTimeImmutable $deletedAt = null;
 
 
-    
     public function getParticipant() : ParticipantInterface
     {
         return $this->participant;

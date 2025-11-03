@@ -10,6 +10,12 @@
 
         <field name="createdAt" column="created_at" type="datetime_immutable" />
 
+        <field name="automatic_reply" column="automatic_reply" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
         <!-- <many-to-one field="sender" target-entity="MyProject\UserBundle\Entity\User" /> -->
 
         <!-- <many-to-one field="thread" target-entity="MyProject\MessageBundle\Entity\Thread">

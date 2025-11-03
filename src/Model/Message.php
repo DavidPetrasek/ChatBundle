@@ -21,6 +21,11 @@ abstract class Message implements MessageInterface
     protected ?int $id = null;
 
     /**
+     * Thread the message belongs to.
+     */
+    protected ThreadInterface $thread;
+
+    /**
      * User who sent the message.
      */
     protected ParticipantInterface $sender;
@@ -36,14 +41,15 @@ abstract class Message implements MessageInterface
     protected \DateTimeImmutable $createdAt;
 
     /**
-     * Thread the message belongs to.
+     * Whether this message was sent by the system and not by a real user
      */
-    protected ThreadInterface $thread;
+    protected bool $automatic_reply = false;
 
     /**
      * Collection of MessageMetadata.
      */
     protected Collection $metadata;
+
 
     public function __construct()
     {
@@ -216,6 +222,24 @@ abstract class Message implements MessageInterface
             $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
         }
         
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAutomaticReply(): bool
+    {
+        return $this->automatic_reply;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAutomaticReply(bool $automatic_reply): self
+    {
+        $this->automatic_reply = $automatic_reply;
+
         return $this;
     }
 }
