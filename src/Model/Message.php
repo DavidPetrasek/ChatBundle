@@ -163,7 +163,7 @@ abstract class Message implements MessageInterface
     public function isReadByParticipant(ParticipantInterface $participant): bool
     {
         if (($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
-            return $meta->getIsRead();
+            return $meta->isRead();
         }
 
         return false;
@@ -172,14 +172,14 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead): self
+    public function setReadByParticipant(ParticipantInterface $participant, $read): self
     {
         if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
         }
 
-        $meta->setIsRead($isRead);
-        $meta->setReadAt($isRead ? new \DateTimeImmutable() : null);
+        $meta->setRead($read);
+        $meta->setReadAt($read ? new \DateTimeImmutable() : null);
 
         return $this;
     }
@@ -190,7 +190,7 @@ abstract class Message implements MessageInterface
     public function isDeletedByParticipant(ParticipantInterface $participant): bool
     {
         if (($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
-            return $meta->getIsDeleted();
+            return $meta->isDeleted();
         }
 
         return false;
@@ -199,14 +199,14 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsDeletedByParticipant(ParticipantInterface $participant, $isDeleted): self
+    public function setDeletedByParticipant(ParticipantInterface $participant, $deleted): self
     {
         if (!($meta = $this->getMetadataForParticipant($participant)) instanceof MessageMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
         }
 
-        $meta->setIsDeleted($isDeleted);
-        $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+        $meta->setDeleted($deleted);
+        $meta->setDeletedAt($deleted ? new \DateTimeImmutable() : null);
 
         return $this;
     }
@@ -214,12 +214,12 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsDeleted($isDeleted): self
+    public function setDeleted($deleted): self
     {
         foreach ($this->metadata as $meta) 
         {
-            $meta->setIsDeleted($isDeleted);
-            $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+            $meta->setDeleted($deleted);
+            $meta->setDeletedAt($deleted ? new \DateTimeImmutable() : null);
         }
         
         return $this;

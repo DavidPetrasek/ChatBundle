@@ -28,12 +28,12 @@ class Sender implements SenderInterface
         $this->threadManager->saveThread($message->getThread(), false);
         $this->messageManager->saveMessage($message, false);
 
-        /* Note: Thread::setIsDeleted() depends on metadata existing for all
+        /* Note: Thread::setDeleted() depends on metadata existing for all
          * thread and message participants, so both objects must be saved first.
          * We can avoid flushing the object manager, since we must save once
          * again after undeleting the thread.
          */
-        $message->getThread()->setIsDeleted(false);
+        $message->getThread()->setDeleted(false);
         $this->messageManager->saveMessage($message);
 
         $this->dispatcher->dispatch(new MessageEvent($message), FOSMessageEvents::POST_SEND);

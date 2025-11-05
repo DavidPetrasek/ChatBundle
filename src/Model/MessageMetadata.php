@@ -6,14 +6,14 @@ abstract class MessageMetadata
 {
     protected ParticipantInterface $participant;
 
-    protected bool $isRead = false;
+    protected bool $read = false;
 
     /**
      * Date when the message was marked as read.
      */
     protected ?\DateTimeImmutable $readAt = null;
 
-    protected bool $isDeleted = false;
+    protected bool $deleted = false;
     
     /**
      * Date when the message was marked as deleted.
@@ -33,14 +33,14 @@ abstract class MessageMetadata
         return $this;
     }
 
-    public function getIsRead() : bool
+    public function isRead() : bool
     {
-        return $this->isRead;
+        return $this->read;
     }
 
-    public function setIsRead(bool $isRead): self
+    public function setRead(bool $read): self
     {
-        $this->isRead = $isRead;
+        $this->read = $read;
 
         return $this;
     }
@@ -58,14 +58,14 @@ abstract class MessageMetadata
     }
 
 
-    public function getIsDeleted() : bool
+    public function isDeleted() : bool
     {
-        return $this->isDeleted;
+        return $this->deleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): self
+    public function setDeleted(bool $deleted): self
     {
-        $this->isDeleted = $isDeleted;
+        $this->deleted = $deleted;
 
         return $this;
     }

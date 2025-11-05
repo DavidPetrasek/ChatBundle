@@ -49,7 +49,7 @@ class MessageManager extends BaseMessageManager
      */
     public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
-        $this->markIsReadByParticipant($readable, $participant, true);
+        $this->markReadByParticipant($readable, $participant, true);
     }
 
     /**
@@ -57,15 +57,15 @@ class MessageManager extends BaseMessageManager
      */
     public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
-        $this->markIsReadByParticipant($readable, $participant, false);
+        $this->markReadByParticipant($readable, $participant, false);
     }
 
     /**
      * Marks all messages of this thread as read by this participant.
      */
-    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $isRead): void
+    public function markReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $read): void
     {
-        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($thread): void {
+        $this->markReadByCondition($participant, $read, function (Builder $queryBuilder) use ($thread): void {
             $queryBuilder->field('thread.$id')->equals(new \MongoId($thread->getId()));
         });
     }
@@ -73,9 +73,9 @@ class MessageManager extends BaseMessageManager
     /**
      * Marks the message as read or unread by this participant.
      */
-    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead): void
+    private function markReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $read): void
     {
-        $this->markIsReadByCondition($participant, $isRead, function (Builder $queryBuilder) use ($message): void {
+        $this->markReadByCondition($participant, $read, function (Builder $queryBuilder) use ($message): void {
             $queryBuilder->field('_id')->equals(new \MongoId($message->getId()));
         });
     }
@@ -84,7 +84,7 @@ class MessageManager extends BaseMessageManager
      * Marks messages as read/unread
      * by updating directly the storage.
      */
-    private function markIsReadByCondition(ParticipantInterface $participant, bool $isRead, \Closure $condition): void
+    private function markReadByCondition(ParticipantInterface $participant, bool $read, \Closure $condition): void
     {
         $queryBuilder = $this->repository->createQueryBuilder();
         $condition($queryBuilder);
@@ -96,12 +96,12 @@ class MessageManager extends BaseMessageManager
          * true for the inverse. We should only add a participant ID to this
          * array if the message is not considered spam.
          */
-        if ($isRead) {
+        if ($read) {
             $queryBuilder->field('unreadForParticipants')->pull($participant->getId());
         }
 
         $queryBuilder
-            ->field('metadata.$.isRead')->set($isRead)
+            ->field('metadata.$.read')->set($read)
             ->getQuery(['multiple' => true])
             ->execute();
 
@@ -109,12 +109,12 @@ class MessageManager extends BaseMessageManager
          * the unreadForParticipants array if the message is not spam. This must
          * be done in a separate query, since the criteria is more selective.
          */
-        if (!$isRead) {
+        if (!$read) {
             $queryBuilder = $this->repository->createQueryBuilder();
             $condition($queryBuilder);
             $queryBuilder->update()
                 ->field('metadata.participant.$id')->equals(new \MongoId($participant->getId()))
-                ->field('isSpam')->equals(false)
+                ->field('spam')->equals(false)
                 ->field('unreadForParticipants')->addToSet($participant->getId())
                 ->getQuery(['multiple' => true])
                 ->execute();

@@ -8,9 +8,9 @@ abstract class Message extends BaseMessage
 {
     /**
      * Tells if the message is spam or flood
-     * This denormalizes Thread.isSpam.
+     * This denormalizes Thread.spam.
      */
-    protected bool $isSpam = false;
+    protected bool $spam = false;
 
     /**
      * The unreadForParticipants array will contain a participant's ID if the
@@ -18,9 +18,9 @@ abstract class Message extends BaseMessage
      */
     protected array $unreadForParticipants = [];
 
-    public function setIsSpam(bool $isSpam): self
+    public function setSpam(bool $spam): self
     {
-        $this->isSpam = $isSpam;
+        $this->spam = $spam;
 
         return $this;
     }
@@ -36,16 +36,16 @@ abstract class Message extends BaseMessage
      */
     public function denormalize(): void
     {
-        $this->doSenderIsRead();
+        $this->doSenderRead();
         $this->doEnsureUnreadForParticipantsArray();
     }
 
     /**
      * Ensures that the sender is considered to have read this message.
      */
-    protected function doSenderIsRead()
+    protected function doSenderRead()
     {
-        $this->setIsReadByParticipant($this->getSender(), true);
+        $this->setReadByParticipant($this->getSender(), true);
     }
 
     /**
@@ -55,12 +55,12 @@ abstract class Message extends BaseMessage
     {
         $this->unreadForParticipants = [];
 
-        if ($this->isSpam) {
+        if ($this->spam) {
             return;
         }
 
         foreach ($this->metadata as $metadata) {
-            if (!$metadata->getIsRead()) {
+            if (!$metadata->isRead()) {
                 $this->unreadForParticipants[] = $metadata->getParticipant()->getId();
             }
         }

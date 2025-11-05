@@ -29,11 +29,11 @@ class MessageManager extends BaseMessageManager
     {
     }
 
-    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, $isRead)
+    public function markReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, $read)
     {
     }
 
-    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, $isRead)
+    private function markReadByParticipant(MessageInterface $message, ParticipantInterface $participant, $read)
     {
     }
 

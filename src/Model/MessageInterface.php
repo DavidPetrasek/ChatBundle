@@ -44,7 +44,7 @@ interface MessageInterface extends ReadableInterface
     /**
      * Sets the message as deleted or not deleted for all recipients including the sender.
      */
-    public function setIsDeleted(bool $isDeleted);
+    public function setDeleted(bool $deleted);
 
     /**
      * Sets whether this message was sent by the system and not by a real user

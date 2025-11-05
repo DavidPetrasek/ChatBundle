@@ -33,23 +33,23 @@ class MessageExtensionTest extends TestCase
         $this->extension = new MessageExtension($this->participantProvider, $this->provider, $this->authorizer);
     }
 
-    public function testIsReadReturnsTrueWhenRead(): void
+    public function testReadReturnsTrueWhenRead(): void
     {
         $this->setUpBeforeTest();
 
         $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
         $readAble = $this->getMockBuilder(\FOS\ChatBundle\Model\ReadableInterface::class)->getMock();
-        $readAble->expects($this->once())->method('isReadByParticipant')->with($this->participant)->will($this->returnValue(true));
+        $readAble->expects($this->once())->method('readByParticipant')->with($this->participant)->will($this->returnValue(true));
         $this->assertTrue($this->extension->isRead($readAble));
     }
 
-    public function testIsReadReturnsFalseWhenNotRead(): void
+    public function testReadReturnsFalseWhenNotRead(): void
     {
         $this->setUpBeforeTest();
 
         $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
         $readAble = $this->getMockBuilder(\FOS\ChatBundle\Model\ReadableInterface::class)->getMock();
-        $readAble->expects($this->once())->method('isReadByParticipant')->with($this->participant)->will($this->returnValue(false));
+        $readAble->expects($this->once())->method('readByParticipant')->with($this->participant)->will($this->returnValue(false));
         $this->assertFalse($this->extension->isRead($readAble));
     }
 
@@ -77,7 +77,7 @@ class MessageExtensionTest extends TestCase
 
         $thread = $this->getThreadMock();
         $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
-        $thread->expects($this->once())->method('isDeletedByParticipant')->with($this->participant)->will($this->returnValue(true));
+        $thread->expects($this->once())->method('deletedByParticipant')->with($this->participant)->will($this->returnValue(true));
         $this->assertTrue($this->extension->isThreadDeletedByParticipant($thread));
     }
 

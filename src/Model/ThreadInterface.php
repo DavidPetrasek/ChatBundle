@@ -84,7 +84,7 @@ interface ThreadInterface extends ReadableInterface
     /**
      * Sets the thread as deleted or not deleted for all participants.
      */
-    public function setIsDeleted(bool $isDeleted);
+    public function setDeleted(bool $deleted);
 
     /**
      * Get the participants this participant is talking with.

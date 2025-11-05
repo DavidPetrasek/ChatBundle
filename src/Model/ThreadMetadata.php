@@ -6,7 +6,7 @@ abstract class ThreadMetadata
 {
     protected ParticipantInterface $participant;
 
-    protected bool $isDeleted = false;
+    protected bool $deleted = false;
 
     /**
      * Date when the message was marked as deleted.
@@ -38,14 +38,14 @@ abstract class ThreadMetadata
         return $this;
     }
 
-    public function getIsDeleted() : bool
+    public function isDeleted() : bool
     {
-        return $this->isDeleted;
+        return $this->deleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): self
+    public function setDeleted(bool $deleted): self
     {
-        $this->isDeleted = $isDeleted;
+        $this->deleted = $deleted;
 
         return $this;
     }

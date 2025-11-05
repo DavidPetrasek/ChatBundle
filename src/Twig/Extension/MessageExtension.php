@@ -27,7 +27,7 @@ class MessageExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('fos_chat_is_read', $this->isRead(...)),
+            new TwigFunction('fos_chat_read', $this->isRead(...)),
             new TwigFunction('fos_chat_nb_unread', $this->getNbUnread(...)),
             new TwigFunction('fos_chat_can_delete_thread', $this->canDeleteThread(...)),
             new TwigFunction('fos_chat_can_delete_message', $this->canDeleteMessage(...)),

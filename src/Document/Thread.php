@@ -132,12 +132,12 @@ abstract class Thread extends AbstractThread
     }
 
     /**
-     * Denormalizes the value of isSpam to messages.
+     * Denormalizes the value of "spam" (boolean) to messages.
      */
     protected function doSpam()
     {
         foreach ($this->getMessages() as $message) {
-            $message->setIsSpam($this->getIsSpam());
+            $message->setSpam($this->isSpam());
         }
     }
 
@@ -181,7 +181,7 @@ abstract class Thread extends AbstractThread
             foreach ($this->getMessages() as $message) {
                 if ($message->getSender()->getId() === $participant->getId()) {
                     $participantIsActiveSender = true;
-                } elseif (!$this->getIsSpam()) {
+                } elseif (!$this->isSpam()) {
                     $participantIsActiveRecipient = true;
                 }
 

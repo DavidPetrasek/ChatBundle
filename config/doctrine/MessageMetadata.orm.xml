@@ -6,11 +6,11 @@
 
     <mapped-superclass name="FOS\ChatBundle\Entity\MessageMetadata">
 
-        <field name="isRead" column="is_read" type="boolean" />
+        <field name="read" column="is_read" type="boolean" />
 
         <field name="readAt" column="read_at" type="datetime_immutable" nullable="true" />
 
-        <field name="isDeleted" column="is_deleted" type="boolean" />
+        <field name="deleted" column="deleted" type="boolean" />
 
         <field name="deletedAt" column="deleted_at" type="datetime_immutable" nullable="true" />
 

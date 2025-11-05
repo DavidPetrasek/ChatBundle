@@ -10,7 +10,7 @@
 
         <field name="createdAt" type="datetime_immutable" />
 
-        <field name="isSpam" type="boolean" />
+        <field name="spam" type="boolean" />
 
         <!--
         <many-to-one field="createdBy" target-entity="MyProject\UserBundle\Entity\User" />

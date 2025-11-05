@@ -28,7 +28,7 @@ abstract class Thread implements ThreadInterface
     /**
      * Tells if the thread is spam or flood.
      */
-    protected bool $isSpam = false;
+    protected bool $spam = false;
 
     /**
      * Messages contained in this thread.
@@ -124,14 +124,14 @@ abstract class Thread implements ThreadInterface
         return $this;
     }
 
-    public function getIsSpam() : bool
+    public function isSpam() : bool
     {
-        return $this->isSpam;
+        return $this->spam;
     }
 
-    public function setIsSpam(bool $isSpam): self
+    public function setSpam(bool $spam): self
     {
-        $this->isSpam = $isSpam;
+        $this->spam = $spam;
 
         return $this;
     }
@@ -174,7 +174,7 @@ abstract class Thread implements ThreadInterface
     public function isDeletedByParticipant(ParticipantInterface $participant): bool
     {
         if (($meta = $this->getMetadataForParticipant($participant)) instanceof ThreadMetadata) {
-            return $meta->getIsDeleted();
+            return $meta->isDeleted();
         }
 
         return false;
@@ -183,14 +183,14 @@ abstract class Thread implements ThreadInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsDeletedByParticipant(ParticipantInterface $participant, $isDeleted): self
+    public function setDeletedByParticipant(ParticipantInterface $participant, $deleted): self
     {
         if (!($meta = $this->getMetadataForParticipant($participant)) instanceof ThreadMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata exists for participant with id "%s"', $participant->getId()));
         }
 
-        $meta->setIsDeleted($isDeleted);
-        $meta->setDeletedAt($isDeleted ? new \DateTimeImmutable() : null);
+        $meta->setDeleted($deleted);
+        $meta->setDeletedAt($deleted ? new \DateTimeImmutable() : null);
 
         return $this;
     }
@@ -198,10 +198,10 @@ abstract class Thread implements ThreadInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsDeleted($isDeleted): self
+    public function setDeleted($deleted): self
     {
         foreach ($this->getParticipants() as $participant) {
-            $this->setIsDeletedByParticipant($participant, $isDeleted);
+            $this->setDeletedByParticipant($participant, $deleted);
         }
 
         return $this;
@@ -224,10 +224,10 @@ abstract class Thread implements ThreadInterface
     /**
      * {@inheritdoc}
      */
-    public function setIsReadByParticipant(ParticipantInterface $participant, $isRead): self
+    public function setReadByParticipant(ParticipantInterface $participant, $read): self
     {
         foreach ($this->getMessages() as $message) {
-            $message->setIsReadByParticipant($participant, $isRead);
+            $message->setReadByParticipant($participant, $read);
         }
 
         return $this;

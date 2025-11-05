@@ -48,7 +48,7 @@ class Deleter implements DeleterInterface
             throw new AccessDeniedException('You are not allowed to delete this message');
         }
 
-        $readable->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), true);
+        $readable->setDeletedByParticipant($this->getAuthenticatedParticipant(), true);
 
         $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_DELETE);
     }
@@ -65,7 +65,7 @@ class Deleter implements DeleterInterface
             throw new AccessDeniedException('You are not allowed to undelete this message');
         }
 
-        $readable->setIsDeletedByParticipant($this->getAuthenticatedParticipant(), false);
+        $readable->setDeletedByParticipant($this->getAuthenticatedParticipant(), false);
 
         $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_UNDELETE);
     }

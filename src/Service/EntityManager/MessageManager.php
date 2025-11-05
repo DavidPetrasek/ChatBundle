@@ -77,8 +77,8 @@ class MessageManager extends BaseMessageManager
             ->andWhere('m.sender != :sender')
             ->setParameter('sender', $participant)
 
-            ->andWhere('mm.isRead = :isRead')
-            ->setParameter('isRead', false, Types::BOOLEAN);
+            ->andWhere('mm.read = :read')
+            ->setParameter('read', false, Types::BOOLEAN);
     }
 
     /**
@@ -169,7 +169,7 @@ class MessageManager extends BaseMessageManager
      */
     public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
-        $readable->setIsReadByParticipant($participant, true);
+        $readable->setReadByParticipant($participant, true);
     }
 
     /**
@@ -177,36 +177,36 @@ class MessageManager extends BaseMessageManager
      */
     public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant): void
     {
-        $readable->setIsReadByParticipant($participant, false);
+        $readable->setReadByParticipant($participant, false);
     }
 
     /**
      * Marks all messages of this thread as read by this participant.
      */
-    public function markIsReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $isRead): void
+    public function markReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $read): void
     {
         foreach ($thread->getMessages() as $message) {
-            $this->markIsReadByParticipant($message, $participant, $isRead);
+            $this->markReadByParticipant($message, $participant, $read);
         }
     }
 
     /**
      * Marks the message as read or unread by this participant.
      */
-    private function markIsReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $isRead): void
+    private function markReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $read): void
     {
         $meta = $message->getMetadataForParticipant($participant);
-        if (!$meta || $meta->getIsRead() === $isRead) {
+        if (!$meta || $meta->isRead() === $read) {
             return;
         }
 
         $this->em->createQueryBuilder()
             ->update($this->metaClass, 'm')
-            ->set('m.isRead', '?1')
-            ->setParameter(1, $isRead, Types::BOOLEAN)
+            ->set('m.read', '?1')
+            ->setParameter(1, $read, Types::BOOLEAN)
 
             ->set('m.readAt', '?2')
-            ->setParameter(2, $isRead ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
+            ->setParameter(2, $read ? new \DateTimeImmutable() : null, Types::DATETIME_IMMUTABLE)
 
             ->where('m.id = :id')
             ->setParameter('id', $meta)
@@ -262,7 +262,7 @@ class MessageManager extends BaseMessageManager
                 $meta = $this->createMessageMetadata();     
                 $meta->setParticipant($threadParticipant);
                 
-                if ($message->getSender() === $threadParticipant) {$meta->setIsRead(true);}
+                if ($message->getSender() === $threadParticipant) {$meta->setRead(true);}
 
                 $message->addMetadata($meta);
             }

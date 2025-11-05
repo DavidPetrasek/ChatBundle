@@ -90,7 +90,7 @@ class ThreadManager extends BaseThreadManager
     public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder()
-            ->field('metadata.isDeleted')->equals(true)
+            ->field('metadata.deleted')->equals(true)
             ->field('metadata.participant.$id')->equals(new \MongoId($participant->getId()))
             ->sort('lastMessageDate', 'desc');
     }
@@ -148,7 +148,7 @@ class ThreadManager extends BaseThreadManager
      */
     public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
     {
-        return $this->messageManager->markIsReadByThreadAndParticipant($readable, $participant, true);
+        return $this->messageManager->markReadByThreadAndParticipant($readable, $participant, true);
     }
 
     /**
@@ -156,7 +156,7 @@ class ThreadManager extends BaseThreadManager
      */
     public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
     {
-        return $this->messageManager->markIsReadByThreadAndParticipant($readable, $participant, false);
+        return $this->messageManager->markReadByThreadAndParticipant($readable, $participant, false);
     }
 
     /**

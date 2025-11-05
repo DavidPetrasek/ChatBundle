@@ -83,12 +83,12 @@ class ThreadManager extends BaseThreadManager
             ->setParameter('user_id', $participant->getId())
 
             // the thread does not contain spam or flood
-            ->andWhere('t.isSpam = :isSpam')
-            ->setParameter('isSpam', false, Types::BOOLEAN)
+            ->andWhere('t.spam = :spam')
+            ->setParameter('spam', false, Types::BOOLEAN)
 
             // the thread is not deleted by this participant
-            ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', false, Types::BOOLEAN)
+            ->andWhere('tm.deleted = :deleted')
+            ->setParameter('deleted', false, Types::BOOLEAN)
 
             // there is at least one message written by an other participant
             ->andWhere('tm.lastMessageDate IS NOT NULL')
@@ -122,12 +122,12 @@ class ThreadManager extends BaseThreadManager
             ->setParameter('user_id', $participant->getId())
 
             // the thread does not contain spam or flood
-            ->andWhere('t.isSpam = :isSpam')
-            ->setParameter('isSpam', false, Types::BOOLEAN)
+            ->andWhere('t.spam = :spam')
+            ->setParameter('spam', false, Types::BOOLEAN)
 
             // the thread is not deleted by this participant
-            ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', false, Types::BOOLEAN)
+            ->andWhere('tm.deleted = :deleted')
+            ->setParameter('deleted', false, Types::BOOLEAN)
 
             // there is at least one message written by this participant
             ->andWhere('tm.lastParticipantMessageDate IS NOT NULL')
@@ -161,8 +161,8 @@ class ThreadManager extends BaseThreadManager
             ->setParameter('user_id', $participant->getId())
 
             // the thread is deleted by this participant
-            ->andWhere('tm.isDeleted = :isDeleted')
-            ->setParameter('isDeleted', true, Types::BOOLEAN)
+            ->andWhere('tm.deleted = :deleted')
+            ->setParameter('deleted', true, Types::BOOLEAN)
 
             // sort by date of last message
             ->orderBy('tm.lastMessageDate', 'DESC')
@@ -229,7 +229,7 @@ class ThreadManager extends BaseThreadManager
      */
     public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
     {
-        return $this->messageManager->markIsReadByThreadAndParticipant($readable, $participant, true);
+        return $this->messageManager->markReadByThreadAndParticipant($readable, $participant, true);
     }
 
     /**
@@ -237,7 +237,7 @@ class ThreadManager extends BaseThreadManager
      */
     public function markAsUnreadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)
     {
-        return $this->messageManager->markIsReadByThreadAndParticipant($readable, $participant, false);
+        return $this->messageManager->markReadByThreadAndParticipant($readable, $participant, false);
     }
 
     /**

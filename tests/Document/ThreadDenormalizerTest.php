@@ -79,7 +79,7 @@ class ThreadDenormalizerTest extends TestCase
         $this->assertSame(['u1' => $this->dates[3]->getTimestamp(), 'u2' => $this->dates[2]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByParticipant());
 
         $this->assertEquals('test thread subject hi dude', $thread->getKeywords());
-        $this->assertSame(['u1' => false, 'u2' => false], $thread->getIsDeletedByParticipant());
+        $this->assertSame(['u1' => false, 'u2' => false], $thread->isDeletedByParticipant());
     }
 
     private function createMessageMock($sender, $recipient, DateTimeImmutable $date)
@@ -94,7 +94,7 @@ class ThreadDenormalizerTest extends TestCase
             ->method('getTimestamp')
             ->will($this->returnValue($date->getTimestamp()));
         $message->expects($this->atLeastOnce())
-            ->method('ensureIsReadByParticipant');
+            ->method('ensureReadByParticipant');
         $message->expects($this->atLeastOnce())
             ->method('getBody')
             ->will($this->returnValue('hi dude'));
@@ -122,7 +122,7 @@ class TestThread extends Thread
 
     public $datesOfLastMessageWrittenByOtherParticipant;
 
-    public $isDeletedByParticipant;
+    public $deletedByParticipant;
 
     public function getDatesOfLastMessageWrittenByParticipant()
     {
@@ -139,7 +139,7 @@ class TestThread extends Thread
         return $this->keywords;
     }
 
-    public function getIsDeletedByParticipant()
+    public function isDeletedByParticipant()
     {
         return $this->isDeletedByParticipant;
     }
