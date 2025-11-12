@@ -84,12 +84,33 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    {
+        return $this->getUnreadMessageByParticipantQueryBuilder($participant)
+            ->andWhere('m.thread = :thread')
+            ->setParameter('thread', $thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    {
+        $builder = $this->getUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread);
+
+        return $builder
+            ->select($builder->expr()->count('m.id'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
     {
         $builder = $this->getUnreadMessageByParticipantQueryBuilder($participant);
 
         return $builder
-            ->select($builder->expr()->count('mm.id'));
+            ->select($builder->expr()->count('m.id'));
     }
 
     /**
@@ -100,16 +121,6 @@ class MessageManager extends BaseMessageManager
         return (int) $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
             ->getQuery()
             ->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
-    {
-        return $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
-            ->andWhere('m.thread = ?1')
-            ->setParameter(1, $thread);
     }
 
     /**

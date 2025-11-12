@@ -32,12 +32,12 @@ interface MessageManagerInterface extends ReadableManagerInterface
     public function getNbSentMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread) : int;
 
     /**
-     * Tells how many unread, non-spam, messages this participant has in a particular thread.
+     * Tells how many unread, messages this participant has in a particular thread.
      */
     public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread);
 
     /**
-     * Tells how many unread, non-spam, messages this participant has in a particular thread.
+     * Tells how many unread, messages this participant has in a particular thread.
      */
     public function getNbUnreadMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread) : int;
 
@@ -47,12 +47,17 @@ interface MessageManagerInterface extends ReadableManagerInterface
     public function getUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant);
 
     /**
-     * Tells how many unread, non-spam, messages this participant has.
+     * Get all unread messages this participant has in a particular thread.
+     */
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread);
+
+    /**
+     * Tells how many unread, messages this participant has.
      */
     public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant);
 
     /**
-     * Tells how many unread, non-spam, messages this participant has.
+     * Tells how many unread, messages this participant has.
      */
     public function getNbUnreadMessageByParticipant(ParticipantInterface $participant) : int;
 
