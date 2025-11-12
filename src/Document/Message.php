@@ -7,7 +7,7 @@ use FOS\ChatBundle\Model\Message as BaseMessage;
 abstract class Message extends BaseMessage
 {
     /**
-     * Tells if the message is spam or flood
+     * Tells if the message is spam
      * This denormalizes Thread.spam.
      */
     protected bool $spam = false;

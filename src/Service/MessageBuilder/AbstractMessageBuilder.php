@@ -55,9 +55,9 @@ abstract class AbstractMessageBuilder
     /**
      * Sets whether this message is being sent by the system and not by a real user
      */
-    public function setAutomaticReply(bool $automatic_reply) : static
+    public function setAutomaticReply(bool $automaticReply) : static
     {
-        $this->message->setAutomaticReply($automatic_reply);
+        $this->message->setAutomaticReply($automaticReply);
 
         return $this;
     }

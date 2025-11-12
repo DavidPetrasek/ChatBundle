@@ -10,7 +10,7 @@
 
         <field name="createdAt" column="created_at" type="datetime_immutable" />
 
-        <field name="automatic_reply" column="automatic_reply" type="boolean">
+        <field name="automaticReply" column="automatic_reply" type="boolean">
             <options>
                 <option name="default">0</option>
             </options>

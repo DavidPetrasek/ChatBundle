@@ -26,7 +26,7 @@ abstract class Thread implements ThreadInterface
     protected string $subject;
 
     /**
-     * Tells if the thread is spam or flood.
+     * Tells if the thread is spam.
      */
     protected bool $spam = false;
 

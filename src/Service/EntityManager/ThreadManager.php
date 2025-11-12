@@ -82,7 +82,7 @@ class ThreadManager extends BaseThreadManager
             ->andWhere('p.id = :user_id')
             ->setParameter('user_id', $participant->getId())
 
-            // the thread does not contain spam or flood
+            // the thread does not contain spam
             ->andWhere('t.spam = :spam')
             ->setParameter('spam', false, Types::BOOLEAN)
 
@@ -121,7 +121,7 @@ class ThreadManager extends BaseThreadManager
             ->andWhere('p.id = :user_id')
             ->setParameter('user_id', $participant->getId())
 
-            // the thread does not contain spam or flood
+            // the thread does not contain spam
             ->andWhere('t.spam = :spam')
             ->setParameter('spam', false, Types::BOOLEAN)
 

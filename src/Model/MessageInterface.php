@@ -49,7 +49,7 @@ interface MessageInterface extends ReadableInterface
     /**
      * Sets whether this message was sent by the system and not by a real user
      */
-    public function setAutomaticReply(bool $automatic_reply);
+    public function setAutomaticReply(bool $automaticReply);
 
     /**
      * Tells if this message was sent by the system and not by a real user

@@ -43,7 +43,7 @@ abstract class Message implements MessageInterface
     /**
      * Whether this message was sent by the system and not by a real user
      */
-    protected bool $automatic_reply = false;
+    protected bool $automaticReply = false;
 
     /**
      * Collection of MessageMetadata.
@@ -230,15 +230,15 @@ abstract class Message implements MessageInterface
      */
     public function isAutomaticReply(): bool
     {
-        return $this->automatic_reply;
+        return $this->automaticReply;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAutomaticReply(bool $automatic_reply): self
+    public function setAutomaticReply(bool $automaticReply): self
     {
-        $this->automatic_reply = $automatic_reply;
+        $this->automaticReply = $automaticReply;
 
         return $this;
     }
