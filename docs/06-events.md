@@ -3,45 +3,41 @@
 Events
 ======
 
-You can see definitions and explanations of each event as defined in `Event\FOSMessageEvents`:
+- POST_SEND
+- POST_DELETE
+- POST_UNDELETE
+- POST_READ
+- POST_UNREAD
 
+
+Example usage
 ```php
 <?php
-namespace FOS\ChatBundle\Event;
+namespace App\EventSubscriber;
 
-/**
- * Declares all events thrown in the MessageBundle.
- */
-final class FOSMessageEvents
+use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\MessageEvent;
+use FOS\ChatBundle\Event\ReadableEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class ChatBundleSubscriber implements EventSubscriberInterface
 {
-    /**
-     * The POST_SEND event occurs after a message has been sent
-     * The event is an instance of FOS\ChatBundle\Event\MessageEvent.
-     */
-    const string POST_SEND = 'fos_chat.post_send';
+    public function afterSend(MessageEvent $event): void
+    {
+        // ...
+    }
 
-    /**
-     * The POST_DELETE event occurs after a thread has been marked as deleted
-     * The event is an instance of FOS\ChatBundle\Event\ThreadEvent.
-     */
-    const string POST_DELETE = 'fos_chat.post_delete';
+    public function afterRead(ReadableEvent $event): void
+    {
+        // ...
+    }
 
-    /**
-     * The POST_UNDELETE event occurs after a thread has been marked as undeleted
-     * The event is an instance of FOS\ChatBundle\Event\ThreadEvent.
-     */
-    const string POST_UNDELETE = 'fos_chat.post_undelete';
-
-    /**
-     * The POST_READ event occurs after a thread has been marked as read
-     * The event is an instance of FOS\ChatBundle\Event\ReadableEvent.
-     */
-    const string POST_READ = 'fos_chat.post_read';
-
-    /**
-     * The POST_UNREAD event occurs after a thread has been unread
-     * The event is an instance of FOS\ChatBundle\Event\ReadableEvent.
-     */
-    const string POST_UNREAD = 'fos_chat.post_unread';
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            FOSMessageEvents::POST_SEND => 'afterSend',
+            FOSMessageEvents::POST_READ => 'afterRead'
+        ];
+    }
 }
 ```
