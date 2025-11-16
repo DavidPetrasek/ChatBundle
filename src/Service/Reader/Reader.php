@@ -2,7 +2,7 @@
 
 namespace FOS\ChatBundle\Service\Reader;
 
-use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\FOSChatEvents;
 use FOS\ChatBundle\Event\ReadableEvent;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
@@ -46,7 +46,7 @@ class Reader implements ReaderInterface
 
         $this->readableManager->markAsReadByParticipant($readable, $participant);
 
-        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_READ);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSChatEvents::POST_READ);
     }
 
     /**
@@ -61,7 +61,7 @@ class Reader implements ReaderInterface
 
         $this->readableManager->markAsUnreadByParticipant($readable, $participant);
 
-        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_UNREAD);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSChatEvents::POST_UNREAD);
     }
 
     /**

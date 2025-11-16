@@ -29,7 +29,7 @@ $thread = $provider->getThread($threadId);
 Manipulate threads
 ------------------
 
-See `FOS\\MessageBundle\\Model\\ThreadInterface` for the complete list of available methods:
+See `FOS\\ChatBundle\\Model\\ThreadInterface` for the complete list of available methods:
 
 ```php
 // Print the thread subject
@@ -52,7 +52,7 @@ the thread metadata using `$container->get('fos_chat.thread_manager')->saveThrea
 Manipulate messages
 -------------------
 
-See ``FOS\\MessageBundle\\Model\\MessageInterface`` for the complete list of available methods:
+See ``FOS\\ChatBundle\\Model\\MessageInterface`` for the complete list of available methods:
 
 ```php
 // Print the message body

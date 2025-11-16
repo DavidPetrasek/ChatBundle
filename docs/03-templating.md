@@ -3,7 +3,6 @@
 Templating Helpers
 ==================
 
-MessageBundle provides a few twig functions:
 
 ```html+jinja
 {# template.html.twig #}

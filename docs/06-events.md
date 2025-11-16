@@ -15,7 +15,7 @@ Example usage
 <?php
 namespace App\EventSubscriber;
 
-use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\FOSChatEvents;
 use FOS\ChatBundle\Event\MessageEvent;
 use FOS\ChatBundle\Event\ReadableEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,8 +35,8 @@ class ChatBundleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FOSMessageEvents::POST_SEND => 'afterSend',
-            FOSMessageEvents::POST_READ => 'afterRead'
+            FOSChatEvents::POST_SEND => 'afterSend',
+            FOSChatEvents::POST_READ => 'afterRead'
         ];
     }
 }

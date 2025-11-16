@@ -2,7 +2,7 @@
 
 namespace FOS\ChatBundle\Service\Sender;
 
-use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\FOSChatEvents;
 use FOS\ChatBundle\Event\MessageEvent;
 use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\ModelManager\MessageManagerInterface;
@@ -36,6 +36,6 @@ class Sender implements SenderInterface
         $message->getThread()->setDeleted(false);
         $this->messageManager->saveMessage($message);
 
-        $this->dispatcher->dispatch(new MessageEvent($message), FOSMessageEvents::POST_SEND);
+        $this->dispatcher->dispatch(new MessageEvent($message), FOSChatEvents::POST_SEND);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace FOS\ChatBundle\Service\Deleter;
 
-use FOS\ChatBundle\Event\FOSMessageEvents;
+use FOS\ChatBundle\Event\FOSChatEvents;
 use FOS\ChatBundle\Event\ReadableEvent;
 use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
@@ -50,7 +50,7 @@ class Deleter implements DeleterInterface
 
         $readable->setDeletedByParticipant($this->getAuthenticatedParticipant(), true);
 
-        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_DELETE);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSChatEvents::POST_DELETE);
     }
 
     /**
@@ -67,7 +67,7 @@ class Deleter implements DeleterInterface
 
         $readable->setDeletedByParticipant($this->getAuthenticatedParticipant(), false);
 
-        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSMessageEvents::POST_UNDELETE);
+        $this->dispatcher->dispatch(new ReadableEvent($readable), FOSChatEvents::POST_UNDELETE);
     }
 
     /**

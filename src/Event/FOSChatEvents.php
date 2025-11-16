@@ -3,9 +3,9 @@
 namespace FOS\ChatBundle\Event;
 
 /**
- * Declares all events thrown in the MessageBundle.
+ * Declares all events thrown in the ChatBundle.
  */
-final class FOSMessageEvents
+final class FOSChatEvents
 {
     /**
      * The POST_SEND event occurs after a message has been sent

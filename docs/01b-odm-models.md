@@ -18,7 +18,7 @@ fos_chat:
     message_class: App\Document\Message
 ```
 
-You may have to include the MessageBundle in your Doctrine mapping configuration,
+You may have to include the ChatBundle in your Doctrine mapping configuration,
 along with the bundle containing your custom Thread and Message classes:
 
 ```yaml
