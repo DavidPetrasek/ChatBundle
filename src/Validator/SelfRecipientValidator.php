@@ -8,16 +8,16 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SelfRecipientValidator extends ConstraintValidator
 {
-    public function __construct(private readonly ParticipantProviderInterface $participantProvider)
-    {
-    }
+    public function __construct
+    (
+        private readonly ParticipantProviderInterface $participantProvider
+    )
+    {}
 
-    /**
-     * Indicates whether the constraint is valid.
-     */
-    public function validate(object $recipient, Constraint $constraint): void
+    public function validate(mixed $recipient, Constraint $constraint): void
     {
-        if ($recipient === $this->participantProvider->getAuthenticatedParticipant()) {
+        if ($recipient === $this->participantProvider->getAuthenticatedParticipant()) 
+        {
             $this->context->addViolation($constraint->message);
         }
     }

@@ -9,20 +9,22 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ReplyAuthorizationValidator extends ConstraintValidator
 {
-    public function __construct(private readonly AuthorizerInterface $authorizer, private readonly ParticipantProviderInterface $participantProvider)
-    {
-    }
+    public function __construct
+    (
+        private readonly AuthorizerInterface $authorizer, 
+        private readonly ParticipantProviderInterface $participantProvider
+    )
+    {}
 
-    /**
-     * Indicates whether the constraint is valid.
-     */
-    public function validate(object $value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         $sender = $this->participantProvider->getAuthenticatedParticipant();
         $recipients = $value->getThread()->getOtherParticipants($sender);
 
-        foreach ($recipients as $recipient) {
-            if (!$this->authorizer->canMessageParticipant($recipient)) {
+        foreach ($recipients as $recipient) 
+        {
+            if (!$this->authorizer->canMessageParticipant($recipient)) 
+            {
                 $this->context->addViolation($constraint->message);
 
                 return;

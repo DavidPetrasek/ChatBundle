@@ -8,16 +8,16 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SpamValidator extends ConstraintValidator
 {
-    public function __construct(private readonly SpamDetectorInterface $spamDetector)
-    {
-    }
+    public function __construct
+    (
+        private readonly SpamDetectorInterface $spamDetector
+    )
+    {}
 
-    /**
-     * Indicates whether the constraint is valid.
-     */
-    public function validate(object $value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
-        if ($this->spamDetector->isSpam($value)) {
+        if ($this->spamDetector->isSpam($value)) 
+        {
             $this->context->addViolation($constraint->message);
         }
     }

@@ -13,9 +13,6 @@ class ReplyAuthorization extends Constraint
         return 'fos_chat.validator.reply_authorization';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets() : array|string
     {
         return self::CLASS_CONSTRAINT;

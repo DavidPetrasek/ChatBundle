@@ -13,9 +13,6 @@ class SelfRecipient extends Constraint
         return 'fos_chat.validator.self_recipient';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets() : array|string
     {
         return self::PROPERTY_CONSTRAINT;

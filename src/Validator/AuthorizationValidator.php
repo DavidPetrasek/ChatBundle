@@ -8,14 +8,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class AuthorizationValidator extends ConstraintValidator
 {
-    public function __construct(private readonly AuthorizerInterface $authorizer)
-    {
-    }
+    public function __construct
+    (
+        private readonly AuthorizerInterface $authorizer
+    )
+    {}
 
-    /**
-     * Indicates whether the constraint is valid.
-     */
-    public function validate(object $recipient, Constraint $constraint): void
+    public function validate(mixed $recipient, Constraint $constraint): void
     {
         if ($recipient && !$this->authorizer->canMessageParticipant($recipient)) {
             $this->context->addViolation($constraint->message);

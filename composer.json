@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Provides user-to-user messaging features for your Symfony application.",
     "keywords": ["symfony", "message", "messaging"],
-    "homepage": "https://github.com/FriendsOfSymfony/FOSMessageBundle",
+    "homepage": "https://github.com/FriendsOfSymfony/FOSChatBundle",
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +13,7 @@
         },
         {
             "name": "FriendsOfSymfony Community",
-            "homepage": "https://github.com/friendsofsymfony/FOSMessageBundle/contributors"
+            "homepage": "https://github.com/friendsofsymfony/FOSChatBundle/contributors"
         }
     ],
     
@@ -32,6 +32,7 @@
         "symfony/security-bundle": ">=7.0",
         "symfony/string": ">=7.0",
         "symfony/twig-bundle": ">=7.0",
+        "symfony/validator": ">=7.0",
         "doctrine/orm": ">=3.3"
     },
     "suggest": {
@@ -39,6 +40,8 @@
         "doctrine/mongodb-odm-bundle": "dev-master"
     },
     "require-dev": {
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "symfony/test-pack": "^1.2",
+        "phpunit/phpunit": "^12.4"
     }
 }

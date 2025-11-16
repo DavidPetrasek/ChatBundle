@@ -13,9 +13,6 @@ class Spam extends Constraint
         return 'fos_chat.validator.spam';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets() : array|string
     {
         return self::CLASS_CONSTRAINT;

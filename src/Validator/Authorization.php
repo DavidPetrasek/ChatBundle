@@ -13,9 +13,6 @@ class Authorization extends Constraint
         return 'fos_chat.validator.authorization';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets() : array|string
     {
         return self::PROPERTY_CONSTRAINT;
