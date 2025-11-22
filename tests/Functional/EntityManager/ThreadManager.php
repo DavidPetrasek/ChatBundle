@@ -16,8 +16,9 @@ class ThreadManager extends BaseThreadManager
         return new Thread();
     }
 
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant)
     {
+
     }
 
     public function findParticipantInboxThreads(ParticipantInterface $participant): array
@@ -25,7 +26,7 @@ class ThreadManager extends BaseThreadManager
         return [new Thread()];
     }
 
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant)
     {
     }
 
@@ -34,7 +35,7 @@ class ThreadManager extends BaseThreadManager
         return [];
     }
 
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant)
     {
     }
 
@@ -43,7 +44,7 @@ class ThreadManager extends BaseThreadManager
         return [];
     }
 
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search) : QueryBuilder
+    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search)
     {
     }
 
@@ -55,6 +56,22 @@ class ThreadManager extends BaseThreadManager
     public function findThreadsCreatedBy(ParticipantInterface $participant): array
     {
         return [];
+    }
+
+    // Added stubs for abstract methods from BaseThreadManager to satisfy implementation
+    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    {
+        throw new \BadMethodCallException('Not implemented in test ThreadManager.');
+    }
+
+    public function getNbParticipantThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    {
+        throw new \BadMethodCallException('Not implemented in test ThreadManager.');
+    }
+
+    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    {
+        throw new \BadMethodCallException('Not implemented in test ThreadManager.');
     }
 
     public function markAsReadByParticipant(ReadableInterface $readable, ParticipantInterface $participant)

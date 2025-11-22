@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
 {
-    private static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return \FOS\ChatBundle\Tests\Functional\TestKernel::class;
     }

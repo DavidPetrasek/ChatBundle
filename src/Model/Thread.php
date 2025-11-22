@@ -155,7 +155,7 @@ abstract class Thread implements ThreadInterface
     /**
      * {@inheritdoc}
      */
-    public function getFirstMessage(): MessageInterface
+    public function getFirstMessage(): ?MessageInterface
     {
         return $this->getMessages()->first();
     }

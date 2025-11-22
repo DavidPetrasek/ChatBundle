@@ -25,10 +25,7 @@ class TestKernel extends Kernel
 {
     use MicroKernelTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new FrameworkBundle(),
@@ -38,9 +35,6 @@ class TestKernel extends Kernel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
         $c->loadFromExtension('framework', [

@@ -4,7 +4,6 @@ namespace FOS\ChatBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\Thread as BaseThread;
 use FOS\ChatBundle\Model\ThreadMetadata as ModelThreadMetadata;

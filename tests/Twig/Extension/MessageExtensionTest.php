@@ -20,11 +20,7 @@ class MessageExtensionTest extends TestCase
 
     private $participant;
 
-    /**
-     * This method should be setUp(): void
-     * For compatibility reasons with old versions of PHP, we cannot use neither setUp(): void nor setUp().
-     */
-    public function setUpBeforeTest(): void
+    public function setUp(): void
     {
         $this->participantProvider = $this->getMockBuilder(\FOS\ChatBundle\Security\ParticipantProviderInterface::class)->getMock();
         $this->provider = $this->getMockBuilder(\FOS\ChatBundle\Service\Provider\ProviderInterface::class)->getMock();
@@ -35,86 +31,61 @@ class MessageExtensionTest extends TestCase
 
     public function testReadReturnsTrueWhenRead(): void
     {
-        $this->setUpBeforeTest();
-
-        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
+        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->willReturn($this->participant);
         $readAble = $this->getMockBuilder(\FOS\ChatBundle\Model\ReadableInterface::class)->getMock();
-        $readAble->expects($this->once())->method('readByParticipant')->with($this->participant)->will($this->returnValue(true));
+        $readAble->expects($this->once())->method('isReadByParticipant')->with($this->participant)->willReturn(true);
         $this->assertTrue($this->extension->isRead($readAble));
     }
 
     public function testReadReturnsFalseWhenNotRead(): void
     {
-        $this->setUpBeforeTest();
-
-        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
+        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->willReturn($this->participant);
         $readAble = $this->getMockBuilder(\FOS\ChatBundle\Model\ReadableInterface::class)->getMock();
-        $readAble->expects($this->once())->method('readByParticipant')->with($this->participant)->will($this->returnValue(false));
+        $readAble->expects($this->once())->method('isReadByParticipant')->with($this->participant)->willReturn(false);
         $this->assertFalse($this->extension->isRead($readAble));
     }
 
     public function testCanDeleteThreadWhenHasPermission(): void
     {
-        $this->setUpBeforeTest();
-
         $thread = $this->getThreadMock();
-        $this->authorizer->expects($this->once())->method('canDeleteThread')->with($thread)->will($this->returnValue(true));
+        $this->authorizer->expects($this->once())->method('canDeleteThread')->with($thread)->willReturn(true);
         $this->assertTrue($this->extension->canDeleteThread($thread));
     }
 
     public function testCanDeleteThreadWhenNoPermission(): void
     {
-        $this->setUpBeforeTest();
-
         $thread = $this->getThreadMock();
-        $this->authorizer->expects($this->once())->method('canDeleteThread')->with($thread)->will($this->returnValue(false));
+        $this->authorizer->expects($this->once())->method('canDeleteThread')->with($thread)->willReturn(false);
         $this->assertFalse($this->extension->canDeleteThread($thread));
     }
 
     public function testIsThreadDeletedByParticipantWhenDeleted(): void
     {
-        $this->setUpBeforeTest();
-
         $thread = $this->getThreadMock();
-        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->will($this->returnValue($this->participant));
-        $thread->expects($this->once())->method('deletedByParticipant')->with($this->participant)->will($this->returnValue(true));
+        $this->participantProvider->expects($this->once())->method('getAuthenticatedParticipant')->willReturn($this->participant);
+        $thread->expects($this->once())->method('isDeletedByParticipant')->with($this->participant)->willReturn(true);
         $this->assertTrue($this->extension->isThreadDeletedByParticipant($thread));
     }
 
     public function testGetNbUnreadCacheStartsEmpty(): void
     {
-        $this->setUpBeforeTest();
-
-        /*
-         * assertAttributeEmpty is deprecated, see deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-         */
-//        if (\method_exists($this, 'assertAttributeEmpty')) {
-//            $this->assertAttributeEmpty('nbUnreadMessagesCache', $this->extension);
-//        }
         $this->assertEmpty($this->extension->getNbUnread());
-        $this->extension->getNbUnread();
     }
 
     public function testGetNbUnread(): void
     {
-        $this->setUpBeforeTest();
+        $this->provider->expects($this->once())->method('getNbUnreadMessages')->willReturn(3);
 
-        /*
-         * assertAttributeEmpty is deprecated, see deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-         */
-//        if (\method_exists($this, 'assertAttributeEmpty')) {
-//            $this->assertAttributeEmpty('nbUnreadMessagesCache', $this->extension);
-//        }
-        $this->assertEmpty($this->extension->getNbUnread());
-        $this->provider->expects($this->once())->method('getNbUnreadMessages')->will($this->returnValue(3));
+        // first call fetches from provider and caches 3
+        $this->assertEquals(3, $this->extension->getNbUnread());
+
+        // second call reads from cache; provider not called again
         $this->assertEquals(3, $this->extension->getNbUnread());
     }
 
     public function testGetNbUnreadStoresCache(): void
     {
-        $this->setUpBeforeTest();
-
-        $this->provider->expects($this->once())->method('getNbUnreadMessages')->will($this->returnValue(3));
+        $this->provider->expects($this->once())->method('getNbUnreadMessages')->willReturn(3);
         //we call it twice but expect to only get one call
         $this->extension->getNbUnread();
         $this->extension->getNbUnread();
@@ -122,8 +93,6 @@ class MessageExtensionTest extends TestCase
 
     public function testGetName(): void
     {
-        $this->setUpBeforeTest();
-
         $this->assertEquals('fos_chat', $this->extension->getName());
     }
 

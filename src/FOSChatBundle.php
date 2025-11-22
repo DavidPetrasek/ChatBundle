@@ -1,7 +1,6 @@
 <?php
 namespace FOS\ChatBundle;
 
-use FOS\ChatBundle\Security\ParticipantProvider;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;

@@ -17,8 +17,6 @@ Documentation
 https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
 
 
-
-BUNDLE WORKS, BUT IT'S STILL UNDER DEVELOPMENT (SEE ISSUES)
 ================
 ## How to test
 - You might need to fork this repo before and then swap the url bellow

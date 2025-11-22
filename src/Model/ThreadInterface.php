@@ -28,7 +28,7 @@ interface ThreadInterface extends ReadableInterface
     /**
      * Gets the first message of the thread.
      */
-    public function getFirstMessage() : MessageInterface;
+    public function getFirstMessage() : ?MessageInterface;
 
     /**
      * Gets the last message of the thread.

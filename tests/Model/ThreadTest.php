@@ -4,19 +4,23 @@ namespace FOS\ChatBundle\Tests\Model;
 
 use FOS\ChatBundle\Model\ParticipantInterface;
 use PHPUnit\Framework\TestCase;
+use FOS\ChatBundle\Model\Thread as ModelThread;
 
 class ThreadTest extends TestCase
 {
     public function testGetOtherParticipants(): void
     {
-        $u1 = $this->createParticipantMock('u1');
-        $u2 = $this->createParticipantMock('u2');
-        $u3 = $this->createParticipantMock('u3');
+        $u1 = $this->createParticipantMock(1);
+        $u2 = $this->createParticipantMock(2);
+        $u3 = $this->createParticipantMock(3);
 
-        $thread = $this->getMockForAbstractClass(\FOS\ChatBundle\Model\Thread::class);
+        $thread = $this->getMockBuilder(ModelThread::class)
+            ->onlyMethods(['getParticipants', 'isParticipant', 'addParticipant', 'getAllMetadata'])
+            ->getMock();
+
         $thread->expects($this->atLeastOnce())
             ->method('getParticipants')
-            ->will($this->returnValue([$u1, $u2, $u3]));
+            ->willReturn([$u1, $u2, $u3]);
 
         $toIds = (fn(array $participants): array => array_map(fn(ParticipantInterface $participant) => $participant->getId(), $participants));
 
@@ -33,7 +37,7 @@ class ThreadTest extends TestCase
 
         $participant->expects($this->any())
             ->method('getId')
-            ->will($this->returnValue($id));
+            ->willReturn($id);
 
         return $participant;
     }

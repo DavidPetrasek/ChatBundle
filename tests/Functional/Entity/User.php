@@ -26,8 +26,13 @@ class User implements ParticipantInterface, UserInterface
         return [];
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return 'user';
     }
 
     public function getId(): ?int
