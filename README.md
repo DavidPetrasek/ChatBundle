@@ -17,9 +17,9 @@ Documentation
 https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
 
 
-================
+
 ## How to test
-- You might need to fork this repo before and then swap the url bellow
+- You might need to fork this repo before and then swap the url below
 1) Add the following to your composer.json:
 ```json
 "repositories": [
@@ -30,4 +30,3 @@ https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
     ]
 ```
 2) Run: `composer require davidpetrasek/chat-bundle @dev`
-##
