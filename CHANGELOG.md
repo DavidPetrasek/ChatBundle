@@ -6,9 +6,9 @@ All notable changes to this project are documented in this file.
 ### Added
 New features:
 - Installer
-- Automatic reply
+- Automatic reply (whether the message was sent by the system)
 - Participant's status
-- Track when something was read or deleted
+- Record datetime when read or deleted
 - Method chaining
 - Mark messages as deleted (for a single participant / for all)
 
