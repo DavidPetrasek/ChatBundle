@@ -16,10 +16,10 @@ class ReplyAuthorizationValidator extends ConstraintValidator
     )
     {}
 
-    public function validate(mixed $value, Constraint $constraint): void
+    public function validate(mixed $message, Constraint $constraint): void
     {
         $sender = $this->participantProvider->getAuthenticatedParticipant();
-        $recipients = $value->getThread()->getOtherParticipants($sender);
+        $recipients = $message->getThread()->getOtherParticipants($sender);
 
         foreach ($recipients as $recipient) 
         {

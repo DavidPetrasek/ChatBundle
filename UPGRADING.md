@@ -2,6 +2,7 @@ How to upgrade from MessageBundle v2.0.1
 =======================
 
 - Switch DateTime to DateTimeImmutable
+- Add `\Service` to some  use statements (https://github.com/DavidPetrasek/ChatBundle/commit/4604c13993eef7a2901623c159becbba5b0b2de4)
  
 Rename the following method calls:
 - getIsRead -> isRead
