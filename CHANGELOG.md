@@ -26,16 +26,26 @@ New getters for Threads and Messages:
 ### Changed
 - Switch DateTime to DateTimeImmutable
 - Add `\Service` to these use statements (these are already corrected):
-use FOS\ChatBundle\Service\Composer\Composer;
-use FOS\ChatBundle\Service\Deleter\Deleter;
-use FOS\ChatBundle\Service\DocumentManager\MessageManager;
-use FOS\ChatBundle\Service\DocumentManager\ThreadManager;
-use FOS\ChatBundle\Service\EntityManager\MessageManager;
-use FOS\ChatBundle\Service\EntityManager\ThreadManager;
-use FOS\ChatBundle\Service\Provider\Provider;
-use FOS\ChatBundle\Service\Reader\Reader;
-use FOS\ChatBundle\Service\Sender\Sender;
-use FOS\ChatBundle\Service\SpamDetection\SpamDetectorInterface;
+`use FOS\ChatBundle\Service\Composer\Composer;`
+
+`use FOS\ChatBundle\Service\Deleter\Deleter;`
+
+`use FOS\ChatBundle\Service\DocumentManager\MessageManager;`
+
+`use FOS\ChatBundle\Service\DocumentManager\ThreadManager;`
+
+`use FOS\ChatBundle\Service\EntityManager\MessageManager;`
+
+`use FOS\ChatBundle\Service\EntityManager\ThreadManager;`
+
+`use FOS\ChatBundle\Service\Provider\Provider;`
+
+`use FOS\ChatBundle\Service\Reader\Reader;`
+
+`use FOS\ChatBundle\Service\Sender\Sender;`
+
+`use FOS\ChatBundle\Service\SpamDetection\SpamDetectorInterface;`
+
  
 Rename:
 - `getIsRead` -> `isRead`
