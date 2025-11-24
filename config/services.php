@@ -8,7 +8,10 @@ use FOS\ChatBundle\Service\Provider\Provider;
 use FOS\ChatBundle\Service\Reader\Reader;
 use FOS\ChatBundle\Security\Authorizer;
 use FOS\ChatBundle\Service\Sender\Sender;
-
+use FOS\ChatBundle\Validator\AuthorizationValidator;
+use FOS\ChatBundle\Validator\ReplyAuthorizationValidator;
+use FOS\ChatBundle\Validator\SelfRecipientValidator;
+use FOS\ChatBundle\Validator\SpamValidator;
 
 return function(ContainerConfigurator $container): void 
 {
@@ -68,5 +71,33 @@ return function(ContainerConfigurator $container): void
         ->args([
             service('fos_chat.participant_provider')
         ])
+
+
+        // Validators
+        
+        ->set('fos_chat.validator.authorization', AuthorizationValidator::class)
+            ->args([
+                service('fos_chat.authorizer'),
+            ])
+            ->tag('validator.constraint_validator', ['alias' => 'fos_chat.validator.authorization'])
+
+        ->set('fos_chat.validator.reply_authorization', ReplyAuthorizationValidator::class)
+            ->args([
+                service('fos_chat.authorizer'),
+                service('fos_chat.participant_provider'),
+            ])
+            ->tag('validator.constraint_validator', ['alias' => 'fos_chat.validator.reply_authorization'])
+
+        ->set('fos_chat.validator.spam', SpamValidator::class)
+            ->args([
+                service('fos_chat.spam_detector'),
+            ])
+            ->tag('validator.constraint_validator', ['alias' => 'fos_chat.validator.spam'])
+
+        ->set('fos_chat.validator.self_recipient', SelfRecipientValidator::class)
+            ->args([
+                service('fos_chat.participant_provider'),
+            ])
+            ->tag('validator.constraint_validator', ['alias' => 'fos_chat.validator.self_recipient'])
     ;
 }; 

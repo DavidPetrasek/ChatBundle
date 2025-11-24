@@ -19,7 +19,7 @@ class FOSChatBundle extends AbstractBundle
                 ->stringNode('message_class')->isRequired()->cannotBeEmpty()->end()
                 
                 // Optional
-                ->stringNode('spam_detector')->defaultNull()->end()
+                ->stringNode('spam_detector')->defaultValue('noop')->cannotBeEmpty()->end()
                 ->stringNode('participant_provider')->defaultValue('fos_chat.participant_provider')->cannotBeEmpty()->end()
             ->end()
         ;
@@ -46,7 +46,7 @@ class FOSChatBundle extends AbstractBundle
         // OPTIONAL
         
         // Register one of default spam detectors if specified
-        if (in_array(strtolower((string) $config['spam_detector']), ['akismet'])) 
+        if (in_array(strtolower((string) $config['spam_detector']), ['noop', 'akismet'])) 
         {
             $container->import('../config/spam_detector/'.$config['spam_detector'].'.php');
         }
