@@ -29,4 +29,4 @@ https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
         }
     ]
 ```
-2) Run: `composer require davidpetrasek/chat-bundle @dev`
+2) Run: `composer req davidpetrasek/chat-bundle @dev`

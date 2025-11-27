@@ -14,25 +14,28 @@ class FOSChatBundle extends AbstractBundle
         $definition->rootNode()
             ->children()
                 // Required
-                ->stringNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('thread_class')->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('message_class')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('db_driver')->cannotBeOverwritten()->end()
+                ->stringNode('thread_class')->end()
+                ->stringNode('message_class')->end()
                 
                 // Optional
-                ->stringNode('spam_detector')->defaultValue('noop')->cannotBeEmpty()->end()
-                ->stringNode('participant_provider')->defaultValue('fos_chat.participant_provider')->cannotBeEmpty()->end()
+                ->stringNode('spam_detector')->defaultValue('noop')->end()
+                ->stringNode('participant_provider')->defaultValue('fos_chat.participant_provider')->end()
             ->end()
         ;
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->import('../config/services.php');
+        // Installer hasn't been used yet
+        if (!isset($config['db_driver'])) {return;}
 
-        if (!in_array(strtolower((string) $config['db_driver']), ['orm', 'mongodb'])) {
+        if (!in_array(strtolower((string) $config['db_driver']), ['orm', 'mongodb'])) 
+        {
             throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
         }
 
+        $container->import('../config/services.php');
         $container->parameters()
             ->set('fos_chat.message_class', $config['message_class'])
             ->set('fos_chat.message_meta_class', $config['message_class'].'Metadata')

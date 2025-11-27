@@ -3,13 +3,13 @@
 Configuration Reference
 =======================
 
-All configuration options with default values. Possible values are commented out:
+All configuration options with default values. Possible values are commented out.
 
 ```yaml
 # config/packages/fos_chat.yaml
 
 fos_chat:
-    # Required 
+    # Required
     db_driver:      # orm | mongodb
     thread_class:   # custom FQCN
     message_class:  # custom FQCN
