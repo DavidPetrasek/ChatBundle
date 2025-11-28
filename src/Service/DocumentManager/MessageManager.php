@@ -21,9 +21,7 @@ use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 class MessageManager extends BaseMessageManager
 {
     private $repository;
-
     private readonly string $class;
-
     private readonly string $metaClass;
 
     public function __construct(private readonly DocumentManager $dm, string $class, string $metaClass)
@@ -36,7 +34,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant) : int
+    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant) : int
     {
         return $this->repository->createQueryBuilder()
             ->field('unreadForParticipants')->equals($participant->getId())

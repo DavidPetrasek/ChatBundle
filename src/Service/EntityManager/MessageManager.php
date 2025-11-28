@@ -19,9 +19,7 @@ use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 class MessageManager extends BaseMessageManager
 {
     private readonly \Doctrine\ORM\EntityRepository $repository;
-
     private readonly string $class;
-
     private readonly string $metaClass;
 
     public function __construct(private readonly EntityManager $em, string $class, string $metaClass)
@@ -44,20 +42,28 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbSentMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    public function getSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): QueryBuilder
     {
-        return $this->repository->createQueryBuilder('m')
-            ->select('count(m.id)')
+        return $this->getMessageByThreadQueryBuilder($thread)
+            ->andWhere('m.sender = :sender')
+            ->setParameter('sender', $participant);
+    }
 
-            ->where('m.sender = ?1 AND m.thread = ?2')
-            ->setParameter(1, $participant)
-            ->setParameter(2, $thread);
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): QueryBuilder
+    {
+        $builder = $this->getSentMessageByParticipantAndThreadQueryBuilder($participant, $thread);
+
+        return $builder
+            ->select($builder->expr()->count('m.id'));
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getNbSentMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread): int
+    public function getNbSentMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread): int
     {
         return $this->getNbSentMessageByParticipantAndThreadQueryBuilder($participant, $thread)->getQuery()->getSingleScalarResult();
     }
@@ -65,7 +71,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('m')
             ->innerJoin('m.metadata', 'mm')
@@ -84,7 +90,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): QueryBuilder
     {
         return $this->getUnreadMessageByParticipantQueryBuilder($participant)
             ->andWhere('m.thread = :thread')
@@ -94,7 +100,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread): QueryBuilder
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): QueryBuilder
     {
         $builder = $this->getUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread);
 
@@ -105,7 +111,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getNbUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         $builder = $this->getUnreadMessageByParticipantQueryBuilder($participant);
 
@@ -116,7 +122,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant): int
+    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant): int
     {
         return (int) $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
             ->getQuery()
@@ -126,7 +132,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread): int
+    public function getNbUnreadMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread): int
     {
         return (int) $this->getNbUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread)
             ->getQuery()
@@ -136,7 +142,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getFirstMessageByThreadQueryBuilder(ThreadInterface $thread): QueryBuilder
+    public function getFirstMessageByThreadQueryBuilder(int|ThreadInterface $thread): QueryBuilder
     {
         return $this->repository->createQueryBuilder('m')            
             ->where('m.thread = ?1')
@@ -149,7 +155,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getFirstMessageByThread(ThreadInterface $thread): ?MessageInterface
+    public function getFirstMessageByThread(int|ThreadInterface $thread): ?MessageInterface
     {
         return $this->getFirstMessageByThreadQueryBuilder($thread)->getQuery()->getOneOrNullResult();
     }
@@ -157,7 +163,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getLastMessageByThreadQueryBuilder(ThreadInterface $thread): QueryBuilder
+    public function getLastMessageByThreadQueryBuilder(int|ThreadInterface $thread): QueryBuilder
     {
         return $this->repository->createQueryBuilder('m')            
             ->where('m.thread = ?1')
@@ -170,7 +176,7 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getLastMessageByThread(ThreadInterface $thread): ?MessageInterface
+    public function getLastMessageByThread(int|ThreadInterface $thread): ?MessageInterface
     {
         return $this->getLastMessageByThreadQueryBuilder($thread)->getQuery()->getOneOrNullResult();
     }

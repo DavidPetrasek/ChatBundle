@@ -22,68 +22,73 @@ interface MessageManagerInterface extends ReadableManagerInterface
     public function getMessageByThreadQueryBuilder(int|ThreadInterface $thread);
 
     /**
-     * How many messages were sent by a participant in a particular thread.
+     * Messages sent by a participant in a particular thread.
      */
-    public function getNbSentMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread);
+    public function getSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread);
 
     /**
      * How many messages were sent by a participant in a particular thread.
      */
-    public function getNbSentMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread) : int;
+    public function getNbSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread);
+
+    /**
+     * How many messages were sent by a participant in a particular thread.
+     */
+    public function getNbSentMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread) : int;
 
     /**
      * Tells how many unread, messages this participant has in a particular thread.
      */
-    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread);
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread);
 
     /**
      * Tells how many unread, messages this participant has in a particular thread.
      */
-    public function getNbUnreadMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread) : int;
+    public function getNbUnreadMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread) : int;
 
     /**
      * Get all unread messages this participant has.
      */
-    public function getUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant);
+    public function getUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant);
 
     /**
      * Get all unread messages this participant has in a particular thread.
      */
-    public function getUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread);
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread);
 
     /**
      * Tells how many unread, messages this participant has.
      */
-    public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant);
+    public function getNbUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant);
 
     /**
      * Tells how many unread, messages this participant has.
      */
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant) : int;
+    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant) : int;
 
     /**
      * Returns the first message of a thread.
      * This is an optimized version of getFirstMessage() which relies on loading the entire collection.
      */
-    public function getFirstMessageByThread(ThreadInterface $thread) : ?MessageInterface;
+    public function getFirstMessageByThread(int|ThreadInterface $thread) : ?MessageInterface;
 
     /**
      * Returns the first message of a thread.
      * This is an optimized version of getFirstMessage() which relies on loading the entire collection.
      */
-    public function getFirstMessageByThreadQueryBuilder(ThreadInterface $thread);
+    public function getFirstMessageByThreadQueryBuilder(int|ThreadInterface $thread);
 
     /**
      * Returns the last message of a thread.
      * This is an optimized version of getLastMessage() which relies on loading the entire collection.
      */
-    public function getLastMessageByThread(ThreadInterface $thread) : ?MessageInterface;
+    public function getLastMessageByThread(int|ThreadInterface $thread) : ?MessageInterface;
 
     /**
      * Returns the last message of a thread.
      * This is an optimized version of getLastMessage() which relies on loading the entire collection.
      */
-    public function getLastMessageByThreadQueryBuilder(ThreadInterface $thread);
+    public function getLastMessageByThreadQueryBuilder(int|ThreadInterface $thread);
 
     /**
      * Creates an empty message instance.

@@ -4,7 +4,7 @@ Getting started with FOSChatBundle
 ## Installation
 
 ```bash
-composer require friendsofsymfony/chat-bundle
+composer req friendsofsymfony/chat-bundle
 ```
 
 Finish installation with:

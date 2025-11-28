@@ -19,15 +19,7 @@ use FOS\ChatBundle\Service\EntityManager\MessageManager;
 class ThreadManager extends BaseThreadManager
 {
     private readonly \Doctrine\ORM\EntityRepository $repository;
-
-    /**
-     * The model class.
-     */
     private readonly string $class;
-
-    /**
-     * The model class.
-     */
     private readonly string $metaClass;
 
     public function __construct(private readonly EntityManager $em, string $class, string $metaClass, private readonly MessageManager $messageManager)
@@ -40,7 +32,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findThreadById($id): ?ThreadInterface
+    public function findThreadById(int $id): ?ThreadInterface
     {
         return $this->repository->find($id);
     }
@@ -48,7 +40,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -61,7 +53,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getNbParticipantThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getNbParticipantThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         $builder = $this->getParticipantThreadsQueryBuilder($participant);
 
@@ -72,7 +64,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantInboxThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -101,7 +93,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantInboxThreads(ParticipantInterface $participant): array
+    public function findParticipantInboxThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantInboxThreadsQueryBuilder($participant)
             ->getQuery()
@@ -111,7 +103,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantSentThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -140,7 +132,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantSentThreads(ParticipantInterface $participant): array
+    public function findParticipantSentThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantSentThreadsQueryBuilder($participant)
             ->getQuery()
@@ -150,7 +142,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantDeletedThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
@@ -172,7 +164,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantDeletedThreads(ParticipantInterface $participant): array
+    public function findParticipantDeletedThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantDeletedThreadsQueryBuilder($participant)
             ->getQuery()
@@ -182,7 +174,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search): never
+    public function getParticipantThreadsBySearchQueryBuilder(int|ParticipantInterface $participant, $search): never
     {
         // remove all non-word chars
         $search = preg_replace('/[^\w]/', ' ', trim($search));
@@ -195,7 +187,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantThreadsBySearch(ParticipantInterface $participant, $search): array
+    public function findParticipantThreadsBySearch(int|ParticipantInterface $participant, $search): array
     {
         return $this->getParticipantThreadsBySearchQueryBuilder($participant, $search)
             ->getQuery()
@@ -205,7 +197,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getThreadsCreatedByParticipantQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.createdBy', 'p')
@@ -217,7 +209,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findThreadsCreatedBy(ParticipantInterface $participant): array
+    public function findThreadsCreatedBy(int|ParticipantInterface $participant): array
     {
         return $this->getThreadsCreatedByParticipantQueryBuilder($participant)
             ->getQuery()

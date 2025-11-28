@@ -20,9 +20,7 @@ use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
 class ThreadManager extends BaseThreadManager
 {
     private $repository;
-
     private readonly string $class;
-
     private readonly string $metaClass;
 
     public function __construct(private readonly DocumentManager $dm, string $class, string $metaClass, private readonly MessageManager $messageManager)
@@ -43,7 +41,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantInboxThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder()
             ->field('activeRecipients')->equals($participant->getId())
@@ -57,7 +55,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantInboxThreads(ParticipantInterface $participant): array
+    public function findParticipantInboxThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantInboxThreadsQueryBuilder($participant)->getQuery()->execute();
     }
@@ -65,7 +63,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantSentThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder()
             ->field('activeSenders')->equals($participant->getId())
@@ -79,7 +77,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantSentThreads(ParticipantInterface $participant): array
+    public function findParticipantSentThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantSentThreadsQueryBuilder($participant)->getQuery()->execute();
     }
@@ -87,7 +85,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant): QueryBuilder
+    public function getParticipantDeletedThreadsQueryBuilder(int|ParticipantInterface $participant): QueryBuilder
     {
         return $this->repository->createQueryBuilder()
             ->field('metadata.deleted')->equals(true)
@@ -98,7 +96,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantDeletedThreads(ParticipantInterface $participant): array
+    public function findParticipantDeletedThreads(int|ParticipantInterface $participant): array
     {
         return $this->getParticipantDeletedThreadsQueryBuilder($participant)->getQuery()->execute();
     }
@@ -106,7 +104,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search): QueryBuilder
+    public function getParticipantThreadsBySearchQueryBuilder(int|ParticipantInterface $participant, $search): QueryBuilder
     {
         // remove all non-word chars
         $search = preg_replace('/[^\w]/', ' ', trim((string) $search));
@@ -127,7 +125,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findParticipantThreadsBySearch(ParticipantInterface $participant, $search): array
+    public function findParticipantThreadsBySearch(int|ParticipantInterface $participant, $search): array
     {
         return $this->getParticipantThreadsBySearchQueryBuilder($participant, $search)->getQuery()->execute();
     }
@@ -135,7 +133,7 @@ class ThreadManager extends BaseThreadManager
     /**
      * {@inheritdoc}
      */
-    public function findThreadsCreatedBy(ParticipantInterface $participant): array
+    public function findThreadsCreatedBy(int|ParticipantInterface $participant): array
     {
         return $this->repository->createQueryBuilder()
             ->field('createdBy.$id')->equals(new \MongoId($participant->getId()))

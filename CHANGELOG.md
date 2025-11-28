@@ -11,12 +11,14 @@ New features:
 - Record datetime when read or deleted
 - Method chaining
 - Mark messages as deleted (for a single participant / for all)
+- Allow passing integers to MessageManager/ThreadManager methods
 
 New getters for Threads and Messages:
 - Added optimized version for `getFirst(Last)Message` methods, specifically `getFirst(Last)MessageByThread` and `getFirst(Last)MessageByThreadQueryBuilder` which doesn't load the entire collection
 - `getNbUnreadMessageByParticipantAndThread`
 - `getNbSentMessageByParticipantAndThread`
 - `getMessageByThreadQueryBuilder`
+- `getSentMessageByParticipantAndThreadQueryBuilder`
 - `getThreadsCreatedByParticipantQueryBuilder`
 - `getParticipantThreadsQueryBuilder`
 - `getUnreadMessageByParticipantQueryBuilder`
