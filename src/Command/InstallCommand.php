@@ -12,8 +12,8 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Process\Process;
 
 
-#[AsCommand(name: 'fos_chat:configure', description: 'Finish installation of FOSChatBundle')]
-class ConfigureCommand extends Command
+#[AsCommand(name: 'fos_chat:install', description: 'Finish installation of FOSChatBundle')]
+class InstallCommand extends Command
 {
     private QuestionHelper $qHelper;
 

@@ -9,7 +9,7 @@ composer req friendsofsymfony/chat-bundle
 
 Finish installation with:
 ```bash
-symfony console fos_chat:configure
+symfony console fos_chat:install
 ```
 
 [See the configuration Reference](99-config-reference.md)
