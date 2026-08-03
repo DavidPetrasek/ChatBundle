@@ -1,7 +1,7 @@
 <?php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use FOS\ChatBundle\Command\ConfigureCommand;
+use FOS\ChatBundle\Command\InstallCommand;
 use FOS\ChatBundle\Maker\Entities;
 use FOS\ChatBundle\Service\Composer\Composer;
 use FOS\ChatBundle\Service\Provider\Provider;
@@ -17,7 +17,7 @@ return function(ContainerConfigurator $container): void
 {
     $container->services()
 
-         ->set(ConfigureCommand::class)
+         ->set(InstallCommand::class)
             ->args([
                 param('kernel.project_dir'),
             ])
