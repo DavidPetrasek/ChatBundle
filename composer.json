@@ -28,7 +28,7 @@
         "symfony/console": ">=7.4",
         "symfony/framework-bundle": ">=7.4",
         "symfony/form": ">=7.4",
-        "symfony/maker-bundle": ">=1.63.0",
+        "symfony/maker-bundle": ">=1.67.0",
         "symfony/security-bundle": ">=7.4",
         "symfony/string": ">=7.4",
         "symfony/twig-bundle": ">=7.4",
@@ -42,6 +42,6 @@
     "require-dev": {
         "rector/rector": "^2.0",
         "symfony/test-pack": "^1.2",
-        "phpunit/phpunit": "^12.4"
+        "phpunit/phpunit": "^13.2"
     }
 }

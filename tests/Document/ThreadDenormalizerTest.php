@@ -4,19 +4,15 @@ namespace FOS\ChatBundle\Document;
 
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use FOS\ChatBundle\Model\MessageInterface;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use PHPUnit\Framework\TestCase;
 
 class ThreadDenormalizerTest extends TestCase
 {
-    private $dates;
+    private array $dates;
 
     public function setUp(): void
     {
-        $this->markTestIncomplete();
-        
         $this->dates = [
             new DateTimeImmutable('- 3 days'),
             new DateTimeImmutable('- 2 days'),
@@ -31,134 +27,125 @@ class ThreadDenormalizerTest extends TestCase
         $user1 = $this->createParticipantMock(1);
         $user2 = $this->createParticipantMock(2);
 
-        /*
-         * First message
-         */
-        $message = $this->createMessageMock($user1, $user2, $this->dates[0]);
         $thread->setSubject('Test thread subject');
+        $thread->addParticipant($user1);
         $thread->addParticipant($user2);
-        $thread->addMessage($message);
-
-        $this->assertSame([$user1, $user2], $thread->getParticipants());
-        $this->assertSame(['u2' => $this->dates[0]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByOtherParticipant());
-        $this->assertSame(['u1' => $this->dates[0]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByParticipant());
 
         /*
-         * Second message
+         * First message (user1 -> user2)
          */
-        $message = $this->createMessageMock($user2, $user1, $this->dates[1]);
-        $thread->addMessage($message);
+        $message1 = $this->createMessageMock($user1, $this->dates[0]);
+        $thread->addMessage($message1);
+        $thread->denormalize();
 
         $this->assertSame([$user1, $user2], $thread->getParticipants());
-        $this->assertSame(['u1' => $this->dates[1]->getTimestamp(), 'u2' => $this->dates[0]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByOtherParticipant());
-        $this->assertSame(['u1' => $this->dates[0]->getTimestamp(), 'u2' => $this->dates[1]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByParticipant());
+        $this->assertEquals($this->dates[0], $thread->getLastMessageDate());
+        $this->assertEquals($this->dates[0], $thread->getMetadataForParticipant($user1)?->getLastParticipantMessageDate());
+        $this->assertNull($thread->getMetadataForParticipant($user1)?->getLastMessageDate());
+        $this->assertEquals($this->dates[0], $thread->getMetadataForParticipant($user2)?->getLastMessageDate());
+        $this->assertNull($thread->getMetadataForParticipant($user2)?->getLastParticipantMessageDate());
+
+        $this->assertSame([1, 2], $thread->getActiveParticipants());
+        $this->assertSame([1], $thread->getActiveSenders());
+        $this->assertSame([2], $thread->getActiveRecipients());
 
         /*
-         * Third message
+         * Second message (user2 -> user1)
          */
-        $message = $this->createMessageMock($user2, $user1, $this->dates[2]);
-        $thread->addMessage($message);
+        $message2 = $this->createMessageMock($user2, $this->dates[1]);
+        $thread->addMessage($message2);
+        $thread->denormalize();
 
-        $this->assertSame([$user1, $user2], $thread->getParticipants());
-        $this->assertSame(['u1' => $this->dates[2]->getTimestamp(), 'u2' => $this->dates[0]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByOtherParticipant());
-        $this->assertSame(['u1' => $this->dates[0]->getTimestamp(), 'u2' => $this->dates[2]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByParticipant());
+        $this->assertEquals($this->dates[1], $thread->getLastMessageDate());
+        $this->assertEquals($this->dates[1], $thread->getMetadataForParticipant($user1)?->getLastMessageDate());
+        $this->assertEquals($this->dates[1], $thread->getMetadataForParticipant($user2)?->getLastParticipantMessageDate());
+
+        $this->assertSame([1, 2], $thread->getActiveSenders());
+        $this->assertSame([1, 2], $thread->getActiveRecipients());
 
         /*
-         * Fourth message
+         * Third message (user2 -> user1)
          */
-        $message = $this->createMessageMock($user1, $user2, $this->dates[3]);
-        $thread->addMessage($message);
+        $message3 = $this->createMessageMock($user2, $this->dates[2]);
+        $thread->addMessage($message3);
+        $thread->denormalize();
 
-        $this->assertSame([$user1, $user2], $thread->getParticipants());
-        $this->assertSame(['u1' => $this->dates[2]->getTimestamp(), 'u2' => $this->dates[3]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByOtherParticipant());
-        $this->assertSame(['u1' => $this->dates[3]->getTimestamp(), 'u2' => $this->dates[2]->getTimestamp()], $thread->getDatesOfLastMessageWrittenByParticipant());
+        $this->assertEquals($this->dates[2], $thread->getLastMessageDate());
+        $this->assertEquals($this->dates[2], $thread->getMetadataForParticipant($user1)?->getLastMessageDate());
+        $this->assertEquals($this->dates[2], $thread->getMetadataForParticipant($user2)?->getLastParticipantMessageDate());
+
+        /*
+         * Fourth message (user1 -> user2)
+         */
+        $message4 = $this->createMessageMock($user1, $this->dates[3]);
+        $thread->addMessage($message4);
+        $thread->denormalize();
+
+        $this->assertEquals($this->dates[3], $thread->getLastMessageDate());
+        $this->assertEquals($this->dates[3], $thread->getMetadataForParticipant($user1)?->getLastParticipantMessageDate());
+        $this->assertEquals($this->dates[2], $thread->getMetadataForParticipant($user1)?->getLastMessageDate());
+        $this->assertEquals($this->dates[3], $thread->getMetadataForParticipant($user2)?->getLastMessageDate());
+        $this->assertEquals($this->dates[2], $thread->getMetadataForParticipant($user2)?->getLastParticipantMessageDate());
 
         $this->assertEquals('test thread subject hi dude', $thread->getKeywords());
-        $this->assertSame(['u1' => false, 'u2' => false], $thread->isDeletedByParticipant($user1));
+        $this->assertFalse($thread->isDeletedByParticipant($user1));
     }
 
-    private function createMessageMock($sender, $recipient, DateTimeImmutable $date)
+    private function createMessageMock(ParticipantInterface $sender, DateTimeImmutable $date)
     {
-        $message = $this->getMockBuilder(\FOS\ChatBundle\Document\Message::class)
+        $message = $this->getMockBuilder(Message::class)
+            ->disableOriginalConstructor()
             ->getMock();
 
-        $message->expects($this->atLeastOnce())
-            ->method('getSender')
+        $message->method('getSender')
             ->willReturn($sender);
-        $message->expects($this->atLeastOnce())
-            ->method('getTimestamp')
+        $message->method('getCreatedAt')
+            ->willReturn($date);
+        $message->method('getTimestamp')
             ->willReturn($date->getTimestamp());
-        $message->expects($this->atLeastOnce())
-            ->method('getBody')
+        $message->method('getBody')
             ->willReturn('hi dude');
+        $message->method('setSpam')
+            ->willReturnSelf();
 
         return $message;
     }
 
-    private function createParticipantMock(int $id)
+    private function createParticipantMock(int|string $id)
     {
-        $user = $this->getMockBuilder(\FOS\ChatBundle\Model\ParticipantInterface::class)
-            ->disableOriginalConstructor(true)
-            ->getMock();
-
-        $user->expects($this->any())
-            ->method('getId')
+        $user = $this->createMock(ParticipantInterface::class);
+        $user->method('getId')
             ->willReturn($id);
 
         return $user;
     }
 }
 
+class TestThreadMetadata extends ThreadMetadata
+{
+}
+
 class TestThread extends Thread
 {
-    public array $datesOfLastMessageWrittenByParticipant = [];
-
-    public array $datesOfLastMessageWrittenByOtherParticipant = [];
-
-    public $isDeletedByParticipant;
-
-    public function getDatesOfLastMessageWrittenByParticipant()
+    public function __construct()
     {
-        return $this->datesOfLastMessageWrittenByParticipant;
+        parent::__construct();
+        $this->metadata = new ArrayCollection();
     }
 
-    public function getDatesOfLastMessageWrittenByOtherParticipant()
+    public function addParticipant(ParticipantInterface $participant): void
     {
-        return $this->datesOfLastMessageWrittenByOtherParticipant;
+        parent::addParticipant($participant);
+
+        if (!$this->getMetadataForParticipant($participant)) {
+            $meta = new TestThreadMetadata();
+            $meta->setParticipant($participant);
+            $this->metadata->add($meta);
+        }
     }
 
-    public function getKeywords()
+    public function getKeywords(): string
     {
         return $this->keywords;
-    }
-
-    public function isDeletedByParticipant(ParticipantInterface $participant): bool
-    {
-        return $this->isDeletedByParticipant;
-    }
-
-    public function getAllMetadata(): Collection
-    {
-        throw new \Exception('Not implemented');
-    }
-
-    #[\Override]
-    public function addMessage(MessageInterface $message): void
-    {
-        parent::addMessage($message);
-
-        $this->sortDenormalizedProperties();
-    }
-
-    /**
-     * Sort denormalized properties to ease testing.
-     */
-    private function sortDenormalizedProperties()
-    {
-        ksort($this->datesOfLastMessageWrittenByParticipant);
-        ksort($this->datesOfLastMessageWrittenByOtherParticipant);
-        $participants = $this->participants->toArray();
-        usort($participants, fn(ParticipantInterface $p1, ParticipantInterface $p2): bool => $p1->getId() > $p2->getId());
-        $this->participants = new ArrayCollection($participants);
     }
 }
