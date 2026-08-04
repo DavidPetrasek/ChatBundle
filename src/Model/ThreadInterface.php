@@ -9,7 +9,7 @@ interface ThreadInterface extends ReadableInterface
     /**
      * Gets the message unique id.
      */
-    public function getId() : ?int;
+    public function getId() : string|int|null;
 
     public function getSubject() : string;
 

@@ -16,60 +16,60 @@ class ThreadManager extends BaseThreadManager
         return new Thread();
     }
 
-    public function getParticipantInboxThreadsQueryBuilder(ParticipantInterface $participant)
+    public function getParticipantInboxThreadsQueryBuilder(int|ParticipantInterface $participant)
     {
 
     }
 
-    public function findParticipantInboxThreads(ParticipantInterface $participant): array
+    public function findParticipantInboxThreads(int|ParticipantInterface $participant): array
     {
         return [new Thread()];
     }
 
-    public function getParticipantSentThreadsQueryBuilder(ParticipantInterface $participant)
+    public function getParticipantSentThreadsQueryBuilder(int|ParticipantInterface $participant)
     {
     }
 
-    public function findParticipantSentThreads(ParticipantInterface $participant): array
-    {
-        return [];
-    }
-
-    public function getParticipantDeletedThreadsQueryBuilder(ParticipantInterface $participant)
-    {
-    }
-
-    public function findParticipantDeletedThreads(ParticipantInterface $participant): array
+    public function findParticipantSentThreads(int|ParticipantInterface $participant): array
     {
         return [];
     }
 
-    public function getParticipantThreadsBySearchQueryBuilder(ParticipantInterface $participant, $search)
+    public function getParticipantDeletedThreadsQueryBuilder(int|ParticipantInterface $participant)
     {
     }
 
-    public function findParticipantThreadsBySearch(ParticipantInterface $participant, $search): array
+    public function findParticipantDeletedThreads(int|ParticipantInterface $participant): array
     {
         return [];
     }
 
-    public function findThreadsCreatedBy(ParticipantInterface $participant): array
+    public function getParticipantThreadsBySearchQueryBuilder(int|ParticipantInterface $participant, $search)
+    {
+    }
+
+    public function findParticipantThreadsBySearch(int|ParticipantInterface $participant, $search): array
+    {
+        return [];
+    }
+
+    public function findThreadsCreatedBy(int|ParticipantInterface $participant): array
     {
         return [];
     }
 
     // Added stubs for abstract methods from BaseThreadManager to satisfy implementation
-    public function getParticipantThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getParticipantThreadsQueryBuilder(int|ParticipantInterface $participant) : QueryBuilder
     {
         throw new \BadMethodCallException('Not implemented in test ThreadManager.');
     }
 
-    public function getNbParticipantThreadsQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getNbParticipantThreadsQueryBuilder(int|ParticipantInterface $participant) : QueryBuilder
     {
         throw new \BadMethodCallException('Not implemented in test ThreadManager.');
     }
 
-    public function getThreadsCreatedByParticipantQueryBuilder(ParticipantInterface $participant) : QueryBuilder
+    public function getThreadsCreatedByParticipantQueryBuilder(int|ParticipantInterface $participant) : QueryBuilder
     {
         throw new \BadMethodCallException('Not implemented in test ThreadManager.');
     }

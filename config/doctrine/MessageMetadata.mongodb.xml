@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass name="FOS\ChatBundle\Document\MessageMetadata">
+
+        <field name="read" type="boolean" />
+
+        <field name="readAt" type="date_immutable" />
+
+        <field name="deleted" type="boolean" />
+
+        <field name="deletedAt" type="date_immutable" />
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

@@ -18,7 +18,7 @@ abstract class Thread implements ThreadInterface
     /**
      * Unique id of the thread.
      */
-    protected ?int $id = null;
+    protected string|int|null $id = null;
 
     /**
      * Text subject of the thread.
@@ -65,7 +65,7 @@ abstract class Thread implements ThreadInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): ?int
+    public function getId(): string|int|null
     {
         return $this->id;
     }

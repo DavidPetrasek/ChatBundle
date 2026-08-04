@@ -16,7 +16,7 @@ use FOS\ChatBundle\Tests\Functional\Entity\Message;
  */
 class MessageManager extends BaseMessageManager
 {
-    public function getNbUnreadMessageByParticipant(ParticipantInterface $participant): int
+    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant): int
     {
         return 3;
     }
@@ -46,51 +46,55 @@ class MessageManager extends BaseMessageManager
     {
     }
 
-    public function getNbSentMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread)
+    public function getSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread)
     {
     }
 
-    public function getNbSentMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread) : int
-    {
-        return 5;
-    }
-
-    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread)
+    public function getNbSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread)
     {
     }
 
-    public function getNbUnreadMessageByParticipantAndThread(ParticipantInterface $participant, ThreadInterface $thread): int
+    public function getNbSentMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread) : int
     {
         return 5;
     }
 
-    public function getUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant)
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread)
     {
     }
 
-    public function getUnreadMessageByParticipantAndThreadQueryBuilder(ParticipantInterface $participant, ThreadInterface $thread)
+    public function getNbUnreadMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread): int
+    {
+        return 5;
+    }
+
+    public function getUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant)
     {
     }
 
-    public function getNbUnreadMessageByParticipantQueryBuilder(ParticipantInterface $participant)
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread)
     {
     }
 
-    public function getFirstMessageByThread(ThreadInterface $thread): null|MessageInterface
+    public function getNbUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant)
+    {
+    }
+
+    public function getFirstMessageByThread(int|ThreadInterface $thread): null|MessageInterface
     {
         return new Message();
     }
 
-    public function getFirstMessageByThreadQueryBuilder(ThreadInterface $thread)
+    public function getFirstMessageByThreadQueryBuilder(int|ThreadInterface $thread)
     {
     }
 
-    public function getLastMessageByThread(ThreadInterface $thread): null|MessageInterface
+    public function getLastMessageByThread(int|ThreadInterface $thread): null|MessageInterface
     {
         return new Message();
     }
 
-    public function getLastMessageByThreadQueryBuilder(ThreadInterface $thread)
+    public function getLastMessageByThreadQueryBuilder(int|ThreadInterface $thread)
     {
     }
 }

@@ -24,7 +24,12 @@ class MessageManager extends BaseMessageManager
     private readonly string $class;
     private readonly string $metaClass;
 
-    public function __construct(private readonly DocumentManager $dm, string $class, string $metaClass)
+    public function __construct
+    (
+        private readonly DocumentManager $dm, 
+        string $class, 
+        string $metaClass
+    )
     {
         $this->repository = $dm->getRepository($class);
         $this->class = $dm->getClassMetadata($class)->name;
@@ -34,12 +39,131 @@ class MessageManager extends BaseMessageManager
     /**
      * {@inheritdoc}
      */
-    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant) : int
+    public function getMessageByThreadQueryBuilder(int|ThreadInterface $thread): Builder
     {
         return $this->repository->createQueryBuilder()
-            ->field('unreadForParticipants')->equals($participant->getId())
+            ->field('thread')->equals($thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): Builder
+    {
+        return $this->getMessageByThreadQueryBuilder($thread)
+            ->field('sender')->equals($participant);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbSentMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): Builder
+    {
+        return $this->getSentMessageByParticipantAndThreadQueryBuilder($participant, $thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbSentMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread): int
+    {
+        return (int) $this->getNbSentMessageByParticipantAndThreadQueryBuilder($participant, $thread)
             ->getQuery()
             ->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant): Builder
+    {
+        return $this->repository->createQueryBuilder()
+            ->field('unreadForParticipants')->equals($participant->getId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): Builder
+    {
+        return $this->getUnreadMessageByParticipantQueryBuilder($participant)
+            ->field('thread')->equals($thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantQueryBuilder(int|ParticipantInterface $participant): Builder
+    {
+        return $this->getUnreadMessageByParticipantQueryBuilder($participant);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantAndThreadQueryBuilder(int|ParticipantInterface $participant, int|ThreadInterface $thread): Builder
+    {
+        return $this->getUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipant(int|ParticipantInterface $participant): int
+    {
+        return (int) $this->getNbUnreadMessageByParticipantQueryBuilder($participant)
+            ->getQuery()
+            ->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNbUnreadMessageByParticipantAndThread(int|ParticipantInterface $participant, int|ThreadInterface $thread): int
+    {
+        return (int) $this->getNbUnreadMessageByParticipantAndThreadQueryBuilder($participant, $thread)
+            ->getQuery()
+            ->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstMessageByThreadQueryBuilder(int|ThreadInterface $thread): Builder
+    {
+        return $this->getMessageByThreadQueryBuilder($thread)
+            ->sort('id', 'asc')
+            ->limit(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstMessageByThread(int|ThreadInterface $thread): ?MessageInterface
+    {
+        return $this->getFirstMessageByThreadQueryBuilder($thread)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastMessageByThreadQueryBuilder(int|ThreadInterface $thread): Builder
+    {
+        return $this->getMessageByThreadQueryBuilder($thread)
+            ->sort('id', 'desc')
+            ->limit(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastMessageByThread(int|ThreadInterface $thread): ?MessageInterface
+    {
+        return $this->getLastMessageByThreadQueryBuilder($thread)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     /**
@@ -64,7 +188,7 @@ class MessageManager extends BaseMessageManager
     public function markReadByThreadAndParticipant(ThreadInterface $thread, ParticipantInterface $participant, bool $read): void
     {
         $this->markReadByCondition($participant, $read, function (Builder $queryBuilder) use ($thread): void {
-            $queryBuilder->field('thread.$id')->equals(new \MongoId($thread->getId()));
+            $queryBuilder->field('thread')->equals($thread);
         });
     }
 
@@ -74,7 +198,7 @@ class MessageManager extends BaseMessageManager
     private function markReadByParticipant(MessageInterface $message, ParticipantInterface $participant, bool $read): void
     {
         $this->markReadByCondition($participant, $read, function (Builder $queryBuilder) use ($message): void {
-            $queryBuilder->field('_id')->equals(new \MongoId($message->getId()));
+            $queryBuilder->field('id')->equals($message->getId());
         });
     }
 
@@ -86,13 +210,11 @@ class MessageManager extends BaseMessageManager
     {
         $queryBuilder = $this->repository->createQueryBuilder();
         $condition($queryBuilder);
-        $queryBuilder->update()
-            ->field('metadata.participant.$id')->equals(new \MongoId($participant->getId()));
+        $queryBuilder->updateOne()
+            ->field('metadata.participant')->equals($participant);
 
         /* If marking the message as read for a participant, we should pull
-         * their ID out of the unreadForParticipants array. The same is not
-         * true for the inverse. We should only add a participant ID to this
-         * array if the message is not considered spam.
+         * their ID out of the unreadForParticipants array.
          */
         if ($read) {
             $queryBuilder->field('unreadForParticipants')->pull($participant->getId());
@@ -100,21 +222,20 @@ class MessageManager extends BaseMessageManager
 
         $queryBuilder
             ->field('metadata.$.read')->set($read)
-            ->getQuery(['multiple' => true])
+            ->getQuery()
             ->execute();
 
         /* If marking the message as unread for a participant, add their ID to
-         * the unreadForParticipants array if the message is not spam. This must
-         * be done in a separate query, since the criteria is more selective.
+         * the unreadForParticipants array if the message is not spam.
          */
         if (!$read) {
             $queryBuilder = $this->repository->createQueryBuilder();
             $condition($queryBuilder);
-            $queryBuilder->update()
-                ->field('metadata.participant.$id')->equals(new \MongoId($participant->getId()))
+            $queryBuilder->updateOne()
+                ->field('metadata.participant')->equals($participant)
                 ->field('spam')->equals(false)
                 ->field('unreadForParticipants')->addToSet($participant->getId())
-                ->getQuery(['multiple' => true])
+                ->getQuery()
                 ->execute();
         }
     }
@@ -124,7 +245,8 @@ class MessageManager extends BaseMessageManager
      */
     public function saveMessage(MessageInterface $message, $andFlush = true): void
     {
-        $message->denormalize();
+        $this->denormalize($message);
+
         $this->dm->persist($message);
         if ($andFlush) {
             $this->dm->flush();
@@ -142,16 +264,15 @@ class MessageManager extends BaseMessageManager
     /**
      * Creates a new MessageMetadata instance.
      */
-    private function createMessageMetadata() : MessageMetadata
+    private function createMessageMetadata(): MessageMetadata
     {
         return new $this->metaClass();
     }
 
     /*
      * DENORMALIZATION
-     *
-     * All following methods are relative to denormalization
      */
+
     /**
      * Performs denormalization tricks.
      */

@@ -35,7 +35,7 @@ class User implements ParticipantInterface, UserInterface
         return 'user';
     }
 
-    public function getId(): ?int
+    public function getId(): string|int|null
     {
         return 1;
     }

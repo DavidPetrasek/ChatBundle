@@ -18,7 +18,7 @@ abstract class Message implements MessageInterface
     /**
      * Unique id of the message.
      */
-    protected ?int $id = null;
+    protected string|int|null $id = null;
 
     /**
      * Thread the message belongs to.
@@ -41,7 +41,7 @@ abstract class Message implements MessageInterface
     protected \DateTimeImmutable $createdAt;
 
     /**
-     * Whether this message was sent by the system and not by a real user
+     * Whether this message was sent by the system and not by a real user.
      */
     protected bool $automaticReply = false;
 
@@ -60,7 +60,7 @@ abstract class Message implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): ?int
+    public function getId(): string|int|null
     {
         return $this->id;
     }

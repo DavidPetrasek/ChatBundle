@@ -2,57 +2,105 @@
 
 namespace FOS\ChatBundle\Document;
 
+use Doctrine\Common\Collections\Collection;
 use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\Thread as AbstractThread;
+use FOS\ChatBundle\Model\ThreadMetadata as ModelThreadMetadata;
 
 abstract class Thread extends AbstractThread
 {
     /**
      * Date that the last message in this thread was created at.
-     *
-     * This denormalization field is used for sorting threads in the inbox and
-     * sent list.
      */
-    protected \DateTimeImmutable $lastMessageDate;
+    protected ?\DateTimeImmutable $lastMessageDate = null;
+
+    protected bool $spam = false;
 
     /**
-     * All text contained in the thread messages
-     * Used for the full text search.
+     * All text contained in the thread messages.
+     * Used for full text search.
      */
     protected string $keywords = '';
 
     /**
-     * The activeParticipants array is a union of the activeRecipients and
-     * activeSenders arrays.
+     * Union of activeRecipients and activeSenders.
      */
     protected array $activeParticipants = [];
 
     /**
-     * The activeRecipients array will contain a participant's ID if the thread
-     * is not deleted for the participant, the thread is not spam and at least
-     * one message in the thread is not created by the participant.
+     * Contains participant IDs for non-deleted, non-spam threads with incoming messages.
      */
     protected array $activeRecipients = [];
 
     /**
-     * The activeSenders array will contain a participant's ID if the thread is
-     * not deleted for the participant and at least one message in the thread
-     * is created by the participant.
+     * Contains participant IDs for non-deleted threads with sent messages.
      */
     protected array $activeSenders = [];
 
     /**
-     * Gets the users participating in this conversation.
+     * @return Collection<int, ModelThreadMetadata>
      */
-    public function getParticipants() : array
+    public function getAllMetadata(): Collection
+    {
+        return $this->metadata;
+    }
+
+    public function getLastMessageDate(): ?\DateTimeImmutable
+    {
+        return $this->lastMessageDate;
+    }
+
+    public function setLastMessageDate(?\DateTimeImmutable $lastMessageDate): self
+    {
+        $this->lastMessageDate = $lastMessageDate;
+
+        return $this;
+    }
+
+    public function isSpam(): bool
+    {
+        return $this->spam;
+    }
+
+    public function setSpam(bool $spam): self
+    {
+        $this->spam = $spam;
+
+        return $this;
+    }
+
+    public function getKeywords(): string
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(string $keywords): self
+    {
+        $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    public function getActiveParticipants(): array
+    {
+        return $this->activeParticipants;
+    }
+
+    public function getActiveRecipients(): array
+    {
+        return $this->activeRecipients;
+    }
+
+    public function getActiveSenders(): array
+    {
+        return $this->activeSenders;
+    }
+
+    public function getParticipants(): array
     {
         return $this->participants->toArray();
     }
 
-    /**
-     * Adds a participant to the thread
-     * If it already exists, nothing is done.
-     */
     public function addParticipant(ParticipantInterface $participant): void
     {
         if (!$this->isParticipant($participant)) {
@@ -60,23 +108,15 @@ abstract class Thread extends AbstractThread
         }
     }
 
-    /**
-     * Tells if the user participates to the conversation.
-     */
-    public function isParticipant(ParticipantInterface $participant) : bool
+    public function isParticipant(ParticipantInterface $participant): bool
     {
         return $this->participants->contains($participant);
     }
 
     /*
      * DENORMALIZATION
-     *
-     * All following methods are relative to denormalization
      */
 
-    /**
-     * Performs denormalization tricks.
-     */
     public function denormalize(): void
     {
         $this->doCreatedByAndAt();
@@ -87,10 +127,7 @@ abstract class Thread extends AbstractThread
         $this->doEnsureActiveParticipantArrays();
     }
 
-    /**
-     * Ensures that the createdBy & createdAt properties are set.
-     */
-    protected function doCreatedByAndAt()
+    protected function doCreatedByAndAt(): void
     {
         if ($this->getCreatedBy() instanceof ParticipantInterface) {
             return;
@@ -104,10 +141,7 @@ abstract class Thread extends AbstractThread
         $this->setCreatedAt($message->getCreatedAt());
     }
 
-    /**
-     * Ensures that the lastMessageDate property is up to date.
-     */
-    protected function doLastMessageDate()
+    protected function doLastMessageDate(): void
     {
         if (!$message = $this->getLastMessage()) {
             return;
@@ -116,37 +150,25 @@ abstract class Thread extends AbstractThread
         $this->lastMessageDate = $message->getCreatedAt();
     }
 
-    /**
-     * Adds all messages contents to the keywords property.
-     */
-    protected function doKeywords()
+    protected function doKeywords(): void
     {
         $keywords = $this->getSubject();
 
         foreach ($this->getMessages() as $message) {
-            $keywords .= ' '.$message->getBody();
+            $keywords .= ' ' . $message->getBody();
         }
 
-        // we only need each word once
         $this->keywords = implode(' ', array_unique(str_word_count(mb_strtolower($keywords, 'UTF-8'), 1)));
     }
 
-    /**
-     * Denormalizes the value of "spam" (boolean) to messages.
-     */
-    protected function doSpam()
+    protected function doSpam(): void
     {
         foreach ($this->getMessages() as $message) {
             $message->setSpam($this->isSpam());
         }
     }
 
-    /**
-     * Ensures that metadata last message dates are up to date.
-     *
-     * Precondition: metadata exists for all thread participants
-     */
-    protected function doMetadataLastMessageDates()
+    protected function doMetadataLastMessageDates(): void
     {
         foreach ($this->metadata as $meta) {
             foreach ($this->getMessages() as $message) {
@@ -161,10 +183,7 @@ abstract class Thread extends AbstractThread
         }
     }
 
-    /**
-     * Ensures that active participant, recipient and sender arrays are updated.
-     */
-    protected function doEnsureActiveParticipantArrays()
+    protected function doEnsureActiveParticipantArrays(): void
     {
         $this->activeParticipants = [];
         $this->activeRecipients = [];

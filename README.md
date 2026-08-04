@@ -19,14 +19,21 @@ https://github.com/DavidPetrasek/ChatBundle/blob/main/docs/00-index.md
 
 
 ## How to test
-- You might need to fork this repo before and then swap the url below
-1) Add the following to your composer.json:
+
+1. Clone/download this repo
+
+2. Add to your `composer.json`:
 ```json
 "repositories": [
+    {
+        "type": "path",
+        "url": "/abs/path/to/cloned/repo/ChatBundle",
+        "options": 
         {
-            "type": "vcs",
-            "url":  "git@github.com:DavidPetrasek/ChatBundle.git"
+            "symlink": true
         }
-    ]
+    }
+]
 ```
-2) Run: `composer req davidpetrasek/chat-bundle @dev`
+
+3. Run: `composer req davidpetrasek/chat-bundle @dev`

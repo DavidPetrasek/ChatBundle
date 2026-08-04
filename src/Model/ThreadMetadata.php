@@ -18,12 +18,12 @@ abstract class ThreadMetadata
     /**
      * Date of last message written by the participant.
      */
-    protected \DateTimeImmutable $lastParticipantMessageDate;
+    protected ?\DateTimeImmutable $lastParticipantMessageDate = null;
 
     /**
      * Date of last message written by another participant.
      */
-    protected \DateTimeImmutable $lastMessageDate;
+    protected ?\DateTimeImmutable $lastMessageDate = null;
 
 
     public function getParticipant() : ParticipantInterface
@@ -78,24 +78,24 @@ abstract class ThreadMetadata
         return $this;
     }
 
-    public function getLastParticipantMessageDate() : \DateTimeImmutable
+    public function getLastParticipantMessageDate() : ?\DateTimeImmutable
     {
         return $this->lastParticipantMessageDate;
     }
 
-    public function setLastParticipantMessageDate(\DateTimeImmutable $date): self
+    public function setLastParticipantMessageDate(?\DateTimeImmutable $date): self
     {
         $this->lastParticipantMessageDate = $date;
 
         return $this;
     }
 
-    public function getLastMessageDate() : \DateTimeImmutable
+    public function getLastMessageDate() : ?\DateTimeImmutable
     {
         return $this->lastMessageDate;
     }
 
-    public function setLastMessageDate(\DateTimeImmutable $date): self
+    public function setLastMessageDate(?\DateTimeImmutable $date): self
     {
         $this->lastMessageDate = $date;
 
