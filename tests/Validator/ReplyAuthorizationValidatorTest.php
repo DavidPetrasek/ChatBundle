@@ -3,22 +3,23 @@ namespace App\Tests\Validator;
 
 use FOS\ChatBundle\Validator\ReplyAuthorization;
 use FOS\ChatBundle\Validator\ReplyAuthorizationValidator;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class ReplyAuthorizationValidatorTest extends ConstraintValidatorTestCase
 {
-    private ?\PHPUnit\Framework\MockObject\MockObject $authorizer = null;
+    private ?MockObject $authorizer = null;
 
-    private ?\PHPUnit\Framework\MockObject\MockObject $participantProvider = null;
+    private ?MockObject $participantProvider = null;
 
-    private \PHPUnit\Framework\MockObject\MockObject $sender = null;
+    private ?MockObject $sender = null;
 
-    private \PHPUnit\Framework\MockObject\MockObject $recipient = null;
+    private ?MockObject $recipient = null;
 
-    private \PHPUnit\Framework\MockObject\MockObject $thread = null;
+    private ?MockObject $thread = null;
 
-    private \PHPUnit\Framework\MockObject\MockObject $message = null;
+    private ?MockObject $message = null;
 
     protected function createValidator(): ConstraintValidatorInterface
     {

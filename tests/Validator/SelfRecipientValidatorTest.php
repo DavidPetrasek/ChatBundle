@@ -3,14 +3,15 @@ namespace App\Tests\Validator;
 
 use FOS\ChatBundle\Validator\SelfRecipient;
 use FOS\ChatBundle\Validator\SelfRecipientValidator;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class SelfRecipientValidatorTest extends ConstraintValidatorTestCase
 {
-    private ?\PHPUnit\Framework\MockObject\MockObject $participantProvider = null;
+    private ?MockObject $participantProvider = null;
 
-    private ?\PHPUnit\Framework\MockObject\MockObject $participant = null;
+    private ?MockObject $participant = null;
 
     protected function createValidator(): ConstraintValidatorInterface
     {

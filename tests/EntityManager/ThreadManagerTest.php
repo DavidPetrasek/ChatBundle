@@ -19,9 +19,9 @@ class ThreadManagerTest extends TestCase
 
     private \DateTimeImmutable $date;
 
-    private \PHPUnit\Framework\MockObject\MockObject $em;
+    private MockObject $em;
 
-    private \PHPUnit\Framework\MockObject\MockObject $messageManager;
+    private MockObject $messageManager;
 
     private \FOS\ChatBundle\Service\EntityManager\ThreadManager $threadManager;
 
