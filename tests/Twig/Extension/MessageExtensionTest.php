@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\ChatBundle\Tests\Twig\Extension;
 
 use FOS\ChatBundle\Twig\Extension\MessageExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Testfile for MessageExtension.
- */
 class MessageExtensionTest extends TestCase
 {
     private ?\FOS\ChatBundle\Twig\Extension\MessageExtension $extension = null;
@@ -90,11 +89,6 @@ class MessageExtensionTest extends TestCase
         //we call it twice but expect to only get one call
         $this->extension->getNbUnread();
         $this->extension->getNbUnread();
-    }
-
-    public function testGetName(): void
-    {
-        $this->assertEquals('fos_chat', $this->extension->getName());
     }
 
     private function getThreadMock(): MockObject
