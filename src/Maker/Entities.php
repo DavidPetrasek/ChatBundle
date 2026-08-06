@@ -33,14 +33,13 @@ class Entities extends AbstractMaker
 
     public static function getCommandDescription(): string
     {
-        return '';
+        return 'Generates ORM Entiry classes for FOSChatBundle';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
             ->addArgument('participantEntFQCN', InputArgument::REQUIRED)
-            ->addArgument('db_driver', InputArgument::REQUIRED)
         ;
     }
 
@@ -49,14 +48,6 @@ class Entities extends AbstractMaker
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
-    {
-        $db_driver = $input->getArgument('db_driver');
-
-        if ($db_driver === 'orm')       {$this->generateOrm($input, $io, $generator);}
-        if ($db_driver === 'mongo_db')  {$this->generateMongoDb($input, $io, $generator);}
-    }
-
-    private function generateOrm(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $participantEntFQCN = $input->getArgument('participantEntFQCN');
         $participantEntClassName = (u($participantEntFQCN)->afterLast('\\'));
@@ -153,10 +144,5 @@ class Entities extends AbstractMaker
         
 
         $generator->writeChanges();
-    }
-
-    private function generateMongoDb(InputInterface $input, ConsoleStyle $io, Generator $generator): void
-    {
-
     }
 }

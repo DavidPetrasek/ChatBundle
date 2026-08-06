@@ -7,6 +7,11 @@ Getting started with FOSChatBundle
 composer req friendsofsymfony/chat-bundle
 ```
 
+If using MongoDB:
+```bash
+composer req doctrine/mongodb-odm-bundle
+```
+
 Finish installation with:
 ```bash
 symfony console fos_chat:install

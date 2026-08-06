@@ -27,6 +27,8 @@ class FOSChatBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        $container->import('../config/install.php');
+
         // Installer hasn't been used yet
         if (!isset($config['db_driver'])) {return;}
 

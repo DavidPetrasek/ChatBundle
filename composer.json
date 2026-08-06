@@ -33,11 +33,12 @@
         "symfony/string": ">=7.4",
         "symfony/twig-bundle": ">=7.4",
         "symfony/validator": ">=7.4",
+        "symfony/yaml": ">=7.4",
         "doctrine/orm": ">=3.3"
     },
     "suggest": {
-        "doctrine/doctrine-bundle": "^2.13.2",
-        "doctrine/mongodb-odm-bundle": "dev-master"
+        "doctrine/doctrine-bundle": "^2.19",
+        "doctrine/mongodb-odm-bundle": "^5.5"
     },
     "require-dev": {
         "rector/rector": "^2.0",

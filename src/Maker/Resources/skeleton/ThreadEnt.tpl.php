@@ -9,7 +9,7 @@ class <?= $class_name ?> extends BaseThread
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options:["unsigned" => true])]
-    protected ?int $id = null;
+    protected string|int|null $id = null;
 
     #[ORM\ManyToOne(targetEntity: <?= $participantEntClassName ?>::class)]
     protected ?ParticipantInterface $createdBy = null;
