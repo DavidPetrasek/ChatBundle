@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\ChatBundle\Twig\Extension;
 
 use FOS\ChatBundle\Model\MessageInterface;

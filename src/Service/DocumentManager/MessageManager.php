@@ -21,7 +21,9 @@ use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 class MessageManager extends BaseMessageManager
 {
     private $repository;
+
     private readonly string $class;
+
     private readonly string $metaClass;
 
     public function __construct

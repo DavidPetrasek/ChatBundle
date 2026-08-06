@@ -20,7 +20,9 @@ use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
 class ThreadManager extends BaseThreadManager
 {
     private $repository;
+
     private readonly string $class;
+
     private readonly string $metaClass;
 
     public function __construct

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\ChatBundle\Event;
 
 use FOS\ChatBundle\Model\ReadableInterface;

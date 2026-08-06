@@ -19,7 +19,9 @@ use FOS\ChatBundle\ModelManager\MessageManager as BaseMessageManager;
 class MessageManager extends BaseMessageManager
 {
     private readonly \Doctrine\ORM\EntityRepository $repository;
+
     private readonly string $class;
+
     private readonly string $metaClass;
 
     public function __construct(private readonly EntityManager $em, string $class, string $metaClass)
@@ -59,7 +61,7 @@ class MessageManager extends BaseMessageManager
         return $builder
             ->select($builder->expr()->count('m.id'));
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -278,7 +280,7 @@ class MessageManager extends BaseMessageManager
                 $threadParticipant = $threadMeta->getParticipant();
                 $meta = $this->createMessageMetadata();     
                 $meta->setParticipant($threadParticipant);
-                
+
                 if ($message->getSender() === $threadParticipant) {$meta->setRead(true);}
 
                 $message->addMetadata($meta);

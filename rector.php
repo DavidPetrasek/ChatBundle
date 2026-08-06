@@ -9,16 +9,14 @@ use Rector\TypeDeclaration\Rector\ClassMethod\AddTypeFromResourceDocblockRector;
 return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
+        __DIR__ . '/tests',
     ])
     ->withPhpSets(php82: true)
     ->withSets([
-        SymfonySetList::SYMFONY_72,
-        SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
-    ->withRules([
-        AddTypeFromResourceDocblockRector::class,
-    ])
+    ->withComposerBased(symfony: true)
+    // ->withRules([])
     ->withPreparedSets
     (
         deadCode: true,
