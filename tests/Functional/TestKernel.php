@@ -35,7 +35,7 @@ class TestKernel extends Kernel
         ];
     }
 
-    private function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+    private function configureContainer(ContainerBuilder $c): void
     {
         $c->loadFromExtension('framework', [
             'secret' => 'MySecretKey',

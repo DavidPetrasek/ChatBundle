@@ -8,8 +8,9 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class SelfRecipientValidatorTest extends ConstraintValidatorTestCase
 {
-    private $participantProvider = null;
-    private $participant = null;
+    private ?\PHPUnit\Framework\MockObject\MockObject $participantProvider = null;
+
+    private ?\PHPUnit\Framework\MockObject\MockObject $participant = null;
 
     protected function createValidator(): ConstraintValidatorInterface
     {

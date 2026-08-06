@@ -19,7 +19,9 @@ use FOS\ChatBundle\Service\EntityManager\MessageManager;
 class ThreadManager extends BaseThreadManager
 {
     private readonly \Doctrine\ORM\EntityRepository $repository;
+
     private readonly string $class;
+
     private readonly string $metaClass;
 
     public function __construct(private readonly EntityManager $em, string $class, string $metaClass, private readonly MessageManager $messageManager)
@@ -45,7 +47,7 @@ class ThreadManager extends BaseThreadManager
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.metadata', 'tm')
             ->innerJoin('tm.participant', 'p')
-            
+
             ->where('p.id = ?1')
             ->setParameter(1, $participant->getId());
     }
@@ -201,11 +203,11 @@ class ThreadManager extends BaseThreadManager
     {
         return $this->repository->createQueryBuilder('t')
             ->innerJoin('t.createdBy', 'p')
-            
+
             ->where('p.id = ?1')
             ->setParameter(1, $participant->getId());
     }
-    
+
     /**
      * {@inheritdoc}
      */

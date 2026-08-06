@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\ChatBundle\Tests\Functional\EntityManager;
 
 use FOS\ChatBundle\Model\MessageInterface;

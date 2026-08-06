@@ -11,7 +11,7 @@ class ThreadDenormalizerTest extends TestCase
 {
     private array $dates;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dates = [
             new DateTimeImmutable('- 3 days'),
@@ -91,7 +91,7 @@ class ThreadDenormalizerTest extends TestCase
         $this->assertFalse($thread->isDeletedByParticipant($user1));
     }
 
-    private function createMessageMock(ParticipantInterface $sender, DateTimeImmutable $date)
+    private function createMessageMock(ParticipantInterface $sender, DateTimeImmutable $date): \PHPUnit\Framework\MockObject\MockObject
     {
         $message = $this->getMockBuilder(Message::class)
             ->disableOriginalConstructor()
@@ -111,7 +111,7 @@ class ThreadDenormalizerTest extends TestCase
         return $message;
     }
 
-    private function createParticipantMock(int|string $id)
+    private function createParticipantMock(int|string $id): \PHPUnit\Framework\MockObject\MockObject
     {
         $user = $this->createMock(ParticipantInterface::class);
         $user->method('getId')

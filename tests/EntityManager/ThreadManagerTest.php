@@ -15,21 +15,25 @@ use PHPUnit\Framework\TestCase;
  */
 class ThreadManagerTest extends TestCase
 {
-    private $user;
-    private $date;
-    private $em;
-    private $messageManager;
-    private $threadManager;
+    private mixed $user;
 
-    public function setUp(): void
+    private \DateTimeImmutable $date;
+
+    private \PHPUnit\Framework\MockObject\MockObject $em;
+
+    private \PHPUnit\Framework\MockObject\MockObject $messageManager;
+
+    private \FOS\ChatBundle\Service\EntityManager\ThreadManager $threadManager;
+
+    protected function setUp(): void
     {
         $this->user = $this->createParticipantMock(4711);
         $this->date = new \DateTimeImmutable('2013-12-25');
-        
+
         // Create mocks for EntityManager and MessageManager
         $this->em = $this->createMock(EntityManager::class);
         $this->messageManager = $this->createMock(MessageManager::class);
-        
+
         // Provide a repository and class metadata objects so the constructor can access them
         $threadClass = \FOS\ChatBundle\Entity\Thread::class;
         $metaClass = \FOS\ChatBundle\Entity\ThreadMetadata::class;
@@ -189,26 +193,11 @@ class ThreadManagerTest extends TestCase
     }
 
     /**
-     * Add expectations on the thread mock.
-     */
-    private function addThreadExpectations(MockObject &$thread, int $createdByCalls = 1, int $createdAtCalls = 1)
-    {
-        $thread->expects($this->exactly($createdByCalls))
-            ->method('setCreatedBy')
-            ->with($this->equalTo($this->user));
-
-        $thread->expects($this->exactly($createdAtCalls))
-            ->method('setCreatedAt')
-            ->with($this->equalTo($this->date));
-    }
-
-    /**
      * Get a Participant.
      */
     private function createParticipantMock(int $id) : mixed
     {
-        $participant = $this->getMockBuilder(\FOS\ChatBundle\Model\ParticipantInterface::class)
-            ->disableOriginalConstructor(true)
+        $participant = $this->getMockBuilder(\FOS\ChatBundle\Model\ParticipantInterface::class)->disableOriginalConstructor()
             ->getMock();
 
         $participant->expects($this->any())
@@ -223,8 +212,7 @@ class ThreadManagerTest extends TestCase
      */
     private function createThreadMock() : mixed
     {
-        return $this->getMockBuilder(\FOS\ChatBundle\Model\ThreadInterface::class)
-            ->disableOriginalConstructor(true)
+        return $this->getMockBuilder(\FOS\ChatBundle\Model\ThreadInterface::class)->disableOriginalConstructor()
             ->getMock();
     }
 }

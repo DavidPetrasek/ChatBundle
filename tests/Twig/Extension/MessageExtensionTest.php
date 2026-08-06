@@ -12,15 +12,15 @@ class MessageExtensionTest extends TestCase
 {
     private ?\FOS\ChatBundle\Twig\Extension\MessageExtension $extension = null;
 
-    private $participantProvider;
+    private \PHPUnit\Framework\MockObject\MockObject $participantProvider;
 
-    private $provider;
+    private \PHPUnit\Framework\MockObject\MockObject $provider;
 
-    private $authorizer;
+    private \PHPUnit\Framework\MockObject\MockObject $authorizer;
 
-    private $participant;
+    private \PHPUnit\Framework\MockObject\MockObject $participant;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->participantProvider = $this->getMockBuilder(\FOS\ChatBundle\Security\ParticipantProviderInterface::class)->getMock();
         $this->provider = $this->getMockBuilder(\FOS\ChatBundle\Service\Provider\ProviderInterface::class)->getMock();
@@ -96,7 +96,7 @@ class MessageExtensionTest extends TestCase
         $this->assertEquals('fos_chat', $this->extension->getName());
     }
 
-    private function getThreadMock()
+    private function getThreadMock(): \PHPUnit\Framework\MockObject\MockObject
     {
         return $this->getMockBuilder(\FOS\ChatBundle\Model\ThreadInterface::class)->getMock();
     }

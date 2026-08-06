@@ -16,11 +16,11 @@ use Symfony\Component\Yaml\Yaml;
 #[AsCommand(name: 'fos_chat:install', description: 'Finish installation of FOSChatBundle')]
 class InstallCommand extends Command
 {
-    private QuestionHelper $qHelper;
+    private readonly QuestionHelper $qHelper;
 
     public function __construct
     (
-        private string $projectDir,
+        private readonly string $projectDir,
     )
     {
         parent::__construct();
@@ -71,7 +71,7 @@ class InstallCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function generateConfig(InputInterface $input, OutputInterface $output): int|array
+    private function generateConfig(InputInterface $input, OutputInterface $output): array
     {
         $db_driver = $this->qHelper->ask($input, $output, new ChoiceQuestion(
             'Please select your DB driver (defaults to orm)',
@@ -142,7 +142,7 @@ class InstallCommand extends Command
         return true;
     }
 
-    private function implementInterface(OutputInterface $output, string $fileAbsPath, string $interfaceUseName, string $interfaceClassName): int|bool
+    private function implementInterface(OutputInterface $output, string $fileAbsPath, string $interfaceUseName, string $interfaceClassName): bool
     {
         $code = file_get_contents($fileAbsPath);
 
@@ -156,15 +156,14 @@ class InstallCommand extends Command
         $code = preg_replace_callback
         (
             '/(class\s+\w+)(?:\s+extends\s+[\w\\\\_]+)?(?:\s+implements\s+([^{]+))?/i',
-            function ($m) use ($interfaceClassName) 
+            function ($m) use ($interfaceClassName): string 
             {
                 $implementsList = !empty($m[2]) ? array_map('trim', explode(',', $m[2])) : [];
 
                 if (!in_array($interfaceClassName, $implementsList, true)) 
                 {
                     $implementsList[] = $interfaceClassName;
-                    $replacement = $m[1] . (str_contains($m[0], 'extends') ? preg_replace('/.*(extends\s+[\w\\\\_]+).*/i', ' $1', $m[0]) : '') . ' implements ' . implode(', ', $implementsList);
-                    return $replacement;
+                    return $m[1] . (str_contains($m[0], 'extends') ? preg_replace('/.*(extends\s+[\w\\\\_]+).*/i', ' $1', $m[0]) : '') . ' implements ' . implode(', ', $implementsList);
                 }
 
                 return $m[0];
@@ -191,6 +190,7 @@ class InstallCommand extends Command
             $output->writeln($makeMigrationProcess->getErrorOutput());
             return Command::FAILURE;
         }
+
         $output->writeln('<info>Migration generated!</info>');
 
         return true;

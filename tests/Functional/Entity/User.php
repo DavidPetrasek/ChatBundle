@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\ChatBundle\Tests\Functional\Entity;
 
 use FOS\ChatBundle\Model\ParticipantInterface;
@@ -24,10 +26,6 @@ class User implements ParticipantInterface, UserInterface
     public function getRoles(): array
     {
         return [];
-    }
-
-    public function eraseCredentials(): void
-    {
     }
 
     public function getUserIdentifier(): string

@@ -22,11 +22,6 @@ class UserProvider implements UserProviderInterface
         return User::class === $class;
     }
 
-    private function fetchUser($username): \FOS\ChatBundle\Tests\Functional\Entity\User
-    {
-        return new User();
-    }
-
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         return new User();

@@ -8,12 +8,17 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class ReplyAuthorizationValidatorTest extends ConstraintValidatorTestCase
 {
-    private $authorizer = null;
-    private $participantProvider = null;
-    private $sender = null;
-    private $recipient = null;
-    private $thread = null;
-    private $message = null;
+    private ?\PHPUnit\Framework\MockObject\MockObject $authorizer = null;
+
+    private ?\PHPUnit\Framework\MockObject\MockObject $participantProvider = null;
+
+    private \PHPUnit\Framework\MockObject\MockObject $sender = null;
+
+    private \PHPUnit\Framework\MockObject\MockObject $recipient = null;
+
+    private \PHPUnit\Framework\MockObject\MockObject $thread = null;
+
+    private \PHPUnit\Framework\MockObject\MockObject $message = null;
 
     protected function createValidator(): ConstraintValidatorInterface
     {
