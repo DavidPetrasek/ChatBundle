@@ -82,11 +82,10 @@ class AkismetSpamDetectorTest extends TestCase
     {
         // Prepare a specific HTTP request
         $request = Request::create('https://my-domain.com/chat');
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $mockResponse = new MockResponse('false');
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse) {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse): \Symfony\Component\HttpClient\Response\MockResponse {
             // Verify that the payload contains the dynamically resolved URL
             $this->assertStringContainsString('blog=https%3A%2F%2Fmy-domain.com', $options['body']);
 
@@ -109,7 +108,7 @@ class AkismetSpamDetectorTest extends TestCase
         $participant = new TestParticipant(userIdentifier: 'john_doe_123', email: 'john.doe@example.com');
 
         $mockResponse = new MockResponse('false');
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse) {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse): \Symfony\Component\HttpClient\Response\MockResponse {
             // Verify author details were included in the request payload
             $this->assertStringContainsString('comment_author=john_doe_123', $options['body']);
             $this->assertStringContainsString('comment_author_email=john.doe%40example.com', $options['body']);
