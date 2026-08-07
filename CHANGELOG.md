@@ -40,7 +40,8 @@ use FOS\ChatBundle\Service\Reader\Reader;
 use FOS\ChatBundle\Service\Sender\Sender;
 use FOS\ChatBundle\Service\SpamDetection\SpamDetectorInterface;
 ```
- 
+- SpamDetector method `isSpam` is now `check` and returns `FOS\ChatBundle\Model\SpamStatus` enum.
+
 Rename:
 - `getIsRead` -> `isRead`
 - `getIsDeleted` -> `isDeleted`

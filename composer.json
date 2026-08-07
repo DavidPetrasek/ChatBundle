@@ -34,11 +34,13 @@
         "symfony/twig-bundle": ">=7.4",
         "symfony/validator": ">=7.4",
         "symfony/yaml": ">=7.4",
-        "doctrine/orm": ">=3.3"
+        "doctrine/orm": ">=3.3",
+        "symfony/http-client": ">=7.4"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "^2.19",
-        "doctrine/mongodb-odm-bundle": "^5.5"
+        "doctrine/mongodb-odm-bundle": "^5.5",
+        "omines/akismet": "^1.0"
     },
     "require-dev": {
         "rector/rector": "^2.0",
