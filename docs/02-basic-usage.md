@@ -5,12 +5,11 @@ Basic Usage
 
 Get user threads
 ----------------
+Inject `FOS\ChatBundle\Provider\ProviderInterface` into your service or controller.
 
 Get the threads in the inbox of the authenticated user:
 
 ```php
-$provider = $container->get('fos_chat.provider');
-
 $threads = $provider->getInboxThreads();
 ```
 
@@ -29,7 +28,7 @@ $thread = $provider->getThread($threadId);
 Manipulate threads
 ------------------
 
-See `FOS\\ChatBundle\\Model\\ThreadInterface` for the complete list of available methods:
+See `FOS\ChatBundle\Model\ThreadInterface` for the complete list of available methods:
 
 ```php
 // Print the thread subject
@@ -52,7 +51,7 @@ the thread metadata using `$container->get('fos_chat.thread_manager')->saveThrea
 Manipulate messages
 -------------------
 
-See ``FOS\\ChatBundle\\Model\\MessageInterface`` for the complete list of available methods:
+See ``FOS\ChatBundle\Model\MessageInterface`` for the complete list of available methods:
 
 ```php
 // Print the message body
@@ -70,12 +69,11 @@ if ($message->isReadByParticipant($participant))
 
 Compose a message
 --------------
+Inject `FOS\ChatBundle\Service\Composer\Composer` into your service or controller.
 
 Create a new message thread:
 
 ```php
-$composer = $container->get('fos_chat.composer');
-
 $message = $composer->newThread()
     ->setSender($jack)
     ->addRecipient($clyde)
@@ -98,21 +96,21 @@ Because they are the attributes of the thread, which already exists.
 
 Send a message
 --------------
+Inject `FOS\ChatBundle\Service\Sender\Sender` into your service or controller.
 
 Nothing's easier than sending the message you've just composed:
 
 ```php
-$sender = $container->get('fos_chat.sender');
 $sender->send($message);
 ```
 
 Number of Unread Messages
 -------------------------
+Inject `FOS\ChatBundle\Service\Provider\Provider` into your service or controller.
 
 You can return the number of unread messages for the authenticated user with:
 
 ```php
-$provider = $container->get('fos_chat.provider');
 $provider->getNbUnreadMessages();
 ```
 
