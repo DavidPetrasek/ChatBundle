@@ -49,6 +49,7 @@
         "omines/akismet": "^1.0",
         "doctrine/doctrine-bundle": "^2.19",
         "doctrine/mongodb-odm-bundle": "^5.5",
-        "phpstan/phpstan": "^2.2"
+        "phpstan/phpstan": "^2.2",
+        "symplify/easy-coding-standard": "^13.2"
     }
 }

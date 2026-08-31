@@ -9,7 +9,6 @@ use FOS\ChatBundle\Model\ParticipantInterface;
 use FOS\ChatBundle\Model\ReadableInterface;
 use FOS\ChatBundle\Model\ThreadInterface;
 use FOS\ChatBundle\ModelManager\ThreadManager as BaseThreadManager;
-use FOS\ChatBundle\Service\EntityManager\MessageManager;
 
 /**
  * Default ORM ThreadManager.

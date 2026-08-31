@@ -4,9 +4,6 @@ namespace FOS\ChatBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\ChatBundle\Model\ParticipantInterface;
-use FOS\ChatBundle\Model\MessageInterface;
-use FOS\ChatBundle\Model\ThreadMetadata;
 
 /**
  * Abstract thread model.
