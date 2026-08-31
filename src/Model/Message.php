@@ -218,7 +218,7 @@ abstract class Message implements MessageInterface
             $meta->setDeleted($deleted);
             $meta->setDeletedAt($deleted ? new \DateTimeImmutable() : null);
         }
-        
+
         return $this;
     }
 

@@ -72,7 +72,7 @@ abstract class ThreadMetadata
     public function setParticipantStatus(null|int|ParticipantStatus $participantStatus): self
     {
         if ($participantStatus instanceof ParticipantStatus) {$participantStatus = $participantStatus->value;}   
-        
+
         $this->participantStatus = $participantStatus;
 
         return $this;

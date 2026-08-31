@@ -77,7 +77,7 @@ class InstallCommand extends Command
             ['orm', 'mongodb'],
             0
         ));
-        
+
         $fqcnType = $db_driver === 'orm' ? 'Entity' : 'Document';
         $yamlAbs = $this->projectDir.'/config/packages/fos_chat.yaml';
         $data = 

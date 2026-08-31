@@ -140,7 +140,7 @@ class Entities extends AbstractMaker
                 'use_statements' => $useStatementsThreadMetadata,
                 'participantEntClassName' => $participantEntClassName]
         );
-        
+
 
         $generator->writeChanges();
     }

@@ -62,7 +62,7 @@ return function(ContainerConfigurator $container): void
 
 
         // Validators
-        
+
         ->set('fos_chat.validator.authorization', AuthorizationValidator::class)
             ->args([
                 service('fos_chat.authorizer'),

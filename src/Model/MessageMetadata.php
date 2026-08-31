@@ -14,7 +14,7 @@ abstract class MessageMetadata
     protected ?\DateTimeImmutable $readAt = null;
 
     protected bool $deleted = false;
-    
+
     /**
      * Date when the message was marked as deleted.
      */
