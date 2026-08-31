@@ -45,6 +45,10 @@
     "require-dev": {
         "rector/rector": "^2.0",
         "symfony/test-pack": "^1.2",
-        "phpunit/phpunit": "^13.2"
+        "phpunit/phpunit": "^13.2",
+        "omines/akismet": "^1.0",
+        "doctrine/doctrine-bundle": "^2.19",
+        "doctrine/mongodb-odm-bundle": "^5.5",
+        "phpstan/phpstan": "^2.2"
     }
 }

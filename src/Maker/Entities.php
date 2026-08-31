@@ -11,7 +11,6 @@ use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping;
 use Doctrine\Common\Collections\Collection;
 use FOS\ChatBundle\Entity\Message;
 use FOS\ChatBundle\Entity\MessageMetadata;
@@ -54,7 +53,7 @@ class Entities extends AbstractMaker
 
         $useStatementsBase = [
             ArrayCollection::class,
-            [Mapping::class => 'ORM'],
+            ['Doctrine\ORM\Mapping' => 'ORM'],
             Collection::class,
             [Message::class => 'BaseMessage'],
             ParticipantInterface::class,

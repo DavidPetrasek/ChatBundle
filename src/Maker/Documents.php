@@ -4,7 +4,6 @@ namespace FOS\ChatBundle\Maker;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Attribute as ODM;
 use FOS\ChatBundle\Document\Message;
 use FOS\ChatBundle\Document\MessageMetadata;
 use FOS\ChatBundle\Document\Thread;
@@ -51,7 +50,7 @@ class Documents extends AbstractMaker
 
         $useStatementsBase = [
             ArrayCollection::class,
-            [ODM::class => 'ODM'],
+            ['Doctrine\ODM\MongoDB\Mapping\Attribute' => 'ODM'],
             Collection::class,
             ParticipantInterface::class,
             ThreadInterface::class,
