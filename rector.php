@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
+use Rector\CodingStyle\Rector\ClassLike\NewlineBetweenClassLikeStmtsRector;
 use Rector\Config\RectorConfig;
-use Rector\Symfony\Set\SymfonySetList;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddTypeFromResourceDocblockRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
+use Rector\Symfony\CodeQuality\Rector\Class_\InlineClassRoutePrefixRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -12,11 +12,10 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withPhpSets(php82: true)
-    ->withSets([
-        SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-    ])
     ->withComposerBased(symfony: true)
-    // ->withRules([])
+    ->withRules([
+        DeclareStrictTypesRector::class
+    ])
     ->withPreparedSets
     (
         deadCode: true,
@@ -28,6 +27,11 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withAttributesSets(symfony: true, doctrine: true)
+    ->withSkip([
+        InlineClassRoutePrefixRector::class,
+        NewlineAfterStatementRector::class,
+        NewlineBetweenClassLikeStmtsRector::class
+    ]);
 ;
 
 

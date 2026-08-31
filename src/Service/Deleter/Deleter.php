@@ -44,7 +44,7 @@ class Deleter implements DeleterInterface
         if ($readable instanceof ThreadInterface  &&  !$this->authorizer->canDeleteThread($readable)) {
             throw new AccessDeniedException('You are not allowed to delete this thread');
         }
-        else if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
+        if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
             throw new AccessDeniedException('You are not allowed to delete this message');
         }
 
@@ -61,7 +61,7 @@ class Deleter implements DeleterInterface
         if ($readable instanceof ThreadInterface  &&  !$this->authorizer->canDeleteThread($readable)) {
             throw new AccessDeniedException('You are not allowed to undelete this thread');
         }
-        else if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
+        if ($readable instanceof MessageInterface  &&  !$this->authorizer->canDeleteMessage($readable)) {
             throw new AccessDeniedException('You are not allowed to undelete this message');
         }
 

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace FOS\ChatBundle;
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;

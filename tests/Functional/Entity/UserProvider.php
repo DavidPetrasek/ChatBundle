@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace FOS\ChatBundle\Tests\Functional\Entity;
 
@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    public function loadUserByUsername($username): \FOS\ChatBundle\Tests\Functional\Entity\User
+    public function loadUserByUsername(string $username): \FOS\ChatBundle\Tests\Functional\Entity\User
     {
         return new User();
     }
@@ -17,7 +17,7 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return User::class === $class;
     }

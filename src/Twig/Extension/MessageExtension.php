@@ -50,9 +50,7 @@ class MessageExtension
     #[AsTwigFunction('fos_chat_nb_unread')]
     public function getNbUnread() : int
     {
-        if (null === $this->nbUnreadMessagesCache) {
-            $this->nbUnreadMessagesCache = $this->provider->getNbUnreadMessages();
-        }
+        $this->nbUnreadMessagesCache ??= $this->provider->getNbUnreadMessages();
 
         return $this->nbUnreadMessagesCache;
     }

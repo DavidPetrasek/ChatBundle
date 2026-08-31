@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace FOS\ChatBundle\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
