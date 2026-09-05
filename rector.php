@@ -3,7 +3,7 @@
 use Rector\CodingStyle\Rector\ClassLike\NewlineBetweenClassLikeStmtsRector;
 use Rector\Config\RectorConfig;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
-use Rector\Symfony\CodeQuality\Rector\Class_\InlineClassRoutePrefixRector;
+use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
@@ -16,34 +16,16 @@ return RectorConfig::configure()
     ->withRules([
         DeclareStrictTypesRector::class
     ])
-    ->withPreparedSets
-    (
-        deadCode: true,
-        codeQuality: true,
-        codingStyle: true,
-        typeDeclarations: true,
-        doctrineCodeQuality: true,
-        symfonyCodeQuality: true,
-        symfonyConfigs: true,
-    )
+    ->withSets
+    ([
+        SetList::DEAD_CODE, 
+        SetList::CODE_QUALITY, 
+        SetList::CODING_STYLE, 
+        SetList::TYPE_DECLARATION
+    ])
     ->withAttributesSets(symfony: true, doctrine: true)
     ->withSkip([
-        InlineClassRoutePrefixRector::class,
         NewlineAfterStatementRector::class,
         NewlineBetweenClassLikeStmtsRector::class
     ]);
 ;
-
-
-// USE THIS FOR DOWNGRADE
-// use Rector\Set\ValueObject\DowngradeLevelSetList;
-// use Rector\Config\RectorConfig;
-
-// return static function (RectorConfig $rectorConfig): void {
-//     $rectorConfig->sets([
-//         DowngradeLevelSetList::DOWN_TO_PHP_82
-//     ]);
-//     $rectorConfig->paths([
-//         __DIR__ . '/src',
-//     ]);
-// };
