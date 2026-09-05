@@ -6,6 +6,7 @@ use FOS\ChatBundle\Service\Provider\Provider;
 use FOS\ChatBundle\Service\Reader\Reader;
 use FOS\ChatBundle\Security\Authorizer;
 use FOS\ChatBundle\Service\Sender\Sender;
+use FOS\ChatBundle\Twig\Extension\MessageExtension;
 use FOS\ChatBundle\Validator\AuthorizationValidator;
 use FOS\ChatBundle\Validator\ReplyAuthorizationValidator;
 use FOS\ChatBundle\Validator\SelfRecipientValidator;
@@ -59,6 +60,14 @@ return function(ContainerConfigurator $container): void
         ->args([
             service('fos_chat.participant_provider')
         ])
+
+        ->set(MessageExtension::class)
+            ->autoconfigure(true)
+            ->args([
+                service('fos_chat.participant_provider'),
+                service('fos_chat.provider'),
+                service('fos_chat.authorizer')
+            ])
 
 
         // Validators
